@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><!-- TITLE_PLACEHOLDER --></title>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+  <script src="./lib/vue@2.js"></script>
+  <script type="module">
+    import { App } from "./app.js";
+    const app = new Vue({
+      render: (h) => h(App),
+    });
+    app.$mount("#app");
+  </script>
+</html>

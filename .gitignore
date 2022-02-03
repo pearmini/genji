@@ -16,3 +16,7 @@ dist
 
 # Test
 coverage
+
+# Locks
+yarn.lock
+package-lock.json

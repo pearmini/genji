@@ -1,0 +1,26 @@
+{
+  "name": "genji-notebook",
+  "version": "0.0.1",
+  "description": "Interactive JavaScript Notebook.",
+  "bin": "bin/genji.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pearmini/genji-notebook.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pearmini/genji-notebook/issues"
+  },
+  "homepage": "https://github.com/pearmini/genji-notebook#readme",
+  "dependencies": {
+    "commander": "^9.0.0",
+    "file-system": "^2.2.2",
+    "markdown-it": "^12.3.2",
+    "node-watch": "^0.7.3"
+  }
+}
