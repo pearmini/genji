@@ -1,0 +1,25 @@
+@import url(./components/outline.css);
+@import url(./components/tree.css);
+
+:root {
+  --genji-main-color: MAIN_COLOR_PLACEHOLDER;
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+a {
+  text-decoration: none;
+}
+
+.app {
+  display: "flex";
+}

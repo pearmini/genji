@@ -1,0 +1,49 @@
+.tree__list--root {
+  list-style-type: none;
+}
+
+.tree__list {
+  list-style-type: none;
+  margin-left: 16px;
+}
+
+.tree__link {
+  padding: 6px 16px;
+  line-height: 20px;
+  display: flex;
+  color: #606770;
+  font-weight: 500;
+  border-radius: 0.25rem;
+  transition-property: color, background-color;
+  transition-duration: 0.3s;
+  justify-content: space-between;
+}
+
+.tree__link--active {
+  color: #28DF99;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.tree__list-item {
+  margin: 0.25rem 0;
+}
+
+.tree__link:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.tree__link--sublist::after {
+  content: " ";
+  height: 1.25rem;
+  width: 1.25rem;
+  display: inline-block;
+  transform: rotate(180deg);
+  transition-duration: 0.3s;
+  transition-property: transform;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24"><path fill="rgba(0,0,0,0.5)" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>')
+    50%/2rem 2rem;
+}
+
+.tree__list-item--collapsed .tree__link--sublist::after {
+  transform: rotate(90deg);
+}

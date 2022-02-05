@@ -1,15 +1,16 @@
 import { Tree } from "./tree.js";
 
 export const Outline = {
-  template: `<div>
-    <div>
+  template: `<div class="outline">
+    <div class="outline__header">
+      <img :src="logo" class="outline__logo"/>
       <h1>{{title}}</h1>
     </div>
-    <div>
-      <tree v-for="tree in data" :data="tree" :key="tree.name" @select="$emit('select', $event)"/>
+    <div class="outline__tree">
+       <tree v-if="data !== undefined" :data="data" :root="true"/>
     </div>
   </div>`,
-  props: ["title", "data"],
+  props: ["title", "data", "logo"],
   components: {
     Tree,
   },

@@ -2,18 +2,17 @@ import { Outline } from "./components/outline.js";
 import { Notebook } from "./components/notebook.js";
 
 export const App = {
-  template: `<div :style="styles.container">
-    <outline :title="notebook.title" :data="notebook.outline" @select="onSelect" />
-    <notebook :data="module"/>
+  template: `<div class="app">
+    <outline 
+      :title="notebook.title" 
+      :data="notebook.outline" 
+      :logo="notebook.logo"
+    />
+    <router-view></router-view>
   </div>`,
   data: () => ({
     notebook: {},
     module: {},
-    styles: {
-      container: {
-        display: "flex",
-      },
-    },
   }),
   components: {
     Outline,
@@ -24,11 +23,16 @@ export const App = {
       .then((response) => response.json())
       .then((data) => {
         this.notebook = data;
+        this.$router.push("/docs/");
       });
   },
-  methods: {
-    onSelect(e) {
-      this.module = this.notebook.modules.find((d) => d.id === e);
+  watch: {
+    $route: {
+      handler(to, from) {
+        const { id } = to.params;
+        this.$store.commit("setSelectedId", id || "");
+      },
+      immediate: true,
     },
   },
 };

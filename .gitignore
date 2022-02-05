@@ -20,3 +20,6 @@ coverage
 # Locks
 yarn.lock
 package-lock.json
+
+# Cache
+notebook.json

@@ -12,4 +12,7 @@ export const Notebook = {
     GCode,
   },
   props: ["data"],
+  data: () => ({
+    styles: {},
+  }),
 };

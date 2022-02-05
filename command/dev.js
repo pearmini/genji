@@ -7,14 +7,7 @@ module.exports = function () {
   const config = require(path.resolve("genji.config.js"));
 
   const server = http.createServer(function (request, response) {
-    if (request.url === "/") {
-      const html = fs.readFileSync(
-        path.resolve(__dirname, "../public/index.html"),
-        "utf8"
-      );
-      response.writeHead(200, { "Content-Type": "text/html" });
-      response.end(html.replace("<!-- TITLE_PLACEHOLDER -->", config.title));
-    } else if (request.url.endsWith(".js")) {
+    if (request.url.endsWith(".js")) {
       const js = fs.readFileSync(
         path.resolve(__dirname, "../public/" + request.url),
         "utf8"
@@ -28,6 +21,26 @@ module.exports = function () {
       );
       response.writeHead(200, { "Content-Type": "application/json" });
       response.end(js);
+    } else if (request.url.endsWith(".css")) {
+      const css = fs.readFileSync(
+        path.resolve(__dirname, "../public/" + request.url),
+        "utf8"
+      );
+      response.writeHead(200, { "Content-Type": "text/css" });
+      response.end(
+        css.replace("MAIN_COLOR_PLACEHOLDER", config.theme.mainColor)
+      );
+    } else {
+      const html = fs.readFileSync(
+        path.resolve(__dirname, "../public/index.html"),
+        "utf8"
+      );
+      response.writeHead(200, { "Content-Type": "text/html" });
+      response.end(
+        html
+          .replace("<!-- TITLE_PLACEHOLDER -->", config.title)
+          .replace("<!-- ICON_PLACEHOLDER -->", config.logo)
+      );
     }
   });
 
