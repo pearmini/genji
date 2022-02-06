@@ -1,11 +1,6 @@
-import { Provider } from "./components/provider.js";
-
 Vue.use(VueRouter);
 
-const routes = [
-  { path: "/docs/:id", component: Provider },
-  { path: "/", component: Provider },
-];
+const routes = [{ path: "/docs/:id" }];
 
 export const router = new VueRouter({
   routes,

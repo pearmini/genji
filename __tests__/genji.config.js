@@ -4,7 +4,7 @@ module.exports = {
   title: "Genji Notebook",
   logo: "https://s2.loli.net/2022/02/05/QvfOBrE4p6PgRxI.png",
   outline: {
-    Introduction: "hello",
+    Introduction: "introduction",
     "Get Started": "",
     Showcase: {
       "Data Visualization": "",

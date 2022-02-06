@@ -27,15 +27,17 @@ export const Tree = {
   </template>`,
   props: ["data", "root"],
   name: "Tree",
+  inject: ["context"],
   computed: {
     to() {
-      const { fileId } = this.data.data;
+      const { fileId, file } = this.data.data;
+      if (file === null) return "!#";
       return fileId ? "/docs/" + fileId : "/docs";
     },
     selected() {
-      const { selectedId } = this.$store.state;
-      const { id } = this.data.data;
-      return selectedId === id && !this.data.children;
+      return (
+        this.context.selectedId === this.data.data.id && !this.data.children
+      );
     },
   },
   data: () => ({ showChildren: true }),
