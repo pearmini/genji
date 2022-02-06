@@ -1,12 +1,6 @@
 import { Outline } from "./components/outline.js";
 import { Notebook } from "./components/notebook.js";
 
-{
-  /* <p v-if="content === null">no data</p> */
-}
-{
-  /* <notebook v-else :data="content" /> */
-}
 export const App = {
   template: `<div class="app">
     <outline 
@@ -14,7 +8,10 @@ export const App = {
       :data="notebook.outline" 
       :logo="notebook.logo"
     />
-
+    <div class="app__main">
+      <p v-if="!content">no data</p> 
+      <notebook v-else :data="content" /> 
+    </div>
   </div>`,
   data: () => ({
     notebook: {},
@@ -32,7 +29,12 @@ export const App = {
     Notebook,
   },
   computed: {
-    content() {},
+    content() {
+      if (!this.notebook.modules) return undefined;
+      return this.notebook.modules.find(
+        (d) => d.id === this.context.selectedId
+      );
+    },
   },
   mounted() {
     fetch("./notebook.json")

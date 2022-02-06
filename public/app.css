@@ -3,5 +3,12 @@ a {
 }
 
 .app {
-  display: "flex";
+  display: flex;
+}
+
+.app__main {
+  padding: 32px 16px;
+  height: 100vh;
+  overflow: scroll;
+  width: calc(100% - 300px);
 }

@@ -1,9 +1,14 @@
 .outline {
   width: 300px;
-  border-right-color: #eee;
+  border-right-color: #d0d7de;
   border-right-style: solid;
   border-right-width: 1px;
   height: 100vh;
+}
+
+.outline * {
+  padding: 0;
+  margin: 0;
 }
 
 .outline__header {
@@ -12,14 +17,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-bottom-color: #eee;
+  margin: 0.5rem;
+  border-bottom-color: #d0d7de;
   border-bottom-style: solid;
   border-bottom-width: 1px;
 }
 
 .outline__tree {
   padding: 0.5rem;
-  height: calc(100% - 240px - 1rem);
+  height: calc(100% - 240px - 2rem);
   overflow: scroll;
 }
 

@@ -1,14 +1,14 @@
+@import url(./lib/normalize.css);
+@import url(./lib/default.min.css);
 @import url(./app.css);
 @import url(./components/outline.css);
 @import url(./components/tree.css);
+@import url(./components/codeblock.css);
+@import url(./components/markdown.css);
+@import url(./components/notebook.css);
 
 :root {
   --genji-main-color: MAIN_COLOR_PLACEHOLDER;
-}
-
-* {
-  margin: 0px;
-  padding: 0px;
 }
 
 html,

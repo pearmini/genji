@@ -1,0 +1,54 @@
+.codeblock {
+  position: relative;
+}
+
+.codeblock__tool {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  transform: translateX(-100%);
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 0.3s;
+}
+
+.codeblock__tool-item {
+  cursor: pointer;
+  padding: 0 0.25rem 0.25rem 0.25rem;
+  color: #606770;
+}
+
+.codeblock__tool-item:hover {
+  color: var(--genji-main-color);
+}
+
+.codeblock__tool-pin--pinned {
+  color: var(--genji-main-color);
+}
+
+.codeblock:hover .codeblock__tool {
+  opacity: 1;
+}
+
+.codeblock__pre {
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.codeblock__pre code {
+  line-height: 1.45;
+  font-size: 85% !important;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+    Liberation Mono, monospace !important;
+}
+
+.codeblock__pre--executable {
+  margin-top: 0px;
+}
+
+.codeblock__pre--hide {
+  display: none;
+}
