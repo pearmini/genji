@@ -25,12 +25,24 @@
   color: var(--genji-main-color);
 }
 
+.codeblock__tool-item:active {
+  transform: scale(1.1);
+}
+
 .codeblock__tool-pin--pinned {
   color: var(--genji-main-color);
 }
 
 .codeblock:hover .codeblock__tool {
   opacity: 1;
+}
+
+.codeblock__output {
+  margin-top: 16px;
+}
+
+.codeblock__output--only {
+  margin-bottom: 16px;
 }
 
 .codeblock__pre {

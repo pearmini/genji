@@ -31,9 +31,12 @@ export const App = {
   computed: {
     content() {
       if (!this.notebook.modules) return undefined;
-      return this.notebook.modules.find(
+      const module = this.notebook.modules.find(
         (d) => d.id === this.context.selectedId
       );
+      const { notFound } = this.notebook;
+      const $404 = `# ${notFound.title}\n${notFound.description}`;
+      return module ? module.markdown : $404;
     },
   },
   mounted() {

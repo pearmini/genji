@@ -1,5 +1,6 @@
 @import url(./lib/normalize.css);
 @import url(./lib/default.min.css);
+@import url(./lib/github-markdown.min.css);
 @import url(./app.css);
 @import url(./components/outline.css);
 @import url(./components/tree.css);

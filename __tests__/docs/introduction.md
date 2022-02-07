@@ -11,7 +11,7 @@
 })();
 ```
 
-This is a **test** paragraph for _markdown-it_.
+This is a **test** paragraph for [_markdown-it_](https://github.com/markdown-it/markdown-it).
 
 ```js | DOM "pin: false"
 (() => {
@@ -34,3 +34,11 @@ This is a **test** paragraph for _markdown-it_.
 - JavaScript
 - Python
 - Rust
+
+```js | DOM
+(() => {
+  const div = document.createElement("div");
+  div.innerText = text;
+  return div;
+})();
+```

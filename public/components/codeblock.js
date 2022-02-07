@@ -28,7 +28,10 @@ export const Codeblock = {
         <pin-icon />
       </>
     </ul>
-    <div ref="output" v-if="options.executable"></div>
+    <div :class="[
+      'codeblock__output',
+      pin ? '' : 'codeblock__output--only',
+    ]" ref="output" v-if="options.executable"></div>
     <pre :class="[
       'codeblock__pre',
       'hljs',
@@ -82,14 +85,29 @@ export const Codeblock = {
   methods: {
     run() {
       if (typeof this.clear === "function") this.clear();
-      const output = eval(this.options.code);
-      const [value, clear] = Array.isArray(output) ? output : [output, null];
+      const [value, clear] = this.execute();
       if (value instanceof HTMLElement) {
         this.$refs.output.innerHTML = "";
         this.$refs.output.appendChild(value);
         this.clear = clear;
       }
     },
-    togglePin() {},
+    execute() {
+      try {
+        const output = eval(this.options.code);
+        return Array.isArray(output) ? output : [output, null];
+      } catch (e) {
+        const span = document.createElement("span");
+        span.innerText = `${e.name}: ${e.message}`;
+        span.style.display = "block";
+        span.style.background = "#fbf3f3";
+        span.style.color = "#fb1716";
+        span.style.padding = "0.5rem";
+        span.style.borderRadius = "6px";
+        span.style.marginBottom = "3px";
+        span.style.marginTop = "16px";
+        return [span, null];
+      }
+    },
   },
 };

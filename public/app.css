@@ -7,6 +7,7 @@ a {
 }
 
 .app__main {
+  box-sizing: border-box;
   padding: 32px 16px;
   height: 100vh;
   overflow: scroll;

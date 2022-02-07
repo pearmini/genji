@@ -18,7 +18,7 @@ export const Notebook = {
       const blocks = [];
       const lines = [];
       let inCode = false;
-      for (const line of this.data.markdown.split("\n")) {
+      for (const line of this.data.split("\n")) {
         const isCode = line.trimStart().startsWith("```");
         if (inCode && isCode) {
           inCode = false;

@@ -1,6 +1,6 @@
 import { md } from "../utils.js";
 export const Markdown = {
-  template: `<div class="markdown" v-html="html"></div>`,
+  template: `<article class="markdown-body" v-html="html"></article>`,
   props: ["content"],
   computed: {
     html() {
