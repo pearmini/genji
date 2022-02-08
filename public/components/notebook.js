@@ -12,7 +12,11 @@ export const Notebook = {
     Codeblock,
     Markdown,
   },
-  props: ["data"],
+  props: {
+    data: {
+      default: "",
+    },
+  },
   computed: {
     blocks() {
       const blocks = [];

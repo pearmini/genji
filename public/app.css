@@ -7,9 +7,83 @@ a {
 }
 
 .app__main {
+  position: relative;
   box-sizing: border-box;
   padding: 32px 16px;
   height: 100vh;
   overflow: scroll;
   width: calc(100% - 300px);
+}
+
+.app__sidebar {
+  width: 300px;
+}
+
+.app__menu-icon {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .app__sidebar {
+    width: 100%;
+    position: absolute;
+    left: -100%;
+    transition-property: left;
+    transition-duration: 0.3s;
+    z-index: 10;
+    background: white;
+  }
+
+  .app__menu-icon {
+    display: block;
+    position: fixed;
+    bottom: 2rem;
+    right: 1rem;
+    background: #ebedf0;
+    padding: 0.5rem 1rem;
+    z-index: 999;
+    border-radius: 6px;
+  }
+
+  .app__sidebar--show {
+    left: 0;
+  }
+
+  .app__main {
+    width: 100%;
+  }
+}
+
+.app__footer {
+  text-align: center;
+}
+
+.app__footer--bottom {
+  position: absolute;
+  bottom: 32px;
+  left: 0;
+  right: 0;
+}
+
+.app__main a {
+  color: var(--genji-main-color) !important;
+}
+
+.app__header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 1rem;
+}
+
+.app__header a {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  color: #606770 !important;
+  margin-left: 0.5rem;
+}
+
+.app__header a:hover {
+  color: var(--genji-main-color) !important;
 }

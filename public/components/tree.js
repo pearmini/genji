@@ -27,7 +27,7 @@ export const Tree = {
   </template>`,
   props: ["data", "root"],
   name: "Tree",
-  inject: ["context"],
+  inject: ["context", "hideSidebar"],
   computed: {
     to() {
       const { fileId, file } = this.data.data;
@@ -46,6 +46,7 @@ export const Tree = {
       if (this.data.children) {
         this.showChildren = !this.showChildren;
       }
+      this.hideSidebar();
       e.stopPropagation();
     },
   },

@@ -43,7 +43,7 @@ This is a **test** paragraph for [_markdown-it_](https://github.com/markdown-it/
 })();
 ```
 
-```js | dom
+```js | dom "pin:false"
 sp.plot({
   data: [
     { genre: "Sports", sold: 275 },
