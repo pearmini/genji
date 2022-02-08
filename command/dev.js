@@ -8,19 +8,16 @@ module.exports = function () {
 
   const server = http.createServer(function (request, response) {
     if (request.url.endsWith(".js")) {
-      const js = fs.readFileSync(
-        path.resolve(__dirname, "../public/" + request.url),
-        "utf8"
-      );
+      const js = javascript(request.url, config.scripts);
       response.writeHead(200, { "Content-Type": "application/javascript" });
       response.end(js);
     } else if (request.url.endsWith(".json")) {
-      const js = fs.readFileSync(
+      const json = fs.readFileSync(
         path.resolve(__dirname, "../public/" + request.url),
         "utf8"
       );
       response.writeHead(200, { "Content-Type": "application/json" });
-      response.end(js);
+      response.end(json);
     } else if (request.url.endsWith(".css")) {
       const css = fs.readFileSync(
         path.resolve(__dirname, "../public/" + request.url),
@@ -40,6 +37,7 @@ module.exports = function () {
         html
           .replace("<!-- TITLE_PLACEHOLDER -->", config.title)
           .replace("<!-- ICON_PLACEHOLDER -->", config.logo)
+          .replace("<!-- SCRIPTS_PLACEHOLDER-->", scripts(config.scripts))
       );
     }
   });
@@ -52,6 +50,21 @@ module.exports = function () {
   watch(path.resolve(config.input), { recursive: true }, () => {
     writeNotebook(config);
   });
+
+  function javascript(url, scripts) {
+    const last = url.split("/").pop();
+    const map = new Map(scripts.map((d) => [d.split("/").pop(), d]));
+    const filepath = map.has(last)
+      ? path.resolve(map.get(last))
+      : path.resolve(__dirname, "../public/" + url);
+    return fs.readFileSync(filepath, "utf8");
+  }
+
+  function scripts(data) {
+    return data
+      .map((d) => `<script src="./lib/${d.split("/").pop()}"></script>`)
+      .join("");
+  }
 
   function writeNotebook(config) {
     const notebook = parse(config);

@@ -12,7 +12,7 @@
   line-height: 20px;
   display: flex;
   color: #606770;
-  font-weight: 500;
+  font-weight: 400;
   border-radius: 0.25rem;
   transition-property: color, background-color;
   transition-duration: 0.3s;
@@ -20,7 +20,7 @@
 }
 
 .tree__link--active {
-  color: #28DF99;
+  color: #28df99;
   background: rgba(0, 0, 0, 0.05);
 }
 
@@ -40,8 +40,10 @@
   transform: rotate(180deg);
   transition-duration: 0.3s;
   transition-property: transform;
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24"><path fill="rgba(0,0,0,0.5)" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>')
-    50%/2rem 2rem;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="16px" height="16px" viewBox="0 0 1024 1024" version="1.1"><path fill="rgba(0, 0, 0, 0.5)" d="M890.5 755.3L537.9 269.2c-12.8-17.6-39-17.6-51.7 0L133.5 755.3c-3.8 5.3-0.1 12.7 6.5 12.7h75c5.1 0 9.9-2.5 12.9-6.6L512 369.8l284.1 391.6c3 4.1 7.8 6.6 12.9 6.6h75c6.5 0 10.3-7.4 6.5-12.7z"/></svg>');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
 
 .tree__list-item--collapsed .tree__link--sublist::after {

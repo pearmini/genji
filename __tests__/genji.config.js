@@ -7,6 +7,7 @@ module.exports = {
     title: "Page Not Found",
     description: "We could not find what you were looking for.",
   },
+  scripts: ["lib/sparrow.min.js"],
   outline: {
     Introduction: "introduction",
     "Get Started": "",

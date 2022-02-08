@@ -57,7 +57,7 @@ export const Codeblock = {
         return { code, executable: false };
       }
       const [type, string] = description.split('"');
-      if (type.trim() !== "DOM") return { code, executable: false };
+      if (type.trim() !== "dom") return { code, executable: false };
       return {
         code,
         pin: true,
@@ -86,7 +86,7 @@ export const Codeblock = {
     run() {
       if (typeof this.clear === "function") this.clear();
       const [value, clear] = this.execute();
-      if (value instanceof HTMLElement) {
+      if (value instanceof HTMLElement || value instanceof SVGElement) {
         this.$refs.output.innerHTML = "";
         this.$refs.output.appendChild(value);
         this.clear = clear;
