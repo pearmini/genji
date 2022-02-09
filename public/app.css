@@ -4,6 +4,7 @@ a {
 
 .app {
   display: flex;
+  height: 100%;
 }
 
 .app__main {
@@ -86,4 +87,71 @@ a {
 
 .app__header a:hover {
   color: var(--genji-main-color) !important;
+}
+
+.app__loading-top {
+  position: fixed;
+  height: 3px;
+  top: 0;
+  width: 200%;
+  left: -200%;
+  background-color: var(--genji-main-color);
+  animation-name: loading;
+  animation-duration: 5s;
+  animation-fill-mode: forwards;
+  opacity: 1;
+  transition: all 0.3s;
+}
+
+.app__loading-top-fade-leave-to {
+  left: 0;
+  opacity: 0;
+}
+
+@keyframes loading {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(49.5%);
+  }
+}
+
+/* @see https://tobiasahlin.com/spinkit/ */
+
+.app__loading {
+  width: 40px;
+  height: 40px;
+  background-color: var(--genji-main-color);
+
+  margin: auto;
+  -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
+  animation: sk-rotateplane 1.2s infinite ease-in-out;
+}
+
+@-webkit-keyframes sk-rotateplane {
+  0% {
+    -webkit-transform: perspective(120px);
+  }
+  50% {
+    -webkit-transform: perspective(120px) rotateY(180deg);
+  }
+  100% {
+    -webkit-transform: perspective(120px) rotateY(180deg) rotateX(180deg);
+  }
+}
+
+@keyframes sk-rotateplane {
+  0% {
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+  }
+  100% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+  }
 }

@@ -3,9 +3,9 @@ import { Markdown } from "./markdown.js";
 
 export const Notebook = {
   template: `<div class="notebook">
-    <template v-for="block in blocks" :key="block.content">
-      <codeblock v-if="block.type === 'code'" :content="block.content"/>
-      <markdown v-else :content="block.content" />
+    <template v-for="block in blocks">
+      <codeblock v-if="block.type === 'code'" :content="block.content" :key="block.content"/>
+      <markdown v-else :content="block.content"  :key="block.content"/>
     </template>
   </div>`,
   components: {

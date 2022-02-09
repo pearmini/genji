@@ -1,8 +1,8 @@
 Vue.use(VueRouter);
 
-const routes = [{ path: "/docs/:id" }];
+const routes = [{ path: "/:id" }];
 
 export const router = new VueRouter({
   routes,
-  mode: "hash",
+  mode: "history",
 });

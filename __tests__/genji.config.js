@@ -14,7 +14,7 @@ module.exports = {
     Introduction: "introduction",
     "Get Started": "",
     Showcase: {
-      "Data Visualization": "",
+      "Data Visualization": "data-visualization",
       "Render Engine": "",
     },
     "API Reference": "",

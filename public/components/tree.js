@@ -31,8 +31,8 @@ export const Tree = {
   computed: {
     to() {
       const { fileId, file } = this.data.data;
-      if (file === null) return "!#";
-      return fileId ? "/docs/" + fileId : "/docs";
+      if (file === null) return "";
+      return fileId || "/";
     },
     selected() {
       return (

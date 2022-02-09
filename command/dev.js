@@ -6,18 +6,17 @@ module.exports = function () {
   const parse = require("../lib/parse");
   const config = require(path.resolve("genji.config.js"));
 
+  let notebook = parse(config);
+
   const server = http.createServer(function (request, response) {
     if (request.url.endsWith(".js")) {
       const js = javascript(request.url, config.scripts);
       response.writeHead(200, { "Content-Type": "application/javascript" });
       response.end(js);
     } else if (request.url.endsWith(".json")) {
-      const json = fs.readFileSync(
-        path.resolve(__dirname, "../public/" + request.url),
-        "utf8"
-      );
+      const data = json(request.url, config.input);
       response.writeHead(200, { "Content-Type": "application/json" });
-      response.end(json);
+      response.end(JSON.stringify(data));
     } else if (request.url.endsWith(".css")) {
       const css = fs.readFileSync(
         path.resolve(__dirname, "../public/" + request.url),
@@ -42,13 +41,12 @@ module.exports = function () {
     }
   });
 
-  writeNotebook(config);
   server.listen("8000", () => {
     console.log("http://localhost:8000/");
   });
 
   watch(path.resolve(config.input), { recursive: true }, () => {
-    writeNotebook(config);
+    notebook = parse(config);
   });
 
   function javascript(url, scripts) {
@@ -60,17 +58,20 @@ module.exports = function () {
     return fs.readFileSync(filepath, "utf8");
   }
 
+  function json(url, input) {
+    const filename = url.split("/").pop().replace(".json", ".md");
+    if (filename === "metadata.md") return notebook;
+    const filepath = path.resolve(input, filename);
+    if (fs.existsSync(filepath)) {
+      const markdown = fs.readFileSync(filepath, { encoding: "utf-8" });
+      return { markdown, code: 1 };
+    }
+    return { code: 0 };
+  }
+
   function scripts(data) {
     return data
       .map((d) => `<script src="./lib/${d.split("/").pop()}"></script>`)
       .join("");
-  }
-
-  function writeNotebook(config) {
-    const notebook = parse(config);
-    fs.writeFileSync(
-      path.resolve(__dirname, "../public/notebook.json"),
-      JSON.stringify(notebook)
-    );
   }
 };
