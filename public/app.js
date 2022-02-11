@@ -30,7 +30,7 @@ export const App = {
         <notebook :data="content" /> 
         <div :class="['app__footer', {'app__footer--bottom': notFound }]">
           <span>{{copyright}}</span>
-          Built with <a href="https://github.com/pearmini/genji-" target="__blank">Genji Notebook</a>.
+          Built with <a href="https://github.com/pearmini/genji-notebook" target="__blank">Genji Notebook</a>.
         </div>
       </div>
       <span class="app__menu-icon" @click="showSidebar = !showSidebar">
@@ -75,10 +75,12 @@ export const App = {
   },
   async mounted() {
     try {
-      this.loadingMetadata = true;
+      const delay = setTimeout(() => (this.loadingMetadata = true), 300);
       this.metadata = await fetchJSON("./docs/metadata.json");
-      const { path } = this.$route;
-      this.content = await this.loadNotebook(path);
+      const id = this.getId(this.$route);
+      this.context.selectedId = id;
+      this.content = await this.loadNotebook(id);
+      clearTimeout(delay);
       this.loadingMetadata = false;
     } catch (e) {
       console.error(e);
@@ -91,11 +93,14 @@ export const App = {
         return this.notebooks.get(id);
       } else {
         try {
-          this.loadingNotebook = true;
-          const finalId = id === "/" ? this.metadata.first : id;
+          const delay = setTimeout(() => (this.loadingNotebook = true), 300);
           const { code, markdown: notebook } = await fetchJSON(
-            `./docs/${finalId}.json`
+            `./docs/${id}.json`
           );
+          // await new Promise((resolve) => {
+          //   setTimeout(resolve, 3000)
+          // })
+          clearTimeout(delay);
           if (code === 0) throw new Error("File not found");
           this.notebooks.set(id, notebook);
           this.loadingNotebook = false;
@@ -109,12 +114,16 @@ export const App = {
         }
       }
     },
+    getId(route) {
+      const { id = "/" } = route.params;
+      const fileId = id === "/" ? this.metadata.first : id;
+      return fileId.endsWith(".md") ? fileId.replace(".md", "") : fileId;
+    },
   },
   watch: {
     async $route(to) {
-      const { id = "/" } = to.params;
-      const finalId = id.endsWith(".md") ? id.replace(".md", "") : id;
-      this.context.selectedId = finalId;
+      const id = this.getId(to);
+      this.context.selectedId = id;
       this.content = await this.loadNotebook(id);
     },
   },

@@ -2,7 +2,7 @@ module.exports = {
   input: "docs",
   output: "dist",
   title: "Genji Notebook",
-  logo: "https://s2.loli.net/2022/02/05/QvfOBrE4p6PgRxI.png",
+  logo: "assets/logo.png",
   github: "https://github.com/pearmini/genji-notebook",
   link: "https://github.com/pearmini",
   notFound: {

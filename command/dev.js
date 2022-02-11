@@ -26,6 +26,11 @@ module.exports = function () {
       response.end(
         css.replace("MAIN_COLOR_PLACEHOLDER", config.theme.mainColor)
       );
+    } else if (isImage(request.url)) {
+      const data = image(request.url, config.assets);
+      response.writeHead(200, { "Content-Type": "image/png" });
+      response.write(data, "binary");
+      response.end();
     } else {
       const html = fs.readFileSync(
         path.resolve(__dirname, "../public/index.html"),
@@ -73,5 +78,15 @@ module.exports = function () {
     return data
       .map((d) => `<script src="./lib/${d.split("/").pop()}"></script>`)
       .join("");
+  }
+
+  function image(url, assets) {
+    const filepath = path.resolve('.' + url);
+    return fs.readFileSync(filepath, { encoding: "binary" });
+  }
+
+  function isImage(str) {
+    var reg = /\.(png|jpg|gif|jpeg|webp)$/;
+    return reg.test(str);
   }
 };

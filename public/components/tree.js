@@ -6,7 +6,7 @@ export const Tree = {
     <li v-else 
       :class="[
         'tree__list-item',
-        data.children && !showChildren ? 'tree__list-item--collapsed' : '',
+        {'tree__list-item--collapsed': data.children && !showChildren }
       ]" 
       @click="onClickListItem"
     >
@@ -14,8 +14,8 @@ export const Tree = {
         :to="to" 
         :class="[
           'tree__link', 
-          data.children ? 'tree__link--sublist' : '',
-          selected? 'tree__link--active' : '',
+          {'tree__link--sublist': data.children},
+          {'tree__link--active': selected}
         ]"
       >
         {{data.data.name}}

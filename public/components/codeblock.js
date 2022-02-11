@@ -1,7 +1,7 @@
 import { md } from "../utils.js";
 import { PinIcon, RunIcon } from "./icon.js";
 
-function mayBeBoolean(value) {
+function maybeBoolean(value) {
   if (value === "false") return false;
   if (value === "true") return true;
   return value;
@@ -12,7 +12,7 @@ function parseAttributes(string) {
   const attributes = string.split(";");
   return attributes.reduce((obj, attribute) => {
     const [key, value] = attribute.split(":");
-    obj[key.trim()] = mayBeBoolean(value.trim());
+    obj[key.trim()] = maybeBoolean(value.trim());
     return obj;
   }, {});
 }
@@ -23,20 +23,20 @@ export const Codeblock = {
       <li @click="run" class="codeblock__tool-item"><run-icon /></>
       <li @click="pin = !pin" :class="[
         'codeblock__tool-item',
-        pin ? 'codeblock__tool-pin--pinned' : ''
+        {'codeblock__tool-pin--pinned': pin}
       ]">
         <pin-icon />
       </>
     </ul>
     <div :class="[
       'codeblock__output',
-      pin ? '' : 'codeblock__output--only',
+      {'codeblock__output--only': !pin},
     ]" ref="output" v-if="options.executable"></div>
     <pre :class="[
       'codeblock__pre',
       'hljs',
-      options.executable ? 'codeblock__pre--executable' : '',
-      !options.executable || pin ? '' : 'codeblock__pre--hide'
+      {'codeblock__pre--executable': options.executable},
+      {'codeblock__pre--hide': options.executable && !pin}
     ]"><code ref="code">{{options.code}}</code></pre>
   </div>`,
   props: ["content"],

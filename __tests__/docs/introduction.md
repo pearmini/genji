@@ -43,4 +43,6 @@ This is a **test** paragraph for [_markdown-it_](https://github.com/markdown-it/
 })();
 ```
 
-[Data Visualization](./data-visualization)
+[Data Visualization](./data-visualization.md)
+
+![](../assets/introduction/logo.png)
