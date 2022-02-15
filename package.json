@@ -4,7 +4,6 @@
   "description": "Interactive JavaScript Notebook.",
   "bin": "bin/genji.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cd __tests__ && nodemon ../bin/genji.js dev"
   },
   "repository": {

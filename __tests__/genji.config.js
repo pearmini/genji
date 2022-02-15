@@ -1,6 +1,7 @@
 module.exports = {
   input: "docs",
   output: "dist",
+  assets: "assets",
   title: "Genji Notebook",
   logo: "assets/logo.png",
   github: "https://github.com/pearmini/genji-notebook",
