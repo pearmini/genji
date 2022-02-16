@@ -94,19 +94,20 @@ export const App = {
       } else {
         const delay = setTimeout(() => (this.loadingNotebook = true), 300);
         try {
-          const notebook = await fetchJSON(`./docs/${id}.json`);
+          const { markdown: notebook } = await fetchJSON(`./docs/${id}.json`);
           // await new Promise((resolve) => {
           //   setTimeout(resolve, 3000)
           // })
           clearTimeout(delay);
+          if (notebook === undefined) throw new Error("File not found");
           this.notebooks.set(id, notebook);
           this.loadingNotebook = false;
           this.notFound = false;
           return notebook;
         } catch {
           this.notFound = true;
-          clearTimeout(delay);
           this.loadingNotebook = false;
+          clearTimeout(delay);
           const { title, description } = this.metadata.notFound;
           return `# ${title}\n${description}`;
         }

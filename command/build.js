@@ -5,6 +5,10 @@ module.exports = function () {
   const config = require(path.resolve("genji.config.js"));
   const metadata = parse(config);
 
+  // clear output
+  const outputPath = path.resolve(config.output);
+  if (fs.existsSync(outputPath)) fs.rmdirSync(outputPath);
+
   // copy public/* to output
   fs.copySync(
     path.resolve(__dirname, "../public/"),
@@ -28,7 +32,7 @@ module.exports = function () {
         const markdown = fs.readFileSync(filepath, { encoding: "utf-8" });
         fs.writeFileSync(
           path.resolve(config.output, "./docs", fileId + ".json"),
-          JSON.stringify(markdown)
+          JSON.stringify({ markdown })
         );
       }
       if (node.children && node.children.length) {
