@@ -81,7 +81,7 @@ module.exports = function () {
   }
 
   function image(url, assets) {
-    const filepath = path.resolve('.' + url);
+    const filepath = path.resolve("." + url);
     return fs.readFileSync(filepath, { encoding: "binary" });
   }
 

@@ -4,7 +4,11 @@
   "description": "Interactive JavaScript Notebook.",
   "bin": "bin/genji.js",
   "scripts": {
-    "start": "cd __tests__ && nodemon ../bin/genji.js dev"
+    "test": "jest",
+    "lint": "prettier --write --ignore-unknown .",
+    "ci": "run-s test lint",
+    "start": "cd __tests__ && nodemon ../bin/genji.js dev",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -20,6 +24,20 @@
   "dependencies": {
     "commander": "^9.0.0",
     "file-system": "^2.2.2",
-    "node-watch": "^0.7.3"
+    "node-watch": "^0.7.3",
+    "rollup": "^2.67.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^16.2.1",
+    "@commitlint/config-conventional": "^16.2.1",
+    "eslint": "^8.9.0",
+    "husky": "^7.0.0",
+    "jest": "^27.5.1",
+    "lint-staged": "^12.3.4",
+    "npm-run-all": "^4.1.5",
+    "prettier": "2.5.1"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }
