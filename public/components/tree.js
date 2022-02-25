@@ -30,9 +30,9 @@ export const Tree = {
   inject: ["context", "hideSidebar"],
   computed: {
     to() {
-      const { fileId, file } = this.data.data;
-      if (file === null) return "";
-      return fileId || "/";
+      const { id, file } = this.data.data;
+      if (file === undefined) return "";
+      return id || "";
     },
     selected() {
       return (

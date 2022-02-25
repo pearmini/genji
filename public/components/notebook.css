@@ -4,6 +4,7 @@
   max-width: 980px;
   margin: 0 auto;
   padding: 45px;
+  min-height: calc(100vh - 120px);
 }
 
 @media (max-width: 767px) {

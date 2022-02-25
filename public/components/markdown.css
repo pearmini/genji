@@ -1,0 +1,21 @@
+.markdown-body__anchor {
+  opacity: 0;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+.markdown-body > h1:hover > .markdown-body__anchor {
+  opacity: 1;
+}
+
+.markdown-body > h2:hover > .markdown-body__anchor {
+  opacity: 1;
+}
+
+.markdown-body > h3:hover > .markdown-body__anchor {
+  opacity: 1;
+}
+
+.markdown-body > h4:hover > .markdown-body__anchor {
+  opacity: 1;
+}

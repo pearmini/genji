@@ -35,6 +35,7 @@ export const Codeblock = {
     <pre :class="[
       'codeblock__pre',
       'hljs',
+      options.lang ? options.lang : '',
       {'codeblock__pre--executable': options.executable},
       {'codeblock__pre--hide': options.executable && !pin}
     ]"><code ref="code">{{options.code}}</code></pre>
@@ -54,14 +55,17 @@ export const Codeblock = {
         lang.trim() !== "js" ||
         description === undefined
       ) {
-        return { code, executable: false };
+        return { code, executable: false, lang: `language-${lang}` };
       }
       const [type, string] = description.split('"');
-      if (type.trim() !== "dom") return { code, executable: false };
+      if (type.trim() !== "dom") {
+        return { code, executable: false, lang: `language-${lang}` };
+      }
       return {
         code,
         pin: true,
         executable: true,
+        lang: `language-${lang}`,
         ...parseAttributes(string),
       };
     },
@@ -83,20 +87,21 @@ export const Codeblock = {
     if (typeof this.clear === "function") this.clear();
   },
   methods: {
-    run() {
+    async run() {
       if (typeof this.clear === "function") this.clear();
-      const [value, clear] = this.execute();
+      const [value, clear] = await this.execute();
       if (value instanceof HTMLElement || value instanceof SVGElement) {
         this.$refs.output.innerHTML = "";
         this.$refs.output.appendChild(value);
         this.clear = clear;
       }
     },
-    execute() {
+    async execute() {
       try {
-        const output = eval(this.options.code);
+        const output = await eval(this.options.code);
         return Array.isArray(output) ? output : [output, null];
       } catch (e) {
+        console.error(e);
         const span = document.createElement("span");
         span.innerText = `${e.name}: ${e.message}`;
         span.style.display = "block";

@@ -6,7 +6,7 @@ program.version(require("../package").version, "-v, --version");
 
 program
   .command("dev")
-  .description("Start development environment.")
+  .description("start development environment")
   .alias("d")
   .action(() => {
     require("../command/dev")();
@@ -14,7 +14,7 @@ program
 
 program
   .command("build")
-  .description("Build static files.")
+  .description("build static files")
   .alias("b")
   .action(() => {
     require("../command/build")();

@@ -1,0 +1,27 @@
+{
+  "input": "docs",
+  "output": "dist",
+  "assets": "assets",
+  "title": "Genji Notebok",
+  "logo": "assets/logo.png",
+  "github": "https://github.com/pearmini/genji-notebook",
+  "link": "https://github.com/pearmini",
+  "notFound": {
+    "title": "Custom Missing Title",
+    "description": "Custom Missing Description."
+  },
+  "scripts": [
+    "lib/sparrow.min.js"
+  ],
+  "outline": {
+    "Test": "test",
+    "Section": {
+      "Name With Space": "name with space",
+      "Name With line": "name-with-line"
+    },
+    "Missing Page": "missing-page"
+  },
+  "theme": {
+    "mainColor": "#28DF99"
+  }
+}

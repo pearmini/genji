@@ -20,7 +20,7 @@
 }
 
 .tree__link--active {
-  color: #28df99;
+  color: var(--genji-main-color);
   background: rgba(0, 0, 0, 0.05);
 }
 

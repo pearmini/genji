@@ -1,13 +1,14 @@
 {
   "name": "genji-notebook",
-  "version": "0.0.1",
+  "version": "0.0.1-beta",
   "description": "Interactive JavaScript Notebook.",
   "bin": "bin/genji.js",
   "scripts": {
     "test": "jest",
     "lint": "prettier --write --ignore-unknown .",
     "ci": "run-s test lint",
-    "start": "cd __tests__ && nodemon ../bin/genji.js dev",
+    "start": "cd demo && nodemon ../bin/genji.js dev",
+    "build": "cd demo && ../bin/genji.js build",
     "prepare": "husky install"
   },
   "repository": {
@@ -23,9 +24,7 @@
   "homepage": "https://github.com/pearmini/genji-notebook#readme",
   "dependencies": {
     "commander": "^9.0.0",
-    "file-system": "^2.2.2",
-    "node-watch": "^0.7.3",
-    "rollup": "^2.67.2"
+    "file-system": "^2.2.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",
@@ -34,6 +33,7 @@
     "husky": "^7.0.0",
     "jest": "^27.5.1",
     "lint-staged": "^12.3.4",
+    "nodemon": "^2.0.15",
     "npm-run-all": "^4.1.5",
     "prettier": "2.5.1"
   },

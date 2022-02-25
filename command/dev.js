@@ -1,12 +1,15 @@
-module.exports = function () {
-  const path = require("path");
-  const watch = require("node-watch");
-  const fs = require("fs");
-  const http = require("http");
-  const parse = require("../lib/parse");
-  const config = require(path.resolve("genji.config.js"));
+const path = require("path");
+const fs = require("fs");
+const http = require("http");
+const nodemon = require("nodemon");
 
-  let notebook = parse(config);
+const { parse } = require("../lib/parse");
+const { compileHTML, compileCSS } = require("../lib/compile");
+const { loadConfig } = require("../lib/config");
+
+function dev() {
+  let config = loadConfig();
+  let metadata = parse(config);
 
   const server = http.createServer(function (request, response) {
     if (request.url.endsWith(".js")) {
@@ -14,7 +17,7 @@ module.exports = function () {
       response.writeHead(200, { "Content-Type": "application/javascript" });
       response.end(js);
     } else if (request.url.endsWith(".json")) {
-      const data = json(request.url, config.input);
+      const data = json(request.url, config.input, metadata);
       response.writeHead(200, { "Content-Type": "application/json" });
       response.end(JSON.stringify(data));
     } else if (request.url.endsWith(".css")) {
@@ -23,11 +26,9 @@ module.exports = function () {
         "utf8"
       );
       response.writeHead(200, { "Content-Type": "text/css" });
-      response.end(
-        css.replace("MAIN_COLOR_PLACEHOLDER", config.theme.mainColor)
-      );
+      response.end(compileCSS(css, config));
     } else if (isImage(request.url)) {
-      const data = image(request.url, config.assets);
+      const data = image(request.url);
       response.writeHead(200, { "Content-Type": "image/png" });
       response.write(data, "binary");
       response.end();
@@ -37,56 +38,76 @@ module.exports = function () {
         "utf8"
       );
       response.writeHead(200, { "Content-Type": "text/html" });
-      response.end(
-        html
-          .replace("<!-- TITLE_PLACEHOLDER -->", config.title)
-          .replace("<!-- ICON_PLACEHOLDER -->", config.logo)
-          .replace("<!-- SCRIPTS_PLACEHOLDER-->", scripts(config.scripts))
-      );
+      response.end(compileHTML(html, config));
     }
   });
 
   server.listen("8000", () => {
-    console.log("http://localhost:8000/");
+    console.log("Open http://localhost:8000/ in your browser.");
   });
 
-  watch(path.resolve(config.input), { recursive: true }, () => {
-    notebook = parse(config);
+  nodemon({
+    watch: [
+      // use
+      path.resolve(config.input),
+      path.resolve(".genjirc"),
+
+      // dev
+      path.resolve(__dirname),
+      path.resolve(__dirname, "../lib"),
+    ],
   });
 
-  function javascript(url, scripts) {
-    const last = url.split("/").pop();
-    const map = new Map(scripts.map((d) => [d.split("/").pop(), d]));
-    const filepath = map.has(last)
-      ? path.resolve(map.get(last))
-      : path.resolve(__dirname, "../public/" + url);
-    return fs.readFileSync(filepath, "utf8");
+  nodemon.on("restart", () => {
+    console.log("reload...");
+    config = loadConfig();
+    metadata = parse(config);
+  });
+}
+
+function javascript(url, scripts) {
+  const last = url.split("/").pop();
+  const map = new Map(scripts.map((d) => [d.split("/").pop(), d]));
+  const filepath = map.has(last)
+    ? path.resolve(map.get(last))
+    : path.resolve(__dirname, "../public/" + url);
+  return fs.readFileSync(filepath, "utf8");
+}
+
+function json(url, input, metadata) {
+  const id = url.split("/").pop().replace(".json", "");
+  if (id === "$metadata") return metadata;
+  const file = filename(id, metadata);
+  if (file === false) return {};
+  const filepath = path.resolve(input, file + ".md");
+  if (fs.existsSync(filepath)) {
+    const markdown = fs.readFileSync(filepath, { encoding: "utf-8" });
+    return { markdown };
   }
+  return {};
+}
 
-  function json(url, input) {
-    const filename = url.split("/").pop().replace(".json", ".md");
-    if (filename === "metadata.md") return notebook;
-    const filepath = path.resolve(input, filename);
-    if (fs.existsSync(filepath)) {
-      const markdown = fs.readFileSync(filepath, { encoding: "utf-8" });
-      return { markdown, code: 1 };
+function filename(id, metadata) {
+  const { outline } = metadata;
+  for (const node of outline) {
+    const discovered = [node];
+    while (discovered.length) {
+      const n = discovered.pop();
+      if (n.data.id === id) return n.data.file;
+      discovered.push(...(n.children || []));
     }
-    return { code: 0 };
   }
+  return false;
+}
 
-  function scripts(data) {
-    return data
-      .map((d) => `<script src="./lib/${d.split("/").pop()}"></script>`)
-      .join("");
-  }
+function image(url) {
+  const filepath = path.resolve("." + url);
+  return fs.readFileSync(filepath, { encoding: "binary" });
+}
 
-  function image(url, assets) {
-    const filepath = path.resolve("." + url);
-    return fs.readFileSync(filepath, { encoding: "binary" });
-  }
+function isImage(str) {
+  const reg = /\.(png|jpg|gif|jpeg|webp)$/;
+  return reg.test(str);
+}
 
-  function isImage(str) {
-    var reg = /\.(png|jpg|gif|jpeg|webp)$/;
-    return reg.test(str);
-  }
-};
+module.exports = dev;

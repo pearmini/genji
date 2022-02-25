@@ -1,8 +1,14 @@
-module.exports = function () {
-  const fs = require("file-system");
-  const path = require("path");
-  const parse = require("../lib/parse");
-  const config = require(path.resolve("genji.config.js"));
+const fs = require("file-system");
+const path = require("path");
+
+const { parse } = require("../lib/parse");
+const { compileHTML, compileCSS } = require("../lib/compile");
+const { loadConfig } = require("../lib/config");
+
+function build() {
+  console.log("Staring building...");
+
+  const config = loadConfig();
   const metadata = parse(config);
 
   // clear output
@@ -17,7 +23,7 @@ module.exports = function () {
 
   // generate metadata
   fs.writeFileSync(
-    path.resolve(config.output, "./docs", "metadata.json"),
+    path.resolve(config.output, "./docs", "$metadata.json"),
     JSON.stringify(metadata)
   );
 
@@ -26,12 +32,12 @@ module.exports = function () {
     const discovered = [root];
     while (discovered.length) {
       const node = discovered.pop();
-      const { fileId, file } = node.data;
+      const { id, file } = node.data;
       const filepath = path.resolve(config.input, file + ".md");
       if (fs.existsSync(filepath)) {
         const markdown = fs.readFileSync(filepath, { encoding: "utf-8" });
         fs.writeFileSync(
-          path.resolve(config.output, "./docs", fileId + ".json"),
+          path.resolve(config.output, "./docs", id + ".json"),
           JSON.stringify({ markdown })
         );
       }
@@ -55,28 +61,15 @@ module.exports = function () {
     );
   }
 
-  // replace placeholder in html
+  // compile html
   const htmlPath = path.resolve(config.output, "index.html");
   const html = fs.readFileSync(htmlPath, { encoding: "utf-8" });
-  fs.writeFileSync(
-    htmlPath,
-    html
-      .replace("<!-- TITLE_PLACEHOLDER -->", config.title)
-      .replace("<!-- ICON_PLACEHOLDER -->", config.logo)
-      .replace("<!-- SCRIPTS_PLACEHOLDER-->", scripts(config.scripts))
-  );
+  fs.writeFileSync(htmlPath, compileHTML(html, config));
 
-  // replace placeholder in css
+  // compile css
   const cssPath = path.resolve(config.output, "main.css");
   const css = fs.readFileSync(cssPath, { encoding: "utf-8" });
-  fs.writeFileSync(
-    cssPath,
-    css.replace("MAIN_COLOR_PLACEHOLDER", config.theme.mainColor)
-  );
+  fs.writeFileSync(cssPath, compileCSS(css, config));
+}
 
-  function scripts(data) {
-    return data
-      .map((d) => `<script src="./lib/${d.split("/").pop()}"></script>`)
-      .join("");
-  }
-};
+module.exports = build;

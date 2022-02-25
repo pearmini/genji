@@ -45,11 +45,13 @@ export const Notebook = {
         });
       }
 
-      return blocks.map(({ type, lines }, index) => ({
-        id: index,
-        type,
-        content: lines.join("\n"),
-      }));
+      return blocks
+        .map(({ type, lines }, index) => ({
+          id: index,
+          type,
+          content: lines.join("\n"),
+        }))
+        .filter((d) => d.content !== "");
     },
   },
 };

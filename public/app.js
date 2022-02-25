@@ -22,7 +22,7 @@ export const App = {
           :logo="metadata.logo"
         />
       </div>
-      <div class="app__main">
+      <div class="app__main" ref="main">
         <div class="app__header">
           <a v-if="metadata.link" :href="metadata.link" target="__blank"><link-icon/></a>
           <a v-if="metadata.github" :href="metadata.github" target="__blank"><github-icon/></a>
@@ -76,7 +76,7 @@ export const App = {
   async mounted() {
     try {
       const delay = setTimeout(() => (this.loadingMetadata = true), 300);
-      this.metadata = await fetchJSON("./docs/metadata.json");
+      this.metadata = await fetchJSON("./docs/$metadata.json");
       const id = this.getId(this.$route);
       this.context.selectedId = id;
       this.content = await this.loadNotebook(id);
@@ -103,6 +103,10 @@ export const App = {
           this.notebooks.set(id, notebook);
           this.loadingNotebook = false;
           this.notFound = false;
+
+          // scroll to top
+          this.$refs.main.scrollTo(0, 0);
+
           return notebook;
         } catch {
           this.notFound = true;
@@ -115,8 +119,8 @@ export const App = {
     },
     getId(route) {
       const { id = "/" } = route.params;
-      const fileId = id === "/" ? this.metadata.first : id;
-      return fileId.endsWith(".md") ? fileId.replace(".md", "") : fileId;
+      const finalId = id === "/" ? this.metadata.first : id;
+      return finalId.endsWith(".md") ? finalId.replace(".md", "") : finalId;
     },
   },
   watch: {
