@@ -51,7 +51,7 @@ You project structure is now arranged as below:
 |____.genjirc
 ```
 
-Then run following command in your project root for development and open `http://localhost:8000/` in your browser.
+Then runs following command in your project root for development and opens `http://localhost:8000/` in your browser.
 
 ```bash
 $ genji dev
@@ -61,9 +61,9 @@ Everything is working as expected if your see the page as blow.
 
 ![example](./assets/example.jpg)
 
-**The red div with "Hello World" in the codeblocks of your markdown file is already being rendered into the document!**
+**The red div with "Hello World" in the codeblock of the markdown file is already being rendered into the document!**
 
-Finally run the following command in your project root before you want to deploy your site.
+Finally runs the following command in your project root before you want to deploy your site.
 
 ```bash
 $ genji build
@@ -73,7 +73,7 @@ $ genji build
 
 Every codeblock in JavaScript with markup: `js | dom` will execute and mounted the return value if it is `HTMLElement` or `SVGElement`.
 
-The valid code in codeblocks can be a function returns a `HTMLElement` or `SVGElement`.
+The valid code in codeblock can be a function returns a `HTMLElement` or `SVGElement`.
 
 <pre>
 ```js | dom
@@ -134,6 +134,7 @@ The function can also returns an array: `[DOM, clearCallback]`, the second eleme
 
 Codeblock with `pin: false` options will hide the code by default. **The options can be only specified in double quote as following.**
 
+<pre>
 ```js | dom "pin: false"
 (() => {
   const div = document.createElement("div");
@@ -142,29 +143,30 @@ Codeblock with `pin: false` options will hide the code by default. **The options
   return div;
 })();
 ```
+</pre>
 
-The options for `.genjirc` is as followed.
+The options for `.genjirc` are as followed.
 
-| Key                  | Type       | Description                                                                                                                                                                                      | Default                                        |
-| -------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------- |
-| input                | `string`   | The path to the folder contains all the markdowns.                                                                                                                                               | `docs`                                         |
-| output               | `string`   | The path to produce site.                                                                                                                                                                        | `dist`                                         |
-| outline              | `object`   | A nested object to specifies the outline. Every key of the object is the name displayed in the sidebar. It relates a markdown if the value is its name and it can be a section with object value | -                                              |
-| assets               | `string`   | The path to the assets folder and all the assets used for the site should be in it.                                                                                                              | `assets`                                       |
-| logo                 | `string`   | The path to the logo of the site.                                                                                                                                                                | -                                              |
-| github               | `string`   | The github link for the site.                                                                                                                                                                    | -                                              |
-| link                 | `string`   | The custom link for the site.                                                                                                                                                                    | -                                              |
-| notFound.title       | `string`   | The title for missing page.                                                                                                                                                                      | `Page Not Found`                               |
-| notFound.description | `string`   | The description for the missing page.                                                                                                                                                            | `We could not find what you were looking for.` |
-| scripts              | `string[]` | A path array to the scripts used in the site.                                                                                                                                                    | []                                             |
-| theme.mainColor      | `string`   | The main color for the site.                                                                                                                                                                     | `#28DF99`                                      |
+| Key                  | Type       | Description                                                                                                                                                                                                                 | Default                                        |
+| -------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| input                | `string`   | The path to the folder containing all the markdown files.                                                                                                                                                                   | `docs`                                         |
+| output               | `string`   | The path to produce the site.                                                                                                                                                                                               | `dist`                                         |
+| outline              | `object`   | A nested object to specifies the outline. Every key of the object is the name displayed in the sidebar. It relates a markdown file if the value is the name of the markdown file and it can be a section with object value. | -                                              |
+| assets               | `string`   | The path to the assets folder and all the assets used for the site should be in it.                                                                                                                                         | `assets`                                       |
+| logo                 | `string`   | The path to the logo of the site.                                                                                                                                                                                           | -                                              |
+| github               | `string`   | The github link for the site.                                                                                                                                                                                               | -                                              |
+| link                 | `string`   | The custom link for the site.                                                                                                                                                                                               | -                                              |
+| notFound.title       | `string`   | The title for missing page.                                                                                                                                                                                                 | `Page Not Found`                               |
+| notFound.description | `string`   | The description for the missing page.                                                                                                                                                                                       | `We could not find what you were looking for.` |
+| scripts              | `string[]` | A path array to the scripts used in the site.                                                                                                                                                                               | []                                             |
+| theme.mainColor      | `string`   | The main color for the site.                                                                                                                                                                                                | `#28DF99`                                      |
 
 See more in [demo](./demo/.genjirc) as example.
 
 ## Future Work
 
 - Use rollup to build the output.
-- Allow more markups for codeblocks and make it become truly reactive. For example:
+- Allow more markups for codeblock and make it become truly reactive. For example:
 
 <pre>
 
