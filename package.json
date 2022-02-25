@@ -1,6 +1,6 @@
 {
   "name": "genji-notebook",
-  "version": "0.0.1-beta",
+  "version": "0.0.2",
   "description": "Interactive JavaScript Notebook.",
   "bin": "bin/genji.js",
   "scripts": {
@@ -11,13 +11,19 @@
     "build": "cd demo && ../bin/genji.js build",
     "prepare": "husky install"
   },
+  "files": [
+    "public",
+    "lib",
+    "assets",
+    "bin",
+    "command"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pearmini/genji-notebook.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "https://github.com/pearmini",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/pearmini/genji-notebook/issues"
   },

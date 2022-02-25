@@ -70,6 +70,8 @@ function build() {
   const cssPath = path.resolve(config.output, "main.css");
   const css = fs.readFileSync(cssPath, { encoding: "utf-8" });
   fs.writeFileSync(cssPath, compileCSS(css, config));
+
+  console.log("Building success!");
 }
 
 module.exports = build;

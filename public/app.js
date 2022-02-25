@@ -105,10 +105,14 @@ export const App = {
           this.notFound = false;
 
           // scroll to top
-          this.$refs.main.scrollTo(0, 0);
+          if (this.$refs.main && this.$refs.main.scrollTo) {
+            this.$refs.main.scrollTo(0, 0);
+          }
 
           return notebook;
-        } catch {
+        } catch (e) {
+          console.error(e);
+          console.error(`Fail to fetch: ${id}`);
           this.notFound = true;
           this.loadingNotebook = false;
           clearTimeout(delay);
