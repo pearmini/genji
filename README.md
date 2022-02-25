@@ -1,12 +1,17 @@
 # Genji Notebook
 
-Build observable and interactive JavaScript notebook from pure markdown. It is inspired by [Observable](https://observablehq.com/).
+Build observable and interactive JavaScript notebook from pure markdown.
 
 ![sparrow](./assets/sparrow.jpg)
 
+## Links
+
+- [Showcase](https://sparrow-vis.github.io/)
+- [Demo](./demo/)
+
 ## Get Started
 
-Install genji-notebook from NPM.
+Installs genji-notebook from NPM.
 
 ```bash
 $ npm i genji-notebook
@@ -37,7 +42,16 @@ Creates a folder named `docs` in your project root and creates a markdown file n
 ```
 </pre>
 
-Run following command in your project root for development and open `http://localhost:8000/` in your browser.
+You project structure is now arranged as below:
+
+```
+.
+|____docs
+| |____hello-world.md
+|____.genjirc
+```
+
+Then run following command in your project root for development and open `http://localhost:8000/` in your browser.
 
 ```bash
 $ genji dev
@@ -47,7 +61,9 @@ Everything is working as expected if your see the page as blow.
 
 ![example](./assets/example.jpg)
 
-Run the following command in your project root before you want to deploy your site.
+**The red div with "Hello World" in the codeblocks of your markdown file is already being rendered into the document!**
+
+Finally run the following command in your project root before you want to deploy your site.
 
 ```bash
 $ genji build
@@ -55,7 +71,7 @@ $ genji build
 
 ## API Reference
 
-Every codeblock in JavaScript with markup: `js | dom` with execute and mounted the return value if it is `HTMLElement` or `SVGElement`.
+Every codeblock in JavaScript with markup: `js | dom` will execute and mounted the return value if it is `HTMLElement` or `SVGElement`.
 
 The valid code in codeblocks can be a function returns a `HTMLElement` or `SVGElement`.
 
@@ -65,7 +81,7 @@ sp.plot(options) // return a SVGElement
 ```
 </pre>
 
-It also can be an IIFE(immediately-invoked function expression) for complex codeblocks.
+It also can be an IIFE(immediately-invoked function expression) for complex codeblock.
 
 <pre>
 ```js | dom
@@ -90,6 +106,28 @@ Async function is also ok.
   div.innerText = "hello";
   div.style.background = "red";
   return div;
+})();
+```
+</pre>
+
+The function can also returns an array: `[DOM, clearCallback]`, the second element of this array will be called before the DOM unmounting.
+
+<pre>
+```js | dom
+(() => {
+  const div = document.createElement("div");
+  div.innerText = "1";
+  div.style.background = "#28DF99";
+  div.style.height = "150px";
+  div.style.lineHeight = "150px";
+  div.style.fontSize = "100px";
+  div.style.color = "white";
+  div.style.textAlign = "center";
+  const timer = setInterval(() => {
+    const number = +div.innerText;
+    div.innerText = number + 1;
+  }, 1000);
+  return [div, () => clearInterval(timer)];
 })();
 ```
 </pre>
@@ -122,6 +160,37 @@ The options for `.genjirc` is as followed.
 | theme.mainColor      | `string`   | The main color for the site.                                                                                                                                                                     | `#28DF99`                                      |
 
 See more in [demo](./demo/.genjirc) as example.
+
+## Future Work
+
+- Use rollup to build the output.
+- Allow more markups for codeblocks and make it become truly reactive. For example:
+
+<pre>
+
+```js | dom
+(() => {
+  const div = document.createElement("div");
+  div.innerText = number;
+  div.style.background = "red";
+  return div;
+})();
+```
+
+```js | number
+number = 10
+```
+</pre>
+
+This snippet will render a div and a slider. Once the slider is been dragged, the text of the div will change correspondingly.
+
+## Thanks
+
+Genji Notebook is inspired the following awesome projects:
+
+- [Observable](https://observablehq.com/)
+- [Dumi](https://github.com/umijs/dumi)
+- [Docusaurus](https://github.com/facebook/Docusaurus)
 
 ## License
 
