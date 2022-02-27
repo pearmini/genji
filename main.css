@@ -1,0 +1,20 @@
+@import url(./lib/normalize.css);
+@import url(./lib/default.min.css);
+@import url(./lib/github-markdown.min.css);
+@import url(./app.css);
+@import url(./components/outline.css);
+@import url(./components/tree.css);
+@import url(./components/codeblock.css);
+@import url(./components/markdown.css);
+@import url(./components/notebook.css);
+
+:root {
+  --genji-main-color: #28DF99;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  scroll-behavior: smooth;
+}

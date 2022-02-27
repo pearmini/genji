@@ -1,0 +1,35 @@
+.outline {
+  width: 100%;
+  border-right-color: #d0d7de;
+  border-right-style: solid;
+  border-right-width: 1px;
+  height: 100vh;
+}
+
+.outline * {
+  padding: 0;
+  margin: 0;
+}
+
+.outline__header {
+  height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem;
+  border-bottom-color: #d0d7de;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
+.outline__tree {
+  padding: 0.5rem;
+  height: calc(100% - 240px - 2rem);
+  overflow: scroll;
+}
+
+.outline__logo {
+  width: 100px;
+  padding: 1rem;
+}

@@ -1,0 +1,157 @@
+a {
+  text-decoration: none;
+}
+
+.app {
+  display: flex;
+  height: 100%;
+}
+
+.app__main {
+  position: relative;
+  box-sizing: border-box;
+  padding: 32px 16px;
+  height: 100vh;
+  overflow: scroll;
+  width: calc(100% - 300px);
+}
+
+.app__sidebar {
+  width: 300px;
+}
+
+.app__menu-icon {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .app__sidebar {
+    width: 100%;
+    position: absolute;
+    left: -100%;
+    transition-property: left;
+    transition-duration: 0.3s;
+    z-index: 10;
+    background: white;
+  }
+
+  .app__menu-icon {
+    display: block;
+    position: fixed;
+    bottom: 2rem;
+    right: 1rem;
+    background: #ebedf0;
+    padding: 0.5rem 1rem;
+    z-index: 999;
+    border-radius: 6px;
+  }
+
+  .app__sidebar--show {
+    left: 0;
+  }
+
+  .app__main {
+    width: 100%;
+  }
+}
+
+.app__footer {
+  text-align: center;
+}
+
+.app__footer--bottom {
+  position: absolute;
+  bottom: 32px;
+  left: 0;
+  right: 0;
+}
+
+.app__main a {
+  color: var(--genji-main-color) !important;
+}
+
+.app__header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 1rem;
+}
+
+.app__header a {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  color: #606770 !important;
+  margin-left: 0.5rem;
+}
+
+.app__header a:hover {
+  color: var(--genji-main-color) !important;
+}
+
+.app__loading-top {
+  position: fixed;
+  height: 3px;
+  top: 0;
+  width: 200%;
+  left: -200%;
+  background-color: var(--genji-main-color);
+  animation-name: loading;
+  animation-duration: 5s;
+  animation-fill-mode: forwards;
+  opacity: 1;
+  transition: all 0.3s;
+}
+
+.app__loading-top-fade-leave-to {
+  left: 0;
+  opacity: 0;
+}
+
+@keyframes loading {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(49.5%);
+  }
+}
+
+/* @see https://tobiasahlin.com/spinkit/ */
+
+.app__loading {
+  width: 40px;
+  height: 40px;
+  background-color: var(--genji-main-color);
+
+  margin: auto;
+  -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
+  animation: sk-rotateplane 1.2s infinite ease-in-out;
+}
+
+@-webkit-keyframes sk-rotateplane {
+  0% {
+    -webkit-transform: perspective(120px);
+  }
+  50% {
+    -webkit-transform: perspective(120px) rotateY(180deg);
+  }
+  100% {
+    -webkit-transform: perspective(120px) rotateY(180deg) rotateX(180deg);
+  }
+}
+
+@keyframes sk-rotateplane {
+  0% {
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+  }
+  100% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+  }
+}
