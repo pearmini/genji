@@ -2,22 +2,22 @@
 
 Build observable and interactive JavaScript notebook from pure markdown.
 
-![sparrow](./assets/sparrow.jpg)
+![sparrow](./assets/sparrow.png)
 
 ## Links
 
-- [Showcase](https://sparrow-vis.github.io/)
-- [Demo](./demo/)
+- [Showcase](https://sparrow-vis.github.io/#/)
+- [Demo](https://pearmini.github.io/genji-notebook/#/)
 
 ## Get Started
 
-Installs genji-notebook from NPM.
+Install genji-notebook from NPM.
 
 ```bash
 $ npm i genji-notebook
 ```
 
-Creates a new config file named `.genjirc` in your project root, and specifies the `outline` options.
+Create a new config file named `.genjirc` in your project root, and specify the `outline` options.
 
 ```json
 {
@@ -27,7 +27,7 @@ Creates a new config file named `.genjirc` in your project root, and specifies t
 }
 ```
 
-Creates a folder named `docs` in your project root and creates a markdown file named `hello-world.md` with following content.
+Create a folder named `docs` in your project root and create a markdown file named `hello-world.md` with the following content.
 
 <pre>
 # Hello World
@@ -42,7 +42,7 @@ Creates a folder named `docs` in your project root and creates a markdown file n
 ```
 </pre>
 
-You project structure is now arranged as below:
+Your project structure is now arranged as below:
 
 ```
 .
@@ -51,23 +51,43 @@ You project structure is now arranged as below:
 |____.genjirc
 ```
 
-Then runs following command in your project root for development and opens `http://localhost:8000/` in your browser.
+Then run the following command in your project root for development and open `http://localhost:8000/#/` in your browser.
 
 ```bash
 $ genji dev
 ```
 
-Everything is working as expected if your see the page as blow.
+Everything is working as expected if your see the page as blew.
 
 ![example](./assets/example.jpg)
 
 **The red div with "Hello World" in the codeblock of the markdown file is already being rendered into the document!**
 
-Finally runs the following command in your project root before you want to deploy your site.
+Finally run the following command in your project root before you want to deploy your site.
 
 ```bash
 $ genji build
 ```
+
+Futhermore, if you want to deploy the site using [Github Pages](https://pages.github.com/), update the `.genjirc`. (Replace `<account>` with your github account name and replace `<repo>` with your repo name).
+
+```json
+{
+  "outline": {
+    "Hello World": "hello-world"
+  },
+  "siteGithub": "https://github.com/<account>/<repo>",
+  "base": "/<repo>/"
+}
+```
+
+Then run:
+
+```
+$ genji deploy
+```
+
+You can visit `https://<account>.github.io/<repo>/#/` after deploying success.
 
 ## API Reference
 
@@ -78,7 +98,8 @@ The valid code in codeblock can be a function returns a `HTMLElement` or `SVGEle
 <pre>
 ```js | dom
 sp.plot(options) // return a SVGElement
-```
+````
+
 </pre>
 
 It also can be an IIFE(immediately-invoked function expression) for complex codeblock.
@@ -160,12 +181,16 @@ The options for `.genjirc` are as followed.
 | notFound.description | `string`   | The description for the missing page.                                                                                                                                                                                       | `We could not find what you were looking for.` |
 | scripts              | `string[]` | A path array to the scripts used in the site.                                                                                                                                                                               | []                                             |
 | theme.mainColor      | `string`   | The main color for the site.                                                                                                                                                                                                | `#28DF99`                                      |
+| base                 | `string`   | The base path for the site.                                                                                                                                                                                                 | `/`                                            |
+| siteGithub           | `string`   | The link to the repo to host the site.(See [gh-pages](https://www.npmjs.com/package/gh-pages) `options.repo`)                                                                                                               | -                                              |
+| siteBranch           | `string`   | The name of the branch you'll pushing to. (See [gh-pages](https://www.npmjs.com/package/gh-pages) `options.branch`)                                                                                                         | `gh-pages`                                     |
 
 See more in [demo](./demo/.genjirc) as example.
 
 ## Future Work
 
 - Use rollup to build the output.
+- Work as a standalone plugin.
 - Allow more markups for codeblock and make it become truly reactive. For example:
 
 <pre>
