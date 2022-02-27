@@ -117,7 +117,7 @@ export const App = {
           this.loadingNotebook = false;
           clearTimeout(delay);
           const { title, description } = this.metadata.notFound;
-          return `# ${title}\n${description}`;
+          return `# ${title}\n${description}\n\n<a href="#/">Home Page</a>`;
         }
       }
     },

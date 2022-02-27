@@ -6,6 +6,7 @@
   "logo": "assets/logo.png",
   "github": "https://github.com/pearmini/genji-notebook",
   "link": "https://github.com/pearmini",
+  "base": "/genji-notebook/",
   "notFound": {
     "title": "Custom Missing Title",
     "description": "Custom Missing Description."
@@ -14,7 +15,8 @@
     "lib/sparrow.min.js"
   ],
   "outline": {
-    "Test": "test",
+    "Test1": "test1",
+    "Test2": "test2",
     "Section": {
       "Name With Space": "name with space",
       "Name With line": "name-with-line"
