@@ -2,7 +2,7 @@ const fs = require("file-system");
 const path = require("path");
 
 const { parse } = require("../lib/parse");
-const { compileHTML, compileCSS } = require("../lib/compile");
+const { compileHTML, compileCSS, compileJS } = require("../lib/compile");
 const { loadConfig } = require("../lib/config");
 
 function build() {
@@ -70,6 +70,11 @@ function build() {
   const cssPath = path.resolve(config.output, "main.css");
   const css = fs.readFileSync(cssPath, { encoding: "utf-8" });
   fs.writeFileSync(cssPath, compileCSS(css, config));
+
+  // compile js
+  const jsPath = path.resolve(config.output, "router.js");
+  const js = fs.readFileSync(jsPath, { encoding: "utf-8" });
+  fs.writeFileSync(jsPath, compileJS(js, config));
 
   console.log("Building success!");
 }

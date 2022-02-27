@@ -4,7 +4,7 @@ const http = require("http");
 const nodemon = require("nodemon");
 
 const { parse } = require("../lib/parse");
-const { compileHTML, compileCSS } = require("../lib/compile");
+const { compileHTML, compileCSS, compileJS } = require("../lib/compile");
 const { loadConfig } = require("../lib/config");
 
 function dev() {
@@ -15,7 +15,7 @@ function dev() {
     if (request.url.endsWith(".js")) {
       const js = javascript(request.url, config.scripts);
       response.writeHead(200, { "Content-Type": "application/javascript" });
-      response.end(js);
+      response.end(compileJS(js, config));
     } else if (request.url.endsWith(".json")) {
       const data = json(request.url, config.input, metadata);
       response.writeHead(200, { "Content-Type": "application/json" });
