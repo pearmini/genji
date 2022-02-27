@@ -20,6 +20,14 @@ program
     require("../command/build")();
   });
 
+program
+  .command("deploy")
+  .description("deploy site to specified github repo")
+  .alias("dp")
+  .action(() => {
+    require("../command/deploy")();
+  });
+
 program.parse(process.argv);
 
 if (!program.args.length) {
