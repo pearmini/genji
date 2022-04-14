@@ -1,0 +1,35 @@
+{
+  "name": "genji-notebook",
+  "version": "0.0.4",
+  "description": "Interactive JavaScript Notebook.",
+  "bin": "bin/genji.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pearmini/genji.git",
+    "directory": "packages/genji-notebook"
+  },
+  "scripts": {
+    "test": "jest",
+    "lint": "prettier --write --ignore-unknown .",
+    "ci": "run-s test lint",
+    "start": "cd demo && nodemon ../bin/genji.js dev",
+    "build": "cd demo && ../bin/genji.js build",
+    "deploy": "cd demo && ../bin/genji.js deploy"
+  },
+  "devDependencies": {
+    "gh-pages": "^3.2.3",
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "commander": "^9.0.0",
+    "file-system": "^2.2.2"
+  },
+  "files": [
+    "public",
+    "lib",
+    "assets",
+    "bin",
+    "command"
+  ],
+  "license": "MIT"
+}
