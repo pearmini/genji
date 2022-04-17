@@ -1,6 +1,6 @@
-# Genji Notebook
+# Genji
 
-Build observable and interactive JavaScript notebook from pure markdown.
+A grammar extended from markdown to build observable and interactive JavaScript document. It now has been implemented as a doc tool **genji-notebook** to help your write docs for Canvas/SVG based library.
 
 ![sparrow](./assets/sparrow.png)
 
