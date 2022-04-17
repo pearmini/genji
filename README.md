@@ -1,6 +1,6 @@
 # Genji
 
-A grammar extended markdown to build observable and interactive JavaScript document. It now has been implemented as a doc tool **genji-notebook** to help your write docs for Canvas/SVG based library.
+A grammar extended from markdown to build observable and interactive JavaScript document. It now has been implemented as a doc tool **genji-notebook** to help your write docs for Canvas/SVG based library.
 
 ![sparrow](./assets/sparrow.png)
 
