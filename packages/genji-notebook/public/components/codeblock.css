@@ -42,6 +42,7 @@
 
 .codeblock__output {
   margin-top: 16px;
+  overflow-x: auto;
 }
 
 .codeblock__output--only {

@@ -73,6 +73,7 @@ Test JavaScript code returns a array: `[DOM, clearCallback]`, it should call cle
   div.innerText = "1";
   div.style.background = "#28DF99";
   div.style.height = "150px";
+  div.style.width = "1000px";
   div.style.lineHeight = "150px";
   div.style.fontSize = "100px";
   div.style.color = "white";
