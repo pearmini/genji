@@ -66,7 +66,7 @@ a {
   right: 0;
 }
 
-.app__main a {
+.app__footer a {
   color: var(--genji-main-color) !important;
 }
 

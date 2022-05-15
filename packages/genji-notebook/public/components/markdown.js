@@ -1,4 +1,5 @@
-import { md } from "../utils.js";
+import { md, href } from "../utils.js";
+
 export const Markdown = {
   template: `<article class="markdown-body" v-html="html"></article>`,
   props: ["content"],
@@ -20,8 +21,9 @@ export const Markdown = {
       e.innerText = e.innerText.replaceAll("#", "");
       const a = document.createElement("a");
       a.innerText = "#";
-      a.setAttribute("name", e.innerText.split(" ").join("-").toLowerCase());
+      a.setAttribute("name", href(e.innerText));
       a.setAttribute("class", "markdown-body__anchor");
+      a.setAttribute("href", `#${href(e.innerText)}`);
       e.appendChild(a);
     }
   },
