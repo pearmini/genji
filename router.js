@@ -4,6 +4,6 @@ const routes = [{ path: "/:id" }];
 
 export const router = new VueRouter({
   routes,
-  mode: "history",
+  mode: "hash",
   base: "/genji/",
 });
