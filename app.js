@@ -90,6 +90,7 @@ export const App = {
     async loadNotebook(id) {
       if (this.notebooks.has(id)) {
         this.notFound = false;
+        this.scrollToTop();
         return this.notebooks.get(id);
       } else {
         const delay = setTimeout(() => (this.loadingNotebook = true), 300);
@@ -104,11 +105,7 @@ export const App = {
           this.loadingNotebook = false;
           this.notFound = false;
 
-          // scroll to top
-          if (this.$refs.main && this.$refs.main.scrollTo) {
-            this.$refs.main.scrollTo(0, 0);
-          }
-
+          this.scrollToTop();
           return notebook;
         } catch (e) {
           console.error(e);
@@ -125,6 +122,11 @@ export const App = {
       const { id = "/" } = route.params;
       const finalId = id === "/" ? this.metadata.first : id;
       return finalId.endsWith(".md") ? finalId.replace(".md", "") : finalId;
+    },
+    scrollToTop() {
+      if (this.$refs.main && this.$refs.main.scrollTo) {
+        this.$refs.main.scrollTo(0, 0);
+      }
     },
   },
   watch: {
