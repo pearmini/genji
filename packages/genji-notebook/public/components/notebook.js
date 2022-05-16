@@ -31,7 +31,6 @@ export const Notebook = {
   },
   methods: {
     href(text) {
-      console.log("href");
       return "#" + href(text);
     },
   },
@@ -53,7 +52,6 @@ export const Notebook = {
           });
         }
       }
-      console.log(H);
       return H.filter((d) => d.type > 1);
     },
     blocks() {

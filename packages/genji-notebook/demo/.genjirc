@@ -4,9 +4,9 @@
   "assets": "assets",
   "title": "Genji Notebok",
   "logo": "assets/logo.png",
-  "github": "https://github.com/pearmini/genji-notebook",
+  "github": "https://github.com/pearmini/genji",
   "link": "https://github.com/pearmini",
-  "base": "/genji-notebook/",
+  "base": "/genji/",
   "notFound": {
     "title": "Custom Missing Title",
     "description": "Custom Missing Description."
