@@ -76,7 +76,7 @@ export const App = {
   async mounted() {
     try {
       const delay = setTimeout(() => (this.loadingMetadata = true), 300);
-      this.metadata = await fetchJSON("./docs/$metadata.json");
+      this.metadata = await fetchJSON("/docs/$metadata.json");
       const id = this.getId(this.$route);
       this.context.selectedId = id;
       this.content = await this.loadNotebook(id);
@@ -95,7 +95,7 @@ export const App = {
       } else {
         const delay = setTimeout(() => (this.loadingNotebook = true), 300);
         try {
-          const { markdown: notebook } = await fetchJSON(`./docs/${id}.json`);
+          const { markdown: notebook } = await fetchJSON(`/docs/${id}.json`);
           // await new Promise((resolve) => {
           //   setTimeout(resolve, 3000)
           // })
