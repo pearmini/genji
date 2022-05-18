@@ -34,15 +34,6 @@ export const Notebook = {
       return "#" + href(text);
     },
   },
-  updated() {
-    // Jump to hash.
-    const { hash } = this.$route;
-    const id = hash.replace("#", "");
-    const h = document.getElementById(id);
-    if (h && h.scrollIntoView) {
-      h.scrollIntoView();
-    }
-  },
   computed: {
     headers() {
       const H = [];
