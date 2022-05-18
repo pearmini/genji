@@ -19,6 +19,7 @@ export const Markdown = {
     );
     for (const e of elements) {
       e.innerText = e.innerText.replaceAll("#", "");
+      e.setAttribute("id", `${href(e.innerText)}`);
       const a = document.createElement("a");
       a.innerText = "#";
       a.setAttribute("name", href(e.innerText));

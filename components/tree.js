@@ -32,7 +32,7 @@ export const Tree = {
     to() {
       const { id, file } = this.data.data;
       if (file === undefined) return "";
-      return id || "";
+      return `/${id}` || "";
     },
     selected() {
       return (
