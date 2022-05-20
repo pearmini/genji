@@ -36,23 +36,27 @@ export const Notebook = {
     },
   },
   updated() {
+    // Deactive links.
+    const A = this.$refs.container.getElementsByTagName("a");
+    for (const a of A) {
+      const href = a.getAttribute("href");
+      // Skip link with # to allow anchor.
+      if (!href.startsWith("#")) {
+        a.onclick = (e) => {
+          e.preventDefault();
+          const relativeHref = href.replace(this.baseURL, "");
+          this.$router.push(relativeHref);
+        };
+      }
+    }
+
     // Jump to hash.
     const { hash } = this.$route;
     const id = hash.replace("#", "");
     const h = document.getElementById(id);
+    console.log(h);
     if (h && h.scrollIntoView) {
       h.scrollIntoView();
-    }
-
-    // deactive links
-    const A = this.$refs.container.getElementsByTagName("a");
-    for (const a of A) {
-      a.onclick = (e) => {
-        e.preventDefault();
-        const href = a.getAttribute("href");
-        const relativeHref = href.replace(this.baseURL, "");
-        this.$router.push(relativeHref);
-      };
     }
   },
   computed: {
