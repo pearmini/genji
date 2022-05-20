@@ -7,7 +7,7 @@ A grammar extended from markdown to build observable and interactive JavaScript 
 ## Links
 
 - [Showcase](https://sparrow-vis.github.io/#/)
-- [Demo](https://pearmini.github.io/genji/#/)
+- [Demo](https://pearmini.github.io/genji/)
 
 ## Get Started
 
