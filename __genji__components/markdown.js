@@ -13,6 +13,7 @@ export const Markdown = {
     },
   },
   mounted() {
+    // 给标题添加锚点
     const h = ["h1", "h2", "h3", "h4"];
     const elements = h.flatMap((d) =>
       Array.from(document.querySelectorAll(`.markdown-body > ${d}`))

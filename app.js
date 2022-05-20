@@ -1,12 +1,15 @@
-import { Outline } from "./components/outline.js";
-import { Notebook } from "./components/notebook.js";
+import { Outline } from "./__genji__components/outline.js";
+import { Notebook } from "./__genji__components/notebook.js";
 import { fetchJSON } from "./utils.js";
 import {
   GithubIcon,
   LinkIcon,
   MenuIcon,
   CloseIcon,
-} from "./components/icon.js";
+} from "./__genji__components/icon.js";
+
+const BASE_URL = "/genji";
+const PREFIX = "__genji__docs";
 
 export const App = {
   template: `<div class="app">
@@ -50,12 +53,14 @@ export const App = {
     notebooks: new Map(),
     notFound: false,
     content: "",
+    baseURL: BASE_URL,
   }),
   provide() {
     const hideSidebar = () => (this.showSidebar = false);
     return {
       context: this.context,
       hideSidebar: hideSidebar.bind(this),
+      baseURL: this.baseURL
     };
   },
   components: {
@@ -76,7 +81,7 @@ export const App = {
   async mounted() {
     try {
       const delay = setTimeout(() => (this.loadingMetadata = true), 300);
-      this.metadata = await fetchJSON("/docs/$metadata.json");
+      this.metadata = await fetchJSON(`${BASE_URL}/${PREFIX}/$metadata.json`);
       const id = this.getId(this.$route);
       this.context.selectedId = id;
       this.content = await this.loadNotebook(id);
@@ -95,7 +100,9 @@ export const App = {
       } else {
         const delay = setTimeout(() => (this.loadingNotebook = true), 300);
         try {
-          const { markdown: notebook } = await fetchJSON(`/docs/${id}.json`);
+          const { markdown: notebook } = await fetchJSON(
+            `${BASE_URL}/${PREFIX}/${id}.json`
+          );
           // await new Promise((resolve) => {
           //   setTimeout(resolve, 3000)
           // })

@@ -1,12 +1,12 @@
-@import url(./lib/normalize.css);
-@import url(./lib/default.min.css);
-@import url(./lib/github-markdown.min.css);
 @import url(./app.css);
-@import url(./components/outline.css);
-@import url(./components/tree.css);
-@import url(./components/codeblock.css);
-@import url(./components/markdown.css);
-@import url(./components/notebook.css);
+@import url(./__genji__lib/normalize.css);
+@import url(./__genji__lib/default.min.css);
+@import url(./__genji__lib/github-markdown.min.css);
+@import url(./__genji__components/outline.css);
+@import url(./__genji__components/tree.css);
+@import url(./__genji__components/codeblock.css);
+@import url(./__genji__components/markdown.css);
+@import url(./__genji__components/notebook.css);
 
 :root {
   --genji-main-color: #28DF99;
