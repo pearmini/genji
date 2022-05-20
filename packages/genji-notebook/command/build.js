@@ -2,7 +2,12 @@ const fs = require("file-system");
 const path = require("path");
 
 const { parse } = require("../lib/parse");
-const { compileHTML, compileCSS, compileJS } = require("../lib/compile");
+const {
+  compileHTML,
+  compileCSS,
+  compileJS,
+  compileMD,
+} = require("../lib/compile");
 const { loadConfig } = require("../lib/config");
 
 function build() {
@@ -23,11 +28,12 @@ function build() {
 
   // generate metadata
   fs.writeFileSync(
-    path.resolve(config.output, "./docs", "$metadata.json"),
+    path.resolve(config.output, "./$genji_docs", "$metadata.json"),
     JSON.stringify(metadata)
   );
 
   // generate notebooks to output/docs
+  const pages = [];
   for (const root of metadata.outline) {
     const discovered = [root];
     while (discovered.length) {
@@ -36,9 +42,10 @@ function build() {
       const filepath = path.resolve(config.input, file + ".md");
       if (fs.existsSync(filepath)) {
         const markdown = fs.readFileSync(filepath, { encoding: "utf-8" });
+        pages.push(id);
         fs.writeFileSync(
-          path.resolve(config.output, "./docs", id + ".json"),
-          JSON.stringify({ markdown })
+          path.resolve(config.output, "./$genji_docs", id + ".json"),
+          JSON.stringify({ markdown: compileMD(markdown, config, filepath) })
         );
       }
       if (node.children && node.children.length) {
@@ -48,23 +55,32 @@ function build() {
   }
 
   // copy assets
-  fs.copySync(
-    path.resolve(config.assets),
-    path.resolve(config.output, config.assets)
-  );
+  // @todo name conflict between docs and assets
+  const assetsPath = path.resolve(config.output, config.assets);
+  fs.copySync(path.resolve(config.assets), assetsPath);
 
   // copy lib
   for (const script of config.scripts) {
     fs.copyFileSync(
       path.resolve(script),
-      path.resolve(config.output, "./lib", script.split("/").pop())
+      path.resolve(config.output, "./$genji_lib", script.split("/").pop())
     );
   }
 
   // compile html
   const htmlPath = path.resolve(config.output, "index.html");
   const html = fs.readFileSync(htmlPath, { encoding: "utf-8" });
-  fs.writeFileSync(htmlPath, compileHTML(html, config));
+  const compiledHTML = compileHTML(html, config);
+  fs.writeFileSync(htmlPath, compiledHTML);
+  for (const id of pages) {
+    const pagePath = path.resolve(config.output, `./${id}`, "index.html");
+    if (pagePath === assetsPath) {
+      throw new Error(
+        `Assets name can not equal to docs name: ${config.assets}`
+      );
+    }
+    fs.writeFileSync(pagePath, compiledHTML);
+  }
 
   // compile css
   const cssPath = path.resolve(config.output, "main.css");
@@ -72,9 +88,12 @@ function build() {
   fs.writeFileSync(cssPath, compileCSS(css, config));
 
   // compile js
-  const jsPath = path.resolve(config.output, "router.js");
-  const js = fs.readFileSync(jsPath, { encoding: "utf-8" });
-  fs.writeFileSync(jsPath, compileJS(js, config));
+  const jsFiles = ["router.js", "app.js"];
+  for (const file of jsFiles) {
+    const jsPath = path.resolve(config.output, file);
+    const js = fs.readFileSync(jsPath, { encoding: "utf-8" });
+    fs.writeFileSync(jsPath, compileJS(js, config));
+  }
 
   console.log("Building success!");
 }

@@ -4,12 +4,20 @@ const http = require("http");
 const nodemon = require("nodemon");
 
 const { parse } = require("../lib/parse");
-const { compileHTML, compileCSS, compileJS } = require("../lib/compile");
+const {
+  compileHTML,
+  compileCSS,
+  compileJS,
+  compileMD,
+} = require("../lib/compile");
 const { loadConfig } = require("../lib/config");
 
 function dev() {
   let config = loadConfig();
   let metadata = parse(config);
+
+  // Do not change base in dev env.
+  config.base = "";
 
   const server = http.createServer(function (request, response) {
     if (request.url.endsWith(".js")) {
@@ -17,7 +25,7 @@ function dev() {
       response.writeHead(200, { "Content-Type": "application/javascript" });
       response.end(compileJS(js, config));
     } else if (request.url.endsWith(".json")) {
-      const data = json(request.url, config.input, metadata);
+      const data = json(request.url, config, metadata);
       response.writeHead(200, { "Content-Type": "application/json" });
       response.end(JSON.stringify(data));
     } else if (request.url.endsWith(".css")) {
@@ -74,7 +82,8 @@ function javascript(url, scripts) {
   return fs.readFileSync(filepath, "utf8");
 }
 
-function json(url, input, metadata) {
+function json(url, config, metadata) {
+  const { input } = config;
   const id = url.split("/").pop().replace(".json", "");
   if (id === "$metadata") return metadata;
   const file = filename(id, metadata);
@@ -82,7 +91,7 @@ function json(url, input, metadata) {
   const filepath = path.resolve(input, file + ".md");
   if (fs.existsSync(filepath)) {
     const markdown = fs.readFileSync(filepath, { encoding: "utf-8" });
-    return { markdown };
+    return { markdown: compileMD(markdown, config, filepath) };
   }
   return {};
 }

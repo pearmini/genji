@@ -84,17 +84,21 @@ export const Codeblock = {
     this.run();
   },
   beforeDestroy() {
+    clearInterval(this.timer);
     if (typeof this.clear === "function") this.clear();
   },
   methods: {
     async run() {
       if (typeof this.clear === "function") this.clear();
-      const [value, clear] = await this.execute();
-      if (value instanceof HTMLElement || value instanceof SVGElement) {
-        this.$refs.output.innerHTML = "";
-        this.$refs.output.appendChild(value);
-        this.clear = clear;
-      }
+      this.timer = setTimeout(async () => {
+        const [value, clear] = await this.execute();
+        if (this.$refs.output === undefined) return;
+        if (value instanceof HTMLElement || value instanceof SVGElement) {
+          this.$refs.output.innerHTML = "";
+          this.$refs.output.appendChild(value);
+          this.clear = clear;
+        }
+      }, 0);
     },
     async execute() {
       try {
