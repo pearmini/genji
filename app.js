@@ -1,15 +1,15 @@
-import { Outline } from "./__genji__components/outline.js";
-import { Notebook } from "./__genji__components/notebook.js";
+import { Outline } from "./$genji_components/outline.js";
+import { Notebook } from "./$genji_components/notebook.js";
 import { fetchJSON } from "./utils.js";
 import {
   GithubIcon,
   LinkIcon,
   MenuIcon,
   CloseIcon,
-} from "./__genji__components/icon.js";
+} from "./$genji_components/icon.js";
 
 const BASE_URL = "/genji";
-const PREFIX = "__genji__docs";
+const PREFIX = "$genji_docs";
 
 export const App = {
   template: `<div class="app">
