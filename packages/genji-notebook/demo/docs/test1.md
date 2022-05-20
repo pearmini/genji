@@ -130,7 +130,7 @@ sp.plot({
 
 This is a **test** paragraph for [_markdown-it_](https://github.com/markdown-it/markdown-it).
 
-Test jump between notebooks: [Name with line](#/name-with-line.md).
+Test jump between notebooks: [Name with line](./name-with-line).
 
 Test static assets.
 

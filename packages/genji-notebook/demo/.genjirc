@@ -3,10 +3,10 @@
   "output": "dist",
   "assets": "assets",
   "title": "Genji Notebok",
-  "logo": "assets/logo.png",
+  "logo": "/assets/logo.png",
   "github": "https://github.com/pearmini/genji",
   "link": "https://github.com/pearmini",
-  "base": "/genji/",
+  "base": "/genji",
   "notFound": {
     "title": "Custom Missing Title",
     "description": "Custom Missing Description."

@@ -13,12 +13,14 @@ export const Markdown = {
     },
   },
   mounted() {
+    // 给标题添加锚点
     const h = ["h1", "h2", "h3", "h4"];
     const elements = h.flatMap((d) =>
       Array.from(document.querySelectorAll(`.markdown-body > ${d}`))
     );
     for (const e of elements) {
       e.innerText = e.innerText.replaceAll("#", "");
+      e.setAttribute("id", `${href(e.innerText)}`);
       const a = document.createElement("a");
       a.innerText = "#";
       a.setAttribute("name", href(e.innerText));
