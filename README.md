@@ -54,7 +54,7 @@ Your project structure is now arranged as below:
 Then run the following command in your project root for development and open `http://localhost:8000/#/` in your browser.
 
 ```bash
-$ genji dev
+$ genji-notebook dev
 ```
 
 Everything is working as expected if your see the page as blew.
@@ -66,7 +66,7 @@ Everything is working as expected if your see the page as blew.
 Finally run the following command in your project root before you want to deploy your site.
 
 ```bash
-$ genji build
+$ genji-notebook build
 ```
 
 Futhermore, if you want to deploy the site using [Github Pages](https://pages.github.com/), update the `.genjirc`. (Replace `<account>` with your github account name and replace `<repo>` with your repo name).
@@ -84,7 +84,7 @@ Futhermore, if you want to deploy the site using [Github Pages](https://pages.gi
 Then run:
 
 ```
-$ genji deploy
+$ genji-notebook deploy
 ```
 
 You can visit `https://<account>.github.io/<repo>/#/` after deploying success.
