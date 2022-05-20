@@ -3,7 +3,7 @@ import { Tree } from "./tree.js";
 export const Outline = {
   template: `<div class="outline">
     <div class="outline__header">
-      <img v-if="logo" :src="logo" class="outline__logo" alt="logo"/>
+      <img v-if="logo" :src="baseURL + logo" class="outline__logo" alt="logo"/>
       <h1>{{title}}</h1>
     </div>
     <div class="outline__tree">
@@ -11,6 +11,7 @@ export const Outline = {
     </div>
   </div>`,
   props: ["title", "data", "logo"],
+  inject: ["baseURL"],
   components: {
     Tree,
   },

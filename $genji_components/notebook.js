@@ -3,7 +3,7 @@ import { Markdown } from "./markdown.js";
 import { href } from "../utils.js";
 
 export const Notebook = {
-  template: `<div class="notebook">
+  template: `<div class="notebook" ref="container">
     <div class="notebook__content">
       <template v-for="block in blocks">
         <codeblock v-if="block.type === 'code'" :content="block.content" :key="block.content"/>
@@ -29,6 +29,7 @@ export const Notebook = {
       default: "",
     },
   },
+  inject: ["baseURL"],
   methods: {
     href(text) {
       return "#" + href(text);
@@ -41,6 +42,17 @@ export const Notebook = {
     const h = document.getElementById(id);
     if (h && h.scrollIntoView) {
       h.scrollIntoView();
+    }
+
+    // deactive links
+    const A = this.$refs.container.getElementsByTagName("a");
+    for (const a of A) {
+      a.onclick = (e) => {
+        e.preventDefault();
+        const href = a.getAttribute("href");
+        const relativeHref = href.replace(this.baseURL, "");
+        this.$router.push(relativeHref);
+      };
     }
   },
   computed: {
