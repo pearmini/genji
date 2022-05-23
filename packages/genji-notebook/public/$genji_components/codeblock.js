@@ -171,15 +171,25 @@ export const Codeblock = {
     options() {
       const [{ content: code, info }] = md.parse(this.content);
       const [lang, description] = info.split("|");
-      if (
-        lang === undefined ||
-        lang.trim() !== "js" ||
-        description === undefined
-      ) {
+
+      // For non JavaScript, do not render it.
+      if (lang === undefined || lang.trim() !== "js") {
         return { code, executable: false, lang: `language-${lang}` };
       }
+
+      // For JavaScript without options, render it by default.
+      if (description === undefined) {
+        return {
+          code,
+          pin: true,
+          executable: true,
+          lang: `language-${lang}`,
+        };
+      }
+
+      // For JavaScript with options, do not render pure code blocks.
       const [type, string] = description.split('"');
-      if (type.trim() !== "dom") {
+      if (type.trim() === "pure") {
         return { code, executable: false, lang: `language-${lang}` };
       }
       return {

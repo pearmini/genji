@@ -11,9 +11,9 @@ This is for codeblock in markdown.
 
 ## Test Basic Usage
 
-Test pure JavaScript code: `js`, it should render a static codeblock.
+Test pure JavaScript code: `js | pure`, it should render a static codeblock.
 
-```js
+```js | pure
 // pure js
 (() => {
   const div = document.createElement("div");
@@ -23,7 +23,7 @@ Test pure JavaScript code: `js`, it should render a static codeblock.
 })();
 ```
 
-Test JavaScript code with dom markup: `js | dom`, it should both render a red div with "hello" and a interactive codeblock.
+Test JavaScript code with dom markup: `js | dom` or just `js`, it should both render a red div with "hello" and a interactive codeblock.
 
 ```js | dom
 (() => {
