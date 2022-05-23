@@ -6,7 +6,11 @@ export const Notebook = {
   template: `<div class="notebook" ref="container">
     <div class="notebook__content">
       <template v-for="block in blocks">
-        <codeblock v-if="block.type === 'code'" :content="block.content" :key="block.content"/>
+        <codeblock v-if="block.type === 'code'" 
+          :content="block.content" 
+          :key="block.content"
+          @rendered="rendered"
+        />
         <markdown v-else :content="block.content"  :key="block.content"/>
       </template>
     </div>
@@ -34,29 +38,32 @@ export const Notebook = {
     href(text) {
       return "#" + href(text);
     },
+    rendered() {
+      // Deactive links.
+      const A = this.$refs.container.getElementsByTagName("a");
+      for (const a of A) {
+        const href = a.getAttribute("href");
+        // Skip link with # to allow anchor.
+        if (!href.startsWith("#")) {
+          a.onclick = (e) => {
+            e.preventDefault();
+            const relativeHref = href.replace(this.baseURL, "");
+            this.$router.push(relativeHref);
+          };
+        }
+      }
+
+      // Jump to hash.
+      const { hash } = this.$route;
+      const id = hash.replace("#", "");
+      const h = document.getElementById(id);
+      if (h && h.scrollIntoView) {
+        h.scrollIntoView();
+      }
+    },
   },
   updated() {
-    // Deactive links.
-    const A = this.$refs.container.getElementsByTagName("a");
-    for (const a of A) {
-      const href = a.getAttribute("href");
-      // Skip link with # to allow anchor.
-      if (!href.startsWith("#")) {
-        a.onclick = (e) => {
-          e.preventDefault();
-          const relativeHref = href.replace(this.baseURL, "");
-          this.$router.push(relativeHref);
-        };
-      }
-    }
-
-    // Jump to hash.
-    const { hash } = this.$route;
-    const id = hash.replace("#", "");
-    const h = document.getElementById(id);
-    if (h && h.scrollIntoView) {
-      h.scrollIntoView();
-    }
+    this.rendered();
   },
   computed: {
     headers() {

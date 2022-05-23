@@ -7,6 +7,7 @@
 @import url(./$genji_components/codeblock.css);
 @import url(./$genji_components/markdown.css);
 @import url(./$genji_components/notebook.css);
+@import url(./$genji_stdlib/index.css);
 
 :root {
   --genji-main-color: MAIN_COLOR_PLACEHOLDER;
