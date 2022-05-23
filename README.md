@@ -98,8 +98,7 @@ The valid code in codeblock can be a function returns a `HTMLElement` or `SVGEle
 <pre>
 ```js | dom
 sp.plot(options) // return a SVGElement
-````
-
+```
 </pre>
 
 It also can be an IIFE(immediately-invoked function expression) for complex codeblock.
