@@ -24,6 +24,24 @@
   color: #606770;
 }
 
+.codeblock__tool-item--run {
+  position: absolute;
+  right: 0;
+  top: 0;
+  cursor: pointer !important;
+  padding: 0.5rem 0.25rem 0 0.25rem;
+  color: #606770;
+  list-style-type: none;
+}
+
+.codeblock__tool-item--run:hover {
+  color: var(--genji-main-color);
+}
+
+.codeblock__tool-item--run:active {
+  transform: scale(1.1);
+}
+
 .codeblock__tool-item:hover {
   color: var(--genji-main-color);
 }
@@ -59,6 +77,13 @@
   font-size: 85% !important;
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
     Liberation Mono, monospace !important;
+  outline: none;
+  caret-color: #606770;
+  tab-size: 2;
+}
+
+.codeblock__wrapper {
+  position: relative;
 }
 
 .codeblock__pre--executable {

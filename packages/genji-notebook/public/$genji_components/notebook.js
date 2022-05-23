@@ -54,7 +54,6 @@ export const Notebook = {
     const { hash } = this.$route;
     const id = hash.replace("#", "");
     const h = document.getElementById(id);
-    console.log(h);
     if (h && h.scrollIntoView) {
       h.scrollIntoView();
     }
