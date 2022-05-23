@@ -293,6 +293,7 @@ export const Codeblock = {
         if (value instanceof HTMLElement || value instanceof SVGElement) {
           this.$refs.output.appendChild(value);
           this.clear = clear;
+          this.$emit("rendered");
         }
       }, 0);
     },
