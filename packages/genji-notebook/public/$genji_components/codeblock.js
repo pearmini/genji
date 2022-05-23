@@ -309,7 +309,7 @@ export const Codeblock = {
     },
     async execute() {
       try {
-        const output = await eval(this.code);
+        const output = await new Function(`return ${this.code}`)();
         return Array.isArray(output) ? output : [output, null];
       } catch (e) {
         console.error(e);
