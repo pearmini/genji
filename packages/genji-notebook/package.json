@@ -1,6 +1,6 @@
 {
   "name": "genji-notebook",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Interactive JavaScript Notebook.",
   "bin": "bin/genji.js",
   "repository": {
@@ -14,7 +14,8 @@
     "ci": "run-s test lint",
     "start": "cd demo && nodemon ../bin/genji.js dev",
     "build": "cd demo && ../bin/genji.js build",
-    "deploy": "cd demo && ../bin/genji.js deploy"
+    "deploy": "cd demo && ../bin/genji.js deploy",
+    "template": "cd template && ../bin/genji.js dev"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.5"

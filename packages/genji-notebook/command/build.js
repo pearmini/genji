@@ -55,9 +55,11 @@ function build() {
   }
 
   // copy assets
-  // @todo name conflict between docs and assets
   const assetsPath = path.resolve(config.output, config.assets);
-  fs.copySync(path.resolve(config.assets), assetsPath);
+  const srcAssetsPath = path.resolve(config.assets);
+  if (fs.existsSync(srcAssetsPath)) {
+    fs.copySync(srcAssetsPath, assetsPath);
+  }
 
   // copy lib
   for (const script of config.scripts) {
