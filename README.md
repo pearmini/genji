@@ -32,7 +32,7 @@ Create a folder named `docs` in your project root and create a markdown file nam
 <pre>
 # Hello World
 
-```js | dom
+```js
 (() => {
   const div = document.createElement("div");
   div.innerText = "Hello World";
@@ -59,9 +59,13 @@ $ genji-notebook dev
 
 Everything is working as expected if your see the page as blew.
 
-![example](./assets/example.jpg)
+![example](./assets/example.png)
 
 **The red div with "Hello World" in the codeblock of the markdown file is already being rendered into the document!**
+
+You can edit the content of this codeblock directly in the browser if you prefer a yellow div with 100px height. Then click the run button to see what will happen.
+
+![edit](./assets/edit.gif)
 
 Finally run the following command in your project root before you want to deploy your site.
 
@@ -91,7 +95,13 @@ You can visit `https://<account>.github.io/<repo>/#/` after deploying success.
 
 ## API Reference
 
-Every codeblock in JavaScript with markup: `js | dom` will execute and mounted the return value if it is `HTMLElement` or `SVGElement`.
+- [Grammar](#grammar): The grammar extended from markdown.
+- [Stblib](#stdlib): Some tools to help you build your notebook.
+- [Options](#options): Options for `.genjirc`.
+
+### Grammar
+
+Every codeblock in JavaScript with markup: `js | dom` or `js` will execute and mounted the return value if it is `HTMLElement` or `SVGElement`.
 
 The valid code in codeblock can be a function returns a `HTMLElement` or `SVGElement`.
 
@@ -152,7 +162,20 @@ The function can also returns an array: `[DOM, clearCallback]`, the second eleme
 ```
 </pre>
 
-Codeblock with `pin: false` options will hide the code by default. **The options can be only specified in double quote as following.**
+JavaScript codeblock with `pure` markup will not be execute and acts like a normal text with highlight.
+
+<pre>
+```js | pure
+(() => {
+  const div = document.createElement("div");
+  div.innerText = "Hello World";
+  div.style.background = "red";
+  return div;
+})();
+```
+</pre>
+
+JavaScript codeblock with `pin: false` options will hide the code by default. **The options can be only specified in double quote as following.**
 
 <pre>
 ```js | dom "pin: false"
@@ -164,6 +187,32 @@ Codeblock with `pin: false` options will hide the code by default. **The options
 })();
 ```
 </pre>
+
+### Stdlib
+
+All the stdlib can be called with namespace **genji** directly in the executable JavaScript codeblock.
+
+<a name="stdlib_preview" href="#stdlib_preview">#</a> **preview**<i>(items)</i> · [Examples](https://pearmini.github.io/genji/test4#preview)
+
+Render previews for specified items. Shape of each item is as followed.
+
+```js
+genji.preview([
+  {
+    thumbnail: "../assets/preview.png",
+    path: "./test1/#test-advanced-usage",
+    title: "Bar Chart",
+  },
+  {
+    thumbnail: "../assets/preview.png",
+    path: "./test1/#test-advanced-usage",
+    title: "Bar Chart",
+  },
+  // ...
+]);
+```
+
+### Options
 
 The options for `.genjirc` are as followed.
 
@@ -180,7 +229,7 @@ The options for `.genjirc` are as followed.
 | notFound.description | `string`   | The description for the missing page.                                                                                                                                                                                       | `We could not find what you were looking for.` |
 | scripts              | `string[]` | A path array to the scripts used in the site.                                                                                                                                                                               | []                                             |
 | theme.mainColor      | `string`   | The main color for the site.                                                                                                                                                                                                | `#28DF99`                                      |
-| base                 | `string`   | The base path for the site.                                                                                                                                                                                                 | `/`                                            |
+| base                 | `string`   | The base path for the site.                                                                                                                                                                                                 | `""`                                           |
 | siteGithub           | `string`   | The link to the repo to host the site.(See [gh-pages](https://www.npmjs.com/package/gh-pages) `options.repo`)                                                                                                               | -                                              |
 | siteBranch           | `string`   | The name of the branch you'll pushing to. (See [gh-pages](https://www.npmjs.com/package/gh-pages) `options.branch`)                                                                                                         | `gh-pages`                                     |
 
