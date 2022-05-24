@@ -1,0 +1,1 @@
+{"markdown":"# Test5\n\n```js | dom\n(() => {\n  const div = document.createElement(\"div\");\n  div.innerText = number;\n  div.style.background = \"red\";\n  return div;\n})();\n```\n\n```js | number\nnumber = 10;\n```\n"}

@@ -60,7 +60,7 @@ export const App = {
     return {
       context: this.context,
       hideSidebar: hideSidebar.bind(this),
-      baseURL: this.baseURL
+      baseURL: this.baseURL,
     };
   },
   components: {
