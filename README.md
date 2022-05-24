@@ -96,7 +96,7 @@ You can visit `https://<account>.github.io/<repo>/#/` after deploying success.
 ## API Reference
 
 - [Grammar](#grammar): The grammar extended from markdown.
-- [Stblib](#stdlib): Some tools to help you build your notebook.
+- [Stdlib](#stdlib): Some tools to help you build your notebook.
 - [Options](#options): Options for `.genjirc`.
 
 ### Grammar
