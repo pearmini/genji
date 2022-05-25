@@ -22,6 +22,7 @@ function defineConfig(config = {}) {
     theme = {
       mainColor: "#28DF99",
     },
+    ...rest
   } = config;
 
   return {
@@ -39,6 +40,7 @@ function defineConfig(config = {}) {
     scripts,
     theme,
     output,
+    ...rest,
   };
 }
 

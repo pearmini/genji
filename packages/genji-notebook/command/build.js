@@ -97,6 +97,14 @@ function build() {
     fs.writeFileSync(jsPath, compileJS(js, config));
   }
 
+  // generate CNAME
+  if (config.domain !== undefined) {
+    fs.writeFileSync(
+      path.resolve(config.output, "./CNAME"),
+      `${config.domain}`
+    );
+  }
+
   console.log("Building success!");
 }
 
