@@ -38,6 +38,14 @@ export const Notebook = {
     href(text) {
       return "#" + href(text);
     },
+    jumpToAnchor() {
+      const { hash } = this.$route;
+      const id = hash.replace("#", "");
+      const h = document.getElementById(id);
+      if (h && h.scrollIntoView) {
+        h.scrollIntoView();
+      }
+    },
     rendered(e) {
       // Deactive links.
       const A = this.$refs.container.getElementsByTagName("a");
@@ -47,8 +55,12 @@ export const Notebook = {
         if (!href.startsWith("#")) {
           a.onclick = (e) => {
             e.preventDefault();
+            // Avoid NavigationDuplicated.
             const relativeHref = href.replace(this.baseURL, "");
-            this.$router.push(relativeHref);
+            if (!this.$route.fullPath.includes(relativeHref)) {
+              this.$router.push(relativeHref);
+            }
+            this.jumpToAnchor();
           };
         }
       }
@@ -56,12 +68,7 @@ export const Notebook = {
       // Jump to hash only when first rendered.
       // It will not happen by click run button.
       if (e === false) {
-        const { hash } = this.$route;
-        const id = hash.replace("#", "");
-        const h = document.getElementById(id);
-        if (h && h.scrollIntoView) {
-          h.scrollIntoView();
-        }
+        this.jumpToAnchor();
       }
     },
   },
