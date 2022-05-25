@@ -194,18 +194,18 @@ All the stdlib can be called with namespace **genji** directly in the executable
 
 <a name="stdlib_preview" href="#stdlib_preview">#</a> **preview**<i>(items)</i> · [Examples](https://pearmini.github.io/genji/test4#preview)
 
-Render previews for specified items. Shape of each item is as followed.
+Render previews for specified items. Shape of each item is as followed. The `path` must be absolute path from the `config.output` root.
 
 ```js
 genji.preview([
   {
     thumbnail: "../assets/preview.png",
-    path: "./test1/#test-advanced-usage",
+    path: "/test1/#test-advanced-usage",
     title: "Bar Chart",
   },
   {
     thumbnail: "../assets/preview.png",
-    path: "./test1/#test-advanced-usage",
+    path: "/test1/#test-advanced-usage",
     title: "Bar Chart",
   },
   // ...
@@ -232,6 +232,7 @@ The options for `.genjirc` are as followed.
 | base                 | `string`   | The base path for the site.                                                                                                                                                                                                 | `""`                                           |
 | siteGithub           | `string`   | The link to the repo to host the site.(See [gh-pages](https://www.npmjs.com/package/gh-pages) `options.repo`)                                                                                                               | -                                              |
 | siteBranch           | `string`   | The name of the branch you'll pushing to. (See [gh-pages](https://www.npmjs.com/package/gh-pages) `options.branch`)                                                                                                         | `gh-pages`                                     |
+| domain               | `string`   | The domain of your site. It will create a `CNAME` file if it is specified.                                                                                                                                                  | `undefined`                                    |
 
 See more in [demo](./demo/.genjirc) as example.
 
