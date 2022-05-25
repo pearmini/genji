@@ -19,6 +19,7 @@
 
 .notebook__outline {
   width: 20%;
+  max-width: 280px;
   font-size: 14px;
   line-height: 20px;
   cursor: pointer;
@@ -26,9 +27,9 @@
 
 .notebook__outline-content {
   padding-left: 16px;
-  border-left-color: #d0d7de;
+  /* border-left-color: #d0d7de;
   border-left-style: solid;
-  border-left-width: 1px;
+  border-left-width: 1px; */
   overflow-y: auto;
   position: sticky;
   top: 0px;
