@@ -220,7 +220,7 @@ export const Codeblock = {
   mounted() {
     if (this.$refs.code) hljs.highlightElement(this.$refs.code);
     if (!this.options.executable) return;
-    this.run();
+    this.run(false);
   },
   beforeDestroy() {
     if (this.timer) clearTimeout(this.timer);
@@ -286,7 +286,7 @@ export const Codeblock = {
       // Update codeblocks.
       this.updateCode(this.code, caretPosition);
     },
-    async run() {
+    async run(byClick) {
       // Clear function may have error either.
       try {
         if (typeof this.clear === "function") this.clear();
@@ -303,7 +303,7 @@ export const Codeblock = {
         if (value instanceof HTMLElement || value instanceof SVGElement) {
           this.$refs.output.appendChild(value);
           this.clear = clear;
-          this.$emit("rendered");
+          this.$emit("rendered", byClick);
         }
       }, 0);
     },

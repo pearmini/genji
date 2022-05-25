@@ -38,7 +38,7 @@ export const Notebook = {
     href(text) {
       return "#" + href(text);
     },
-    rendered() {
+    rendered(e) {
       // Deactive links.
       const A = this.$refs.container.getElementsByTagName("a");
       for (const a of A) {
@@ -53,12 +53,15 @@ export const Notebook = {
         }
       }
 
-      // Jump to hash.
-      const { hash } = this.$route;
-      const id = hash.replace("#", "");
-      const h = document.getElementById(id);
-      if (h && h.scrollIntoView) {
-        h.scrollIntoView();
+      // Jump to hash only when first rendered.
+      // It will not happen by click run button.
+      if (e === false) {
+        const { hash } = this.$route;
+        const id = hash.replace("#", "");
+        const h = document.getElementById(id);
+        if (h && h.scrollIntoView) {
+          h.scrollIntoView();
+        }
       }
     },
   },
