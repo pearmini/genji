@@ -6,42 +6,42 @@
 genji.preview([
   {
     thumbnail: "../assets/preview.png",
-    path: "./test1/#test-advanced-usage",
+    path: "/test1/#test-advanced-usage",
     title: "Bar Chart",
   },
   {
     thumbnail: "../assets/preview.png",
-    path: "./test1/#test-advanced-usage",
+    path: "/test1/#test-advanced-usage",
     title: "Bar Chart",
   },
   {
     thumbnail: "../assets/preview.png",
-    path: "./test1/#test-advanced-usage",
+    path: "/test1/#test-advanced-usage",
     title: "Bar Chart",
   },
   {
     thumbnail: "../assets/preview.png",
-    path: "./test1/#test-advanced-usage",
+    path: "/test1/#test-advanced-usage",
     title: "Bar Chart",
   },
   {
     thumbnail: "../assets/preview.png",
-    path: "./test1/#test-advanced-usage",
+    path: "/test1/#test-advanced-usage",
     title: "Bar Chart",
   },
   {
     thumbnail: "../assets/preview.png",
-    path: "./test1/#test-advanced-usage",
+    path: "/test1/#test-advanced-usage",
     title: "Bar Chart",
   },
   {
     thumbnail: "../assets/preview.png",
-    path: "./test1/#test-advanced-usage",
+    path: "/test1/#test-advanced-usage",
     title: "Bar Chart",
   },
   {
     thumbnail: "../assets/preview.png",
-    path: "./test1/#test-advanced-usage",
+    path: "/test1/#test-advanced-usage",
     title: "Bar Chart",
   },
 ]);
