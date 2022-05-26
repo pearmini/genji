@@ -192,24 +192,30 @@ JavaScript codeblock with `pin: false` options will hide the code by default. **
 
 All the stdlib can be called with namespace **genji** directly in the executable JavaScript codeblock.
 
-<a name="stdlib_preview" href="#stdlib_preview">#</a> **preview**<i>(items)</i> · [Examples](https://pearmini.github.io/genji/test4#preview)
+<a name="stdlib_preview" href="#stdlib_preview">#</a> **preview**<i>(items, options)</i> · [Examples](https://pearmini.github.io/genji/test4#preview)
 
 Render previews for specified items. Shape of each item is as followed. The `path` must be absolute path from the `config.output` root.
 
 ```js
-genji.preview([
+genji.preview(
+  [
+    {
+      thumbnail: "../assets/preview.png",
+      path: "/test1/#test-advanced-usage",
+      title: "Bar Chart",
+    },
+    {
+      thumbnail: "../assets/preview.png",
+      path: "/test1/#test-advanced-usage",
+      title: "Bar Chart",
+    },
+    // ...
+  ],
   {
-    thumbnail: "../assets/preview.png",
-    path: "/test1/#test-advanced-usage",
-    title: "Bar Chart",
-  },
-  {
-    thumbnail: "../assets/preview.png",
-    path: "/test1/#test-advanced-usage",
-    title: "Bar Chart",
-  },
-  // ...
-]);
+    height: 300, // Default to 200
+    size: "contain", // "contain" | "cover", Default to "cover"
+  }
+);
 ```
 
 ### Options
