@@ -3,7 +3,7 @@
   padding: 45px;
   min-height: calc(100vh - 120px);
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .notebook__content {
@@ -27,9 +27,6 @@
 
 .notebook__outline-content {
   padding-left: 16px;
-  /* border-left-color: #d0d7de;
-  border-left-style: solid;
-  border-left-width: 1px; */
   overflow-y: auto;
   position: sticky;
   top: 0px;

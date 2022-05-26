@@ -1,6 +1,6 @@
 {
   "name": "genji-notebook",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Interactive JavaScript Notebook.",
   "bin": "bin/genji.js",
   "repository": {
