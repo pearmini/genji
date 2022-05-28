@@ -1,6 +1,7 @@
 .preview__container {
   display: grid;
   grid-gap: 1rem;
+  margin: 1rem 0px;
 }
 
 .preview__container a {
