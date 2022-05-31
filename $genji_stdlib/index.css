@@ -1,7 +1,7 @@
 .preview__container {
   display: grid;
-  grid-gap: 0.875rem;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 5fr));
+  grid-gap: 1rem;
+  margin: 1rem 0px;
 }
 
 .preview__container a {
@@ -19,7 +19,6 @@
   box-sizing: border-box;
   width: 100%;
   padding-top: 62.5%;
-  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -34,4 +33,5 @@
   text-overflow: ellipsis;
   overflow: hidden;
   font-size: 14px;
+  margin-top: 0.25em;
 }
