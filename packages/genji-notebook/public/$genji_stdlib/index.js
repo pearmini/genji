@@ -4,7 +4,7 @@ function fromVue(component) {
 }
 
 function preview(thumbnails, options = {}) {
-  const { height = 200, size = "cover" } = options;
+  const { height = 175, size = "cover" } = options;
   return fromVue({
     template: `<div class="preview__container" :style="{
       gridTemplateColumns: 'repeat(auto-fill, minmax(' + height + 'px, 5fr))'
@@ -27,6 +27,14 @@ function preview(thumbnails, options = {}) {
   });
 }
 
+async function fetchJSON(url) {
+  const response = await fetch(url);
+  const data = await response.json();
+  return data;
+}
+
 const genji = {
   preview,
+  fetchJSON,
+  require: d3.require,
 };

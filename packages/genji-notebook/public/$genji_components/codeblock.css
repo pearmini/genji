@@ -84,3 +84,8 @@
   background: #fafafa;
   margin-bottom: 16px;
 }
+
+.codeblock__output--builtin {
+  position: relative;
+  left: -16px;
+}

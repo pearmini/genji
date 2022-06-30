@@ -30,7 +30,7 @@ export const App = {
           <a v-if="metadata.link" :href="metadata.link" target="__blank"><link-icon/></a>
           <a v-if="metadata.github" :href="metadata.github" target="__blank"><github-icon/></a>
         </div>
-        <notebook :data="content" /> 
+        <notebook :content="content" /> 
         <div :class="['app__footer', {'app__footer--bottom': notFound }]">
           <span>{{copyright}}</span>
           Built with <a href="https://github.com/pearmini/genji-notebook" target="__blank">Genji Notebook</a>.
