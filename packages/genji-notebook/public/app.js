@@ -80,7 +80,8 @@ export const App = {
   },
   async mounted() {
     try {
-      const delay = setTimeout(() => (this.loadingMetadata = true), 300);
+      // To avoid show loading every time.
+      const delay = setTimeout(() => (this.loadingMetadata = true), 100);
       this.metadata = await fetchJSON(`${BASE_URL}/${PREFIX}/$metadata.json`);
       const id = this.getId(this.$route);
       this.context.selectedId = id;
