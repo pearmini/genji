@@ -65,7 +65,7 @@ Test JavaScript code with pin options: `js | dom "pin: false"`, it should not re
 })();
 ```
 
-Test JavaScript code returns a array: `[DOM, clearCallback]`, it should call clearCallback after unmounted.
+Test JavaScript code with `setInterval`.
 
 ```js | dom
 (() => {
@@ -82,7 +82,7 @@ Test JavaScript code returns a array: `[DOM, clearCallback]`, it should call cle
     const number = +div.innerText;
     div.innerText = number + 1;
   }, 1000);
-  return [div, () => clearInterval(timer)];
+  return div;
 })();
 ```
 
