@@ -318,27 +318,29 @@ function diff(a, b) {
 
 export const Notebook = {
   template: `<div class="notebook" ref="container">
-    <div class="notebook__content">
-      <template v-for="node in nodes">
-        <codeblock v-if="node.type === 'code'" 
-          ref="code"
-          :options="node" 
-          :output="output[node.id]"
-          :variables="variables"
-          :key="node.content"
-          @updateValue="updateNodeValue"
-          @updateContent="updateNodeContent"
-        />
-        <markdown v-else :content="node.content"  :key="node.content"/>
-      </template>
-    </div>
-    <div class="notebook__outline" ref="outline">
-      <div class="notebook__outline-content">
-        <p v-for="h in headers" :style="{
-          paddingLeft: (h.type - 2) * 16 + 'px'
-        }">
-          <a :href="href(h.content)">{{h.content}}</a>
-        </p>
+    <div class="notebook__main">
+      <div class="notebook__content">
+        <template v-for="node in nodes">
+          <codeblock v-if="node.type === 'code'" 
+            ref="code"
+            :options="node" 
+            :output="output[node.id]"
+            :variables="variables"
+            :key="node.content"
+            @updateValue="updateNodeValue"
+            @updateContent="updateNodeContent"
+          />
+          <markdown v-else :content="node.content"  :key="node.content"/>
+        </template>
+      </div>
+      <div class="notebook__outline" ref="outline">
+        <div class="notebook__outline-content">
+          <p v-for="h in headers" :style="{
+            paddingLeft: (h.type - 2) * 16 + 'px'
+          }">
+            <a :href="href(h.content)">{{h.content}}</a>
+          </p>
+        </div>
       </div>
     </div>
   </div>`,
