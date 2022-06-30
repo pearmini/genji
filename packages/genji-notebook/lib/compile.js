@@ -3,7 +3,7 @@ const path = require("path");
 function compileHTML(html, config) {
   return html
     .replace("<!-- TITLE_PLACEHOLDER -->", config.title)
-    .replace("<!-- ICON_PLACEHOLDER -->", config.logo)
+    .replace("<!-- ICON_PLACEHOLDER -->", logoURL(config))
     .replace(/<!-- BASE -->/g, config.base)
     .replace("<!-- SCRIPTS_PLACEHOLDER-->", scripts(config));
 }
@@ -15,6 +15,12 @@ function scripts(config) {
       (d) => `<script src="${base}/$genji_lib/${d.split("/").pop()}"></script>`
     )
     .join("");
+}
+
+function logoURL(config) {
+  const { logo, base } = config;
+  if (logo.startsWith("http")) return logo;
+  return base + logo;
 }
 
 function compileCSS(css, config) {
