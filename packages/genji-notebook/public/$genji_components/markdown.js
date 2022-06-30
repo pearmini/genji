@@ -9,7 +9,7 @@ export const Markdown = {
       return raw
         .replaceAll("&lt;", "<")
         .replaceAll("&gt;", ">")
-        .replaceAll("&quot;", "");
+        .replaceAll("&quot;", '"');
     },
   },
   mounted() {
