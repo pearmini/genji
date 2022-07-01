@@ -30,7 +30,7 @@ export const App = {
           <a v-if="metadata.link" :href="metadata.link" target="__blank"><link-icon/></a>
           <a v-if="metadata.github" :href="metadata.github" target="__blank"><github-icon/></a>
         </div>
-        <notebook :data="content" /> 
+        <notebook :content="content" /> 
         <div :class="['app__footer', {'app__footer--bottom': notFound }]">
           <span>{{copyright}}</span>
           Built with <a href="https://github.com/pearmini/genji-notebook" target="__blank">Genji Notebook</a>.
@@ -80,7 +80,8 @@ export const App = {
   },
   async mounted() {
     try {
-      const delay = setTimeout(() => (this.loadingMetadata = true), 300);
+      // To avoid show loading every time.
+      const delay = setTimeout(() => (this.loadingMetadata = true), 100);
       this.metadata = await fetchJSON(`${BASE_URL}/${PREFIX}/$metadata.json`);
       const id = this.getId(this.$route);
       this.context.selectedId = id;

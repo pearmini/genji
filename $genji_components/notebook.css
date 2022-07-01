@@ -2,8 +2,11 @@
   box-sizing: border-box;
   padding: 45px;
   min-height: calc(100vh - 120px);
+}
+
+.notebook__main {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 .notebook__content {

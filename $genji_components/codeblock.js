@@ -1,20 +1,21 @@
-import { md } from "../utils.js";
 import { PinIcon, RunIcon } from "./icon.js";
+import { createDescription, createInput, createTable } from "./output.js";
 
-function maybeBoolean(value) {
-  if (value === "false") return false;
-  if (value === "true") return true;
-  return value;
+function isDom(output) {
+  return output instanceof HTMLElement || output instanceof SVGElement;
 }
 
-function parseAttributes(string) {
-  if (!string) return {};
-  const attributes = string.split(";");
-  return attributes.reduce((obj, attribute) => {
-    const [key, value] = attribute.split(":");
-    obj[key.trim()] = maybeBoolean(value.trim());
-    return obj;
-  }, {});
+function normalizeOutput(options, output, vm) {
+  const { outputType } = options;
+  if (output?.$loading || output?.$error) {
+    return output;
+  } else if (outputType === "dom") {
+    return isDom(output) ? output : createDescription(options, output);
+  } else if (outputType === "table") {
+    return createTable(options, output);
+  } else {
+    return createInput(options, output, vm);
+  }
 }
 
 /**
@@ -33,8 +34,9 @@ export const Codeblock = {
     <div :class="[
       'codeblock__output',
       {'codeblock__output--only': !pin},
-    ]" ref="output" v-if="options.executable"></div>
-    <div class="codeblock__wrapper" :style="{
+      {'codeblock__output--builtin': builtin }
+    ]" ref="output" v-if="options.executable" :output="output"></div>
+    <div class="codeblock__wrapper" ref="code" :style="{
       marginTop: options.executable ? '0px' : '16px',
       display: (options.executable && !pin) ? 'none' : 'block'
     }">
@@ -42,119 +44,92 @@ export const Codeblock = {
       <textarea ref="textarea" :value='code' />
     </div>
   </div>`,
-  props: ["content"],
+  props: ["options", "output", "variables"],
   data: () => ({
-    pin: false,
     clear: null,
     currentCode: null,
-    history: [],
+    currentPin: null,
   }),
   components: {
     PinIcon,
     RunIcon,
   },
   computed: {
-    options() {
-      const [{ content, info }] = md.parse(this.content);
-      const code = content.slice(0, content.length - 1);
-      const [lang, description] = info.split("|");
-
-      // For non JavaScript, do not render it.
-      if (lang === undefined || lang.trim() !== "js") {
-        return { code, executable: false, lang: `language-${lang}` };
-      }
-
-      // For JavaScript without options, render it by default.
-      if (description === undefined) {
-        return {
-          code,
-          pin: true,
-          executable: true,
-          lang: `language-${lang}`,
-        };
-      }
-
-      // For JavaScript with options, do not render pure code blocks.
-      const [type, string] = description.split('"');
-      if (type.trim() === "pure") {
-        return { code, executable: false, lang: `language-${lang}` };
-      }
-      return {
-        code,
-        pin: true,
-        executable: true,
-        lang: `language-${lang}`,
-        ...parseAttributes(string),
-      };
+    pin: {
+      get() {
+        return this.currentPin ?? this.options.pin;
+      },
+      set(newValue) {
+        this.currentPin = newValue;
+      },
     },
     code: {
       get() {
-        return this.currentCode ?? this.options.code;
+        return this.currentCode ?? this.options.content;
       },
       set(newValue) {
         this.currentCode = newValue;
       },
     },
-  },
-  watch: {
-    options: {
-      handler(newValue = {}) {
-        this.pin = newValue.pin;
-      },
-      immediate: true,
+    builtin() {
+      if (this.output === null) return false;
+      if (typeof this.output !== "object") return false;
+      return this.output.$loading || this.output.$error;
     },
+  },
+  updated() {
+    if (!this.options.executable) return;
+    this.renderOutput();
   },
   mounted() {
-    if (this.$refs.textarea) {
-      const editor = CodeMirror.fromTextArea(this.$refs.textarea, {
-        lineWrapping: true,
-        readOnly: this.options.executable ? false : "nocursor",
-      });
-      editor.on("change", ({ doc }) => {
-        this.code = doc.getValue();
-      });
+    if (!this.$refs.textarea) return;
+    const { code } = this.$refs;
+    const none = code.style.display === "none";
+    if (none) {
+      code.style.display = "block";
+      code.style.position = "absolute";
+      code.style.left = "-1000px";
+      code.style.right = "-1000px";
     }
+    const editor = CodeMirror.fromTextArea(this.$refs.textarea, {
+      readOnly: this.options.executable ? false : "nocursor",
+    });
+    if (none) {
+      code.style.display = "none";
+      code.style.position = "static";
+    }
+    // Bind events and render outputs.
     if (!this.options.executable) return;
-    this.run(false);
-  },
-  beforeDestroy() {
-    if (this.timer) clearTimeout(this.timer);
-    if (typeof this.clear === "function") this.clear();
+    editor.on("change", ({ doc }) => {
+      this.code = doc.getValue();
+    });
+    editor.on("update", () => this.renderUnderline());
+    this.renderUnderline();
+    this.renderOutput();
   },
   methods: {
-    async run(byClick) {
-      // Clear function may have error either.
-      // Only throw errors related code execution.
-      try {
-        if (typeof this.clear === "function") this.clear();
-        if (this.timer) clearTimeout(this.timer);
-        this.timer = setTimeout(async () => {
-          this.$refs.output.innerHTML = "";
-          const [value, clear] = await this.execute();
-          if (this.$refs.output === undefined) return;
-          if (value instanceof HTMLElement || value instanceof SVGElement) {
-            this.$refs.output.appendChild(value);
-            this.clear = clear;
-            this.$emit("rendered", byClick);
-          }
-        }, 0);
-      } catch (e) {}
-    },
-    async execute() {
-      try {
-        const output = await new Function(`return ${this.code}`)();
-        return Array.isArray(output) ? output : [output, null];
-      } catch (e) {
-        console.error(e);
-        const span = document.createElement("span");
-        span.innerText = `${e.name}: ${e.message}. Open console for more details.`;
-        span.style.display = "block";
-        span.style.background = "#fbf3f3";
-        span.style.color = "#fb1716";
-        span.style.padding = "0.5rem";
-        span.style.borderRadius = "6px";
-        return [span, null];
+    renderUnderline() {
+      const spans = this.$refs.code.getElementsByClassName("cm-variable");
+      for (const span of spans) {
+        const { innerText } = span;
+        const { name } = this.options;
+        const underline =
+          this.variables?.includes(innerText) && name !== innerText;
+        span.style.borderBottom = underline ? "1px solid #aaa" : "";
       }
+    },
+    renderOutput() {
+      if (!this.$refs.output) return;
+      const output = normalizeOutput(
+        this.options,
+        this.output,
+        this.$emit.bind(this)
+      );
+      this.$refs.output.innerHTML = "";
+      this.$refs.output.appendChild(output);
+    },
+    async run() {
+      this.$emit("updateContent", this.options.id, this.code);
     },
   },
 };

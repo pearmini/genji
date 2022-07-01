@@ -1,0 +1,23 @@
+.genji__output--table {
+  border-spacing: 0;
+  border-collapse: collapse;
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow: auto;
+}
+.genji__output--table td,
+.genji__output--table th {
+  padding: 6px 13px;
+  border: 1px solid #d0d7de;
+}
+.genji__output--table tr {
+  background-color: #ffffff;
+  border-top: 1px solid hsla(210, 18%, 87%, 1);
+}
+.genji__output--table tr:nth-child(2n) {
+  background-color: #f6f8fa;
+}
+.genji__output--table img {
+  background-color: transparent;
+}
