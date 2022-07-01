@@ -6,11 +6,11 @@
 
 This repo will not only introduce the _specification_ of Genji, it also will provide several following tools to build observable and interactive document.
 
-- [Genji Notebook](./packages/genji-notebook/README.md) - A doc tool based on Genji to build observable and interactive website.
-- [Genji Renderer](./packages/genji-renderer/README.md) - A JavaScript library to render Genji. (WIP)
-- [Genji Rect](./packages/genji-react/README.md) - A Rect component to render Genji. (WIP)
-- [Genji Vue](./packages/genji-vue/README.md) - A Vue component to render Genji. (WIP)
-- [Genji Dumi](./packages/genji-dumi/README.md) - A plugin to render Genji in [Dumi](https://github.com/umijs/dumi). (WIP)
+- [Genji Notebook](./packages/genji-notebook/) - A doc tool based on Genji to build observable and interactive website.
+- [Genji Renderer](./packages/genji-renderer/) - A JavaScript library to render Genji. (WIP)
+- [Genji Rect](./packages/genji-react/) - A Rect component to render Genji. (WIP)
+- [Genji Vue](./packages/genji-vue/) - A Vue component to render Genji. (WIP)
+- [Genji Dumi](./packages/genji-dumi/) - A plugin to render Genji in [Dumi](https://github.com/umijs/dumi). (WIP)
 
 ## Links
 

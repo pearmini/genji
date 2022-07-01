@@ -1,9 +1,8 @@
 # Genji Notebook
 
-It now has been implemented as a doc tool **genji-notebook** to help your write docs for Canvas/SVG based library.
+A doc tool based on Genji to build observable and interactive website. It is inspired by [Dumi](https://github.com/umijs/dumi) and [Docusaurus](https://github.com/facebook/Docusaurus).
 
-- [Dumi](https://github.com/umijs/dumi)
-- [Docusaurus](https://github.com/facebook/Docusaurus)
+![demo](./assets/demo.jpg)
 
 ## Get Started
 
@@ -25,7 +24,7 @@ Create a new config file named `.genjirc` in your project root, and specify the 
 
 Create a folder named `docs` in your project root and create a markdown file named `hello-world.md` with the following content.
 
-<pre>
+````markdown
 # Hello World
 
 ```js
@@ -36,7 +35,7 @@ Create a folder named `docs` in your project root and create a markdown file nam
   return div;
 })();
 ```
-</pre>
+````
 
 Your project structure is now arranged as below:
 
@@ -111,7 +110,7 @@ The options for `.genjirc` are as followed.
 | siteBranch           | `string`   | The name of the branch you'll pushing to. (See [gh-pages](https://www.npmjs.com/package/gh-pages) `options.branch`)                                                                                                         | `gh-pages`                                     |
 | domain               | `string`   | The domain of your site. It will create a `CNAME` file if it is specified.                                                                                                                                                  | `undefined`                                    |
 
-See more in [demo](./demo/.genjirc) as example.
+See more in [demo](./demo/.genjirc) as an example.
 
 ## License
 
