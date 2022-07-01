@@ -46,3 +46,15 @@ genji.preview([
   },
 ]);
 ```
+
+```js | range "pin: false; min: 100; max: 200"
+width = 150;
+```
+
+```js
+$("<div>").width(width).height(100).css("background", "orange").get(0);
+```
+
+```js | dom "pin: false"
+$ = genji.require("jquery");
+```
