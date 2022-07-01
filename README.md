@@ -4,6 +4,8 @@
 
 **Genji** is a concise grammar that extends markdown to author observable and interactive JavaScript document. It is inspired by [Observable](https://observablehq.com/explore) and is useful to write documentation for web-based library.
 
+![demo](./assets/demo.jpg)
+
 This repo will not only introduce the _specification_ of Genji, it also will provide several following tools to build observable and interactive document.
 
 - [Genji Notebook](./packages/genji-notebook/) - A doc tool based on Genji to build observable and interactive website.
@@ -47,7 +49,7 @@ This example dose three things:
 
 Let's explain how Genji manage to do these.
 
-Each JavaScript codeblock in Genji is executable by default. And it suppose to have only one _statement_ or _expression_ in each codeblock. The return value of the codeblock will be displayed in the document as output with different form.
+Each JavaScript codeblock in Genji is **executable** and **writeable** by default. And it suppose to have only one _statement_ or _expression_ in each codeblock. The return value of the codeblock will be displayed in the document as output with different form.
 
 It it is a _HTMLElement_ or _SVGElement_, the element will be mounted directly, such as:
 

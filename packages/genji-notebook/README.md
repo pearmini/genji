@@ -54,13 +54,9 @@ $ genji-notebook dev
 
 Everything is working as expected if your see the page as blew.
 
-![example](./assets/example.png)
+![example](./assets/example.jpg)
 
 **The red div with "Hello World" in the codeblock of the markdown file is already being rendered into the document!**
-
-You can edit the content of this codeblock directly in the browser if you prefer a yellow div with 100px height. Then click the run button to see what will happen.
-
-![edit](./assets/edit.gif)
 
 Finally run the following command in your project root before you want to deploy your site.
 
