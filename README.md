@@ -29,7 +29,7 @@ width = 150;
 ```
 
 ```js
-$("<div>").width(width).height(100).css("background", "orange").get(0);
+$("<div></div>").width(width).height(100).css("background", "orange").get(0);
 ```
 
 ```js | dom "pin: false"
@@ -49,12 +49,12 @@ This example dose three things:
 
 Let's explain how Genji manage to do these.
 
-Each JavaScript codeblock in Genji is **executable** and **writeable** by default. And it suppose to have only one _statement_ or _expression_ in each codeblock. The return value of the codeblock will be displayed in the document as output with different form.
+Each JavaScript codeblock in Genji is **executable** and **editable** by default. And it suppose to have only one _statement_ or _expression_ in each codeblock. The return value of the codeblock will be displayed in the document as output with different form.
 
 It it is a _HTMLElement_ or _SVGElement_, the element will be mounted directly, such as:
 
 ```js
-$("<div>").width(width).height(100).css("background", "orange").get(0);
+$("<div></div>").width(width).height(100).css("background", "orange").get(0);
 ```
 
 If it is non-element value, the _description_ of the value will be displayed by default, such as:
