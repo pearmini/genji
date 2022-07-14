@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   root: "./__tests__/markdown",
-  publicDir: path.resolve("./__test__"),
+  publicDir: __dirname,
   resolve: {
     alias: [
       { find: "genji-notebook", replacement: path.resolve("./src/index.js") },
