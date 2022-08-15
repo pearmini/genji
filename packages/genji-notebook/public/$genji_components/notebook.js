@@ -380,11 +380,19 @@ export const Notebook = {
     },
     enableHashLinks() {
       const A = this.$refs.container.getElementsByTagName("a");
-      for (const a of A) {
+      const notebookLink = (a) => {
         const href = a.getAttribute("href");
-        if (!href.startsWith("#") && a.__enableHash !== true) {
+        return (
+          !href.startsWith("#") &&
+          !href.startsWith("http") &&
+          a._notebookLink !== true
+        );
+      };
+      for (const a of A) {
+        if (notebookLink(a)) {
           a.onclick = (e) => {
             e.preventDefault();
+            const href = a.getAttribute("href");
             // Avoid NavigationDuplicated.
             const relativeHref = href.replace(this.baseURL, "");
             if (!this.$route.fullPath.includes(relativeHref)) {
@@ -392,7 +400,7 @@ export const Notebook = {
             }
             this.jumpToAnchor();
           };
-          a.__enableHash = true;
+          a._notebookLink = true;
         }
       }
     },
