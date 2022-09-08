@@ -1,23 +1,34 @@
-import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
-import "highlight.js/styles/github.css";
-import "github-markdown-css/github-markdown-light.css";
+import { merge } from "lodash";
+import { loader } from "./loaders";
+import { useMarkdownIt } from "./parse";
+import { renderCodeBlocks } from "./runtime";
+import { CODEBLOCK } from "./constants";
+import { markup } from "./markups";
 
-const md = new MarkdownIt({
-  highlight: (code, language) => {
-    try {
-      return hljs.highlight(code, { language }).value;
-    } catch (e) {
-      return "";
-    }
+const DEFAULT_OPTIONS = {
+  container: document.createElement("div"),
+  markdownItOptions: {
+    highlight: (code, language) => {
+      try {
+        return hljs.highlight(code, { language }).value;
+      } catch (e) {
+        return "";
+      }
+    },
   },
-});
+  loader,
+  markup,
+};
 
-export function createRender(options = {}) {
+export function createRenderer(rawOptions = {}) {
+  const options = merge(merge({}, DEFAULT_OPTIONS), rawOptions);
+  const [tokenById, renderMarkdown] = useMarkdownIt(options);
   return (markdown) => {
-    const { container = document.createElement("div") } = options;
-    container.innerHTML = md.render(markdown);
-    container.className = "markdown-body";
+    const { container } = options;
+    container.innerHTML = renderMarkdown(markdown);
+    const codeblocks = container.getElementsByClassName(CODEBLOCK);
+    renderCodeBlocks(codeblocks, tokenById, options);
     return container;
   };
 }
