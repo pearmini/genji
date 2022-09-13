@@ -1,4 +1,5 @@
 const path = require("path");
+const hash = require("object-hash");
 
 function compileHTML(html, config) {
   return html
@@ -12,7 +13,8 @@ function scripts(config) {
   const { scripts, base } = config;
   return scripts
     .map(
-      (d) => `<script src="${base}/$genji_lib/${d.split("/").pop()}"></script>`
+      (d) =>
+        `<script src="${base}/$genji_lib/${compileHashFileName(d)}"></script>`
     )
     .join("");
 }
@@ -48,9 +50,18 @@ function compileMD(markdown, config, filepath) {
   });
 }
 
+function compileHashFileName(pathname) {
+  const hashPrefix = hash({ pathname });
+  const filename = pathname.split("/").pop();
+  const chunks = filename.split(".");
+  chunks.splice(chunks.length - 1, 0, hashPrefix.slice(0, 12));
+  return chunks.join(".");
+}
+
 module.exports = {
   compileHTML,
   compileCSS,
   compileJS,
   compileMD,
+  compileHashFileName,
 };

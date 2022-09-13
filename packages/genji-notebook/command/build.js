@@ -7,6 +7,7 @@ const {
   compileCSS,
   compileJS,
   compileMD,
+  compileHashFileName,
 } = require("../lib/compile");
 const { loadConfig } = require("../lib/config");
 
@@ -65,7 +66,7 @@ function build() {
   for (const script of config.scripts) {
     fs.copyFileSync(
       path.resolve(script),
-      path.resolve(config.output, "./$genji_lib", script.split("/").pop())
+      path.resolve(config.output, "./$genji_lib", compileHashFileName(script))
     );
   }
 

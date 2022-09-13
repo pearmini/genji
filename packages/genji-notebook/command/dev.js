@@ -9,6 +9,7 @@ const {
   compileCSS,
   compileJS,
   compileMD,
+  compileHashFileName,
 } = require("../lib/compile");
 const { loadConfig } = require("../lib/config");
 
@@ -75,7 +76,7 @@ function dev() {
 
 function javascript(url, scripts) {
   const last = url.split("/").pop();
-  const map = new Map(scripts.map((d) => [d.split("/").pop(), d]));
+  const map = new Map(scripts.map((d) => [compileHashFileName(d), d]));
   const filepath = map.has(last)
     ? path.resolve(map.get(last))
     : path.resolve(__dirname, "../public/" + url);
