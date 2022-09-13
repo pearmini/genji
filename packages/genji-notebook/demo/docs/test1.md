@@ -118,6 +118,12 @@ sp.plot({
 });
 ```
 
+Test using third-party library with the same name.
+
+```js | dom
+sp2.redRect();
+```
+
 ## Test Markdown
 
 > test quote
