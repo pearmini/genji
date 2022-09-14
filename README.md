@@ -363,7 +363,7 @@ a = "a";
 
 <a name="markup_radio" href="#markup_radio">#</a> **radio**
 
-Render a `<ratio>`.
+Render a `<radio>`.
 
 ```ts
 type Options = {
@@ -372,7 +372,7 @@ type Options = {
    */
   label: string;
   /**
-   * @description The options for select.
+   * @description The options for radio.
    * @default []
    */
   options: { labels: string[]; values: (string | number)[] }[];
