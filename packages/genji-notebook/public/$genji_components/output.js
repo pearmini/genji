@@ -7,6 +7,7 @@ export function createInput(options, output, $emit) {
     number: createNumberInput,
     range: createRangeInput,
     select: createSelectInput,
+    radio: createRadioInput,
   };
   const inputFactory = registry[outputType] || createBasicInput;
   return inputFactory(options, value, $emit);
@@ -81,7 +82,13 @@ function isNumeric(options) {
 
 function isOnChange(options) {
   const { outputType } = options;
-  return outputType === "select";
+  switch (outputType) {
+    case "select":
+    case "radio":
+      return true;
+    default:
+      return false;
+  }
 }
 
 function isColor(options) {
@@ -94,7 +101,8 @@ function createBasicInput(
   value,
   $emit,
   slot = '<input :type="type" :value="value"></input>',
-  defaults = {}
+  defaults = {},
+  valueOf = valueOfInput
 ) {
   const { outputType, name, label = name, ...rest } = options;
   const input = fromVue({
@@ -114,7 +122,7 @@ function createBasicInput(
     }),
   });
   const createOnInput = () => (e) => {
-    const { value } = e.target;
+    const value = valueOf(e);
     const v = isNumeric(options) ? +value : value;
     $emit("updateValue", options.id, v);
     if (input.$oninput) input.$oninput(e);
@@ -156,12 +164,38 @@ function createSelectInput(options, value, $emit) {
   return node;
 }
 
+function createRadioInput(options, value, $emit) {
+  const { name } = options;
+  const template = `<label v-for="label, index in options.labels" >
+    {{label}}
+    <input type="radio" name="${name}" :checked="index === 0 ? true: false" :id="options.values[index]"/>
+    &ensp;
+  </label>`;
+  const defaults = {
+    options: [],
+  };
+  const valueOf = (e) => e.target.id;
+  const node = createBasicInput(
+    options,
+    value,
+    $emit,
+    template,
+    defaults,
+    valueOf
+  );
+  return node;
+}
+
 function stringify(output) {
   const withFunction = (_, v) => (typeof v === "function" ? `${v}` : v);
   return JSON.stringify(output, withFunction)
     .replaceAll("\\n", "")
     .replaceAll('\\"', '"')
     .replaceAll("\\'", "'");
+}
+
+function valueOfInput(e) {
+  return e.target.value;
 }
 
 function valueOf(options, output) {

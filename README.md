@@ -361,6 +361,35 @@ a = "a";
 ```
 ````
 
+<a name="markup_radio" href="#markup_radio">#</a> **radio**
+
+Render a `<ratio>`.
+
+```ts
+type Options = {
+  /**
+   * @description The label for the input.
+   */
+  label: string;
+  /**
+   * @description The options for select.
+   * @default []
+   */
+  options: { labels: string[]; values: (string | number)[] }[];
+  /**
+   * @description Hide the code by default with false value.
+   * @default false
+   */
+  pin?: boolean;
+};
+```
+
+````markdown
+```js | radio "options: { labels: ['A', 'B', 'C'], values: ['a', 'b', 'c'] }"
+a = "a";
+```
+````
+
 <a name="markup_table" href="#markup_table">#</a> **table**
 
 Render an array of objects into a table.

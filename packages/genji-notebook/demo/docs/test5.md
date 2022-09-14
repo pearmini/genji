@@ -111,7 +111,15 @@ inputSelect = "a";
 ```
 
 ```js
-`selected: ${inputSelect}`;
+`select: ${inputSelect}`;
+```
+
+```js | radio "options: { labels: ['A', 'B', 'C'], values: ['a', 'b', 'c'] }"
+inputRatio = "a";
+```
+
+```js
+`ratio: ${inputRatio}`;
 ```
 
 ## Table
