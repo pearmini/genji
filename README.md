@@ -2,11 +2,11 @@
 
 > Author observable and interactive document as simple as markdown.
 
-**Genji** is a concise grammar that extends markdown to author observable and interactive JavaScript document. It is inspired by [Observable](https://observablehq.com/explore) and is useful to write documentation for web-based library.
+**Genji** is a concise grammar that extends markdown to author observable and interactive documents. It is inspired by [Observable](https://observablehq.com/explore) and is useful to write documentation for web-based libraries.
 
 ![demo](./assets/demo.jpg)
 
-This repo will not only introduce the _specification_ of Genji, it also will provide several following tools to build observable and interactive document.
+This repo will not only introduce the _specification_ of Genji, it also will provide several following tools to build observable and interactive documents.
 
 - [Genji Notebook](./packages/genji-notebook/) - A doc tool based on Genji to build observable and interactive website.
 - [Genji Renderer](./packages/genji-renderer/) - A JavaScript library to render Genji. (WIP)
@@ -49,15 +49,15 @@ This example dose three things:
 
 Let's explain how Genji manage to do these.
 
-Each JavaScript codeblock in Genji is **executable** and **editable** by default. And it suppose to have only one _statement_ or _expression_ in each codeblock. The return value of the codeblock will be displayed in the document as output with different form.
+Each JavaScript codeblock in Genji is **executable** and **editable** by default. And it supposed to have only one _statement_ or _expression_ in each codeblock. The return value of the codeblock will be displayed in the document as output with different form.
 
-It it is a _HTMLElement_ or _SVGElement_, the element will be mounted directly, such as:
+If it is a _HTMLElement_ or _SVGElement_, the element will be mounted directly, such as:
 
 ```js
 $("<div></div>").width(width).height(100).css("background", "orange").get(0);
 ```
 
-If it is non-element value, the _description_ of the value will be displayed by default, such as:
+If it is a non-element value, the _description_ of the value will be displayed by default, such as:
 
 ```js
 $ = genji.require("jquery");
@@ -85,7 +85,7 @@ There is no need for you to consider the order of codeblocks in the document, Ge
 
 <a name="declare_a_variable" href="#declare_a_variable">#</a> **Declare a variable.**
 
-The following ways of declaring a variable have no difference, but the first one is recommended, because it make more sense as each variable is changeable.
+The following ways of declaring a variable have no difference, but the first one is recommended, because it makes more sense as each variable is changeable.
 
 ````markdown
 ```js
@@ -164,7 +164,7 @@ height = width * 2;
 
 ### Markup
 
-Markup is specified as `js | [markup] "[options]"`, and the syntax of options is like `"key1: value1; key2: value2;..."`. **The options can be only specified in double quote and all is optional**.
+Markup is specified as `js | [markup] "[options]"`, where options follow the format `"key1: value1; key2: value2;..."`. **The options can be only specified in double quote and all is optional**.
 
 <a name="markup_pure" href="#markup_pure">#</a> **pure**
 
@@ -486,7 +486,7 @@ genji.preview(
 
 <a name="stdlib_fetchJSON" href="#stdlib_fetchJSON">#</a> **fetchJSON**<i>(url)</i>
 
-Fetch file with JSON format and return a object.
+Fetch file with JSON format and return an object.
 
 ```js
 const data = await fetchJSON(
