@@ -1,6 +1,6 @@
 {
   "name": "genji",
-  "description": "A grammar extended markdown to build observable and interactive JavaScript document.",
+  "description": "The grammar extension for interactive Markdown document.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pearmini/genji.git"

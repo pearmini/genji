@@ -1,3 +1,0 @@
-# Genji Dumi
-
-> WIP
