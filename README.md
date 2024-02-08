@@ -10,9 +10,6 @@ This repo will not only introduce the _specification_ of Genji, it also will pro
 
 - [Genji Notebook](./packages/genji-notebook/) - A doc tool based on Genji to build observable and interactive website.
 - [Genji Renderer](./packages/genji-renderer/) - A JavaScript library to render Genji. (WIP)
-- [Genji Rect](./packages/genji-react/) - A Rect component to render Genji. (WIP)
-- [Genji Vue](./packages/genji-vue/) - A Vue component to render Genji. (WIP)
-- [Genji Dumi](./packages/genji-dumi/) - A plugin to render Genji in [Dumi](https://github.com/umijs/dumi). (WIP)
 
 ## Links
 
@@ -252,7 +249,7 @@ type Options = {
   min?: number;
   /**
    * @description The max value of the input.
-   * @default infinity
+   * @default Infinity
    */
   max?: number;
   /**
