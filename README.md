@@ -9,7 +9,6 @@
 This repo will not only introduce the _specification_ of Genji, it also will provide several following tools to build observable and interactive documents.
 
 - [Genji Notebook](./packages/genji-notebook/) - A doc tool based on Genji to build observable and interactive website.
-- [Genji Renderer](./packages/genji-renderer/) - A JavaScript library to render Genji. (WIP)
 
 ## Links
 
