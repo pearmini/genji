@@ -2,13 +2,13 @@
 
 > Author observable and interactive document as simple as markdown.
 
-**Genji** is a concise grammar that extends markdown to author observable and interactive documents. It is inspired by [Observable](https://observablehq.com/explore) and is useful to write documentation for web-based libraries.
+**Genji** is a concise Markdown extension to author observable and interactive documents. It is inspired by [Observable](https://observablehq.com/explore) and is useful to write documentation for web-based libraries.
 
 ![demo](./assets/demo.jpg)
 
 This repo will not only introduce the _specification_ of Genji, it also will provide several following tools to build observable and interactive documents.
 
-- [Genji Notebook](./packages/genji-notebook/) - A doc tool based on Genji to build observable and interactive website.
+- [genji-notebook](./packages/genji-notebook/) - A simple static site generator with builtin Genji Markdown extension.
 
 ## Links
 
