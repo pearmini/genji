@@ -9,6 +9,7 @@
 This repo will not only introduce the _specification_ of Genji, it also will provide several following tools to build observable and interactive documents.
 
 - [genji-notebook](./packages/genji-notebook/) - A simple static site generator with builtin Genji Markdown extension.
+- [genji-theme-vitepress](./packages/genji-theme-vitepress/) - A [VitePress](https://vitepress.dev/) theme to enable Genji Markdown extension. (WIP)
 
 ## Links
 
