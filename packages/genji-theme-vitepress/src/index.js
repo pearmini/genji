@@ -1,1 +1,1 @@
-export { createTheme } from "./theme";
+export { enhanceTheme } from "./theme";

@@ -1,11 +1,8 @@
 <script setup>
 import { useRoute } from "vitepress";
-import DefaultTheme from "vitepress/theme";
 import { onMounted, watch, defineProps } from "vue";
 
-const { Layout } = DefaultTheme;
-
-const { global = {} } = defineProps(["global"]);
+const { global = {}, Theme } = defineProps(["global", "Theme"]);
 
 const route = useRoute();
 
@@ -39,5 +36,5 @@ function render() {
 </script>
 
 <template>
-  <Layout></Layout>
+  <Theme.Layout></Theme.Layout>
 </template>
