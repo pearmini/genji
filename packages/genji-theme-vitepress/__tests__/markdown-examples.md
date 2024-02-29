@@ -1,6 +1,10 @@
-# Genji Markdown Extension
+# Genji Markdown Extensions
 
-Render a red block.
+Test Genji' built-in Markdown Extensions.
+
+## Basic Block
+
+It should render a red block.
 
 ```js
 display(() => {

@@ -1,37 +1,40 @@
 <script setup>
 import { useRoute } from "vitepress";
 import DefaultTheme from "vitepress/theme";
-import { onMounted, watch } from "vue";
-import * as stdlib from "./stdlib";
+import { onMounted, watch, defineProps } from "vue";
 
 const { Layout } = DefaultTheme;
 
+const { global = {} } = defineProps(["global"]);
+
 const route = useRoute();
+
 watch(
   () => route.path,
   () => setTimeout(() => render())
 );
 
 onMounted(() => {
-  injectStdlib();
+  injectGlobal();
   render();
 });
 
-function injectStdlib() {
-  Object.assign(window, stdlib);
+function injectGlobal() {
+  Object.assign(window, global);
 }
 
 function render() {
-  const block = document.getElementsByClassName("language-js")[0];
-  if (!block) return;
-  const pre = document.getElementsByClassName("shiki")[0];
-  if (!pre) return;
-  const code = pre.textContent.replace(/\n/g, "");
-  const node = new Function(`return ${code}`)();
-  const cell = document.createElement("div");
-  cell.classList.add("genji-cell");
-  cell.appendChild(node);
-  block.parentNode.insertBefore(cell, block);
+  const blocks = document.getElementsByClassName("language-js");
+  if (!blocks.length) return;
+  for (const block of blocks) {
+    const pre = block.getElementsByClassName("shiki")[0];
+    const code = pre.textContent.replace(/\n/g, "");
+    const node = new Function(`return ${code}`)();
+    const cell = document.createElement("div");
+    cell.classList.add("genji-cell");
+    cell.appendChild(node);
+    block.parentNode.insertBefore(cell, block);
+  }
 }
 </script>
 
