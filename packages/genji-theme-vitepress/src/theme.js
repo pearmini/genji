@@ -1,13 +1,12 @@
 import { h } from "vue";
 import Layout from "./Layout.vue";
-import DefaultTheme from "vitepress/theme";
 import "./style.css";
 
-export function createTheme({ global } = {}) {
+export function enhanceTheme(Theme, { global } = {}) {
   return {
-    extends: DefaultTheme,
+    extends: Theme,
     Layout: () => {
-      return h(Layout, { global });
+      return h(Layout, { global, Theme });
     },
   };
 }

@@ -1,10 +1,11 @@
-import { createTheme } from "../../../src";
+import DefaultTheme from "vitepress/theme";
+import { enhanceTheme } from "../../../src";
 
 function display(fn) {
   return fn();
 }
 
-const Theme = createTheme({
+const Theme = enhanceTheme(DefaultTheme, {
   global: { display },
 });
 
