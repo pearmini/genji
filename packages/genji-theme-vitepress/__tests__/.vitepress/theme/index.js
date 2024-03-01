@@ -1,12 +1,16 @@
 import DefaultTheme from "vitepress/theme";
 import { enhanceTheme } from "../../../src";
 
-function display(fn) {
-  return fn();
-}
-
 const Theme = enhanceTheme(DefaultTheme, {
-  global: { display },
+  global: {
+    block: (color) => {
+      const div = document.createElement("div");
+      div.style.width = "100px";
+      div.style.height = "100px";
+      div.style.background = color;
+      return div;
+    },
+  },
 });
 
 export default {

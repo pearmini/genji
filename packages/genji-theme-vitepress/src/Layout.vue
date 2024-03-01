@@ -1,10 +1,19 @@
 <script setup>
 import { useRoute } from "vitepress";
 import { onMounted, watch, defineProps } from "vue";
+import { Module } from "./module";
 
 const { global = {}, Theme } = defineProps(["global", "Theme"]);
 
 const route = useRoute();
+
+const module = new Module();
+
+// Avoid mount multiple times because of hot reload in development.
+if (import.meta.env.DEV) {
+  if (window.__module__) window.__module__.dispose();
+  window.__module__ = module;
+}
 
 watch(
   () => route.path,
@@ -17,7 +26,14 @@ onMounted(() => {
 });
 
 function injectGlobal() {
-  Object.assign(window, global);
+  Object.assign(window, {
+    ...global,
+    display: (callback) => callback(),
+    dispose: (node, callback) => {
+      Object.assign(node, { __dispose__: callback });
+      return node;
+    },
+  });
 }
 
 const parsers = {
@@ -32,7 +48,13 @@ function mount(block, node) {
   block.parentNode.insertBefore(cell, block);
 }
 
+function unmount(node) {
+  if (node.__dispose__) node.__dispose__();
+  node.remove();
+}
+
 function render() {
+  module.dispose();
   const codes = document.querySelectorAll("[data-genji]");
   const blocks = Array.from(codes).filter((code) => {
     if (!code.dataset.genji) return false;
@@ -46,8 +68,10 @@ function render() {
     if (parser) {
       const pre = block.getElementsByClassName("shiki")[0];
       const code = pre.textContent.replace(/\n/g, "");
-      const node = new Function(`return ${parser(code)}`)();
-      mount(block, node);
+      module.add(parser(code), {
+        next: (node) => mount(block, node),
+        dispose: unmount,
+      });
     }
   }
 }

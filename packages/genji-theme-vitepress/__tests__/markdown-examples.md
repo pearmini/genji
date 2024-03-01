@@ -35,12 +35,23 @@ display(() => {
 It should render with `| dom` markup with `javascript`.
 
 ```javascript | dom
+block("orange");
+```
+
+## Dispose Block
+
+```js | dom
 display(() => {
-  const div = document.createElement("div");
-  div.style.width = "100px";
-  div.style.height = "100px";
-  div.style.background = "red";
-  return div;
+  const span = document.createElement("span");
+  span.textContent = 1;
+  const timer = setInterval(
+    () => (span.textContent = +span.textContent + 1),
+    1000
+  );
+  return dispose(span, () => {
+    clearInterval(timer);
+    console.log("Dispose Block");
+  });
 });
 ```
 
