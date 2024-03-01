@@ -70,7 +70,7 @@ function render() {
       const code = pre.textContent.replace(/\n/g, "");
       module.add(parser(code), {
         next: (node) => mount(block, node),
-        dispose: unmount,
+        complete: unmount,
       });
     }
   }

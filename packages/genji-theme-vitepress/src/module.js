@@ -10,7 +10,7 @@ export class Module {
   dispose() {
     for (const variable of this._variables) {
       const { value, observer } = variable;
-      if (observer.dispose) observer.dispose(value);
+      if (observer.complete) observer.complete(value);
     }
     this._variables = [];
   }
