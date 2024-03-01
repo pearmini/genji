@@ -1,7 +1,9 @@
 import { defineConfig } from "vitepress";
+import { config } from "../../src/config";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  extends: config,
   title: "Genji Theme VitePress",
   description: "A VitePress Site",
   cleanUrls: true,
@@ -11,7 +13,6 @@ export default defineConfig({
       { text: "Home", link: "/" },
       { text: "Examples", link: "/markdown-examples" },
     ],
-
     sidebar: [
       {
         text: "Examples",
@@ -21,7 +22,6 @@ export default defineConfig({
         ],
       },
     ],
-
     socialLinks: [
       { icon: "github", link: "https://github.com/vuejs/vitepress" },
     ],
