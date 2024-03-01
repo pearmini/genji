@@ -1,3 +1,7 @@
 .genji-cell {
-  margin: 16px 0px;
+  margin: 16px 0px 0px 0px;
+}
+
+.genji-cell + div {
+  margin-top: 0px !important;
 }
