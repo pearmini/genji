@@ -4,7 +4,7 @@ Test Genji' built-in Markdown Extensions.
 
 ## Pure Block
 
-It should not render without `| dom` mark with `js`.
+It should not render without `| dom` markup with `js`.
 
 ```js
 display(() => {
@@ -18,7 +18,7 @@ display(() => {
 
 ## Renderable Block
 
-It should render with `| dom` mark with `js`.
+It should render with `| dom` markup with `js`.
 
 ```js | dom {0,4}
 display(() => {
@@ -32,7 +32,7 @@ display(() => {
 
 ## JavaScript Block
 
-It should render with `| dom` mark with `javascript`.
+It should render with `| dom` markup with `javascript`.
 
 ```javascript | dom
 display(() => {
@@ -55,7 +55,7 @@ def add(x, y):
 
 ## Python Block2
 
-It should not render python block with `| dom` mark.
+It should not render python block with `| dom` markup.
 
 ```python | dom
 def add(x, y):
