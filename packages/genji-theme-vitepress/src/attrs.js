@@ -1,7 +1,7 @@
 const regexType = /\|\s*([^\s]+)/;
 const regexDIV = /(\<div class="[^"]*")/;
 
-export function genjiPlugin(md) {
+export function attrs(md) {
   const fence = md.renderer.rules.fence;
   if (!fence) return;
   md.renderer.rules.fence = (...args) => {

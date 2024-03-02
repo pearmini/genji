@@ -1,17 +1,12 @@
 export class Module {
   constructor() {
-    this._variables = [];
+    this._subscriptions = [];
   }
-  add(code, observer) {
-    const node = new Function(`return ${code}`)();
-    observer.next(node);
-    this._variables.push({ value: node, observer });
+  add(observable, observer) {
+    this._subscriptions.push(observable.subscribe(observer));
   }
   dispose() {
-    for (const variable of this._variables) {
-      const { value, observer } = variable;
-      if (observer.complete) observer.complete(value);
-    }
-    this._variables = [];
+    for (const subscription of this._subscriptions) subscription.unsubscribe();
+    this._subscriptions = [];
   }
 }
