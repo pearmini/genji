@@ -1,4 +1,4 @@
-# Genji Markdown Extensions
+# Markdown Extensions
 
 Test Genji' built-in Markdown Extensions.
 

@@ -5,3 +5,12 @@
 .genji-cell + div {
   margin-top: 0px !important;
 }
+
+.genji-object-inspector {
+  margin-bottom: 4px;
+}
+
+.genji-object-inspector * {
+  font-size: 16px;
+  background-color: transparent !important;
+}
