@@ -56,12 +56,21 @@ function renderObjectInspector(data, { isDark }) {
   return node;
 }
 
+function renderLoading() {
+  const node = document.createElement("div");
+  node.id = "genji-loading";
+  node.classList.add("genji-loading");
+  return node;
+}
+
 function normalize(node, options) {
   if (isMountableNode(node)) return node;
   return renderObjectInspector(node, options);
 }
 
 function mount(block, node) {
+  const previous = block.previousElementSibling;
+  if (previous && previous.classList.contains("genji-cell")) previous.remove();
   const cell = document.createElement("div");
   cell.classList.add("genji-cell");
   cell.appendChild(normalize(node));
@@ -173,8 +182,20 @@ function render(module, { isDark }) {
           const node = new Function(
             `return ${parsed} //# sourceURL=${SCRIPT_PREFIX}-${i}.js`
           )();
-          normalized = normalize(node, { isDark });
-          observer.next(normalized);
+          const next = (node) => {
+            normalized = normalize(node, { isDark });
+            observer.next(normalized);
+          };
+          if (node instanceof Promise) {
+            next(renderLoading());
+            node
+              .then((d) => next(d))
+              .catch((e) => {
+                throw e;
+              });
+          } else {
+            next(node);
+          }
         } catch (e) {
           console.error(e);
           normalized = renderError(e, { isDark, pre });

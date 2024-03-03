@@ -25,3 +25,22 @@
   text-decoration-style: wavy;
   text-decoration-skip-ink: none;
 }
+
+.genji-loading {
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid var(--vp-c-text-1);
+  border-top-color: transparent;
+  border-radius: 100%;
+  animation: circle infinite 0.75s linear;
+  margin-bottom: 2px;
+}
+
+@keyframes circle {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

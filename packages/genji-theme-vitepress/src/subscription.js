@@ -3,6 +3,6 @@ export class Subscription {
     this._dispose = dispose;
   }
   unsubscribe() {
-    this._dispose();
+    if (this._dispose) this._dispose();
   }
 }
