@@ -19,6 +19,7 @@ export default defineConfig({
         items: [
           { text: "Markdown Extensions", link: "/markdown-extensions" },
           { text: "Object Inspector", link: "/object-inspector" },
+          { text: "Errors", link: "/errors" },
         ],
       },
     ],
