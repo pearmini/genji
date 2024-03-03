@@ -4,15 +4,18 @@
   "description": "A VitePress theme to enable Genji Markdown extension.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "test:dev": "vitepress dev __tests__",
     "test:build": "vitepress build __tests__",
     "test:preview": "vitepress preview __tests__"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "repository": "git@github.com:pearmini/genji-notebook.git",
+  "author": "pearmini",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pearmini/genji.git",
+    "directory": "packages/genji-theme-vitepress"
+  },
   "devDependencies": {
     "vitepress": "^1.0.0-rc.44"
   },
