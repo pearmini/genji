@@ -10,6 +10,13 @@ const Theme = enhanceTheme(DefaultTheme, {
       div.style.background = color;
       return div;
     },
+    parseDiv: (code) => {
+      return `(() => {
+          ${code}
+          return div;
+        })()
+      `;
+    },
   },
 });
 

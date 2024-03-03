@@ -155,6 +155,14 @@ function renderError(e, { pre }) {
   return node;
 }
 
+function parseCode(code, parsers) {
+  return parsers.reduce((acc, parser) => parser(acc), code);
+}
+
+function lines(...L) {
+  return L.join(`\n`);
+}
+
 function render(module, { isDark }) {
   module.dispose();
 
@@ -169,18 +177,22 @@ function render(module, { isDark }) {
   for (let i = 0; i < blocks.length; i++) {
     const block = blocks[i];
     const { dataset } = block;
-    const { lang } = dataset;
-    const parser = parsers[lang];
-    if (parser) {
+    const { lang, parser } = dataset;
+    const P = [parsers[lang], window[parser]].filter(Boolean);
+
+    if (P.length) {
       const pre = block.getElementsByClassName("shiki")[0];
       const code = pre.textContent;
 
       const observable = new Observable((observer) => {
         let normalized;
         try {
-          const parsed = parser(code);
+          const parsed = parseCode(code, P);
           const node = new Function(
-            `return ${parsed} //# sourceURL=${SCRIPT_PREFIX}-${i}.js`
+            lines(
+              `const value = ${parsed}`,
+              `return value //# sourceURL=${SCRIPT_PREFIX}-${i}.js`
+            )
           )();
           const next = (node) => {
             normalized = normalize(node, { isDark });
