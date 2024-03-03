@@ -177,12 +177,13 @@ function render(module, { isDark }) {
   for (let i = 0; i < blocks.length; i++) {
     const block = blocks[i];
     const { dataset } = block;
-    const { lang, parser } = dataset;
+    const { lang, parser, code: showCode } = dataset;
     const P = [parsers[lang], window[parser]].filter(Boolean);
 
     if (P.length) {
       const pre = block.getElementsByClassName("shiki")[0];
       const code = pre.textContent;
+      if (showCode === "false") block.style.display = "none";
 
       const observable = new Observable((observer) => {
         let normalized;

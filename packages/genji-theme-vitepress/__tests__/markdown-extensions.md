@@ -38,6 +38,18 @@ It should render with `| dom` markup with `javascript`.
 block("orange");
 ```
 
+## Hide Code
+
+```js | dom "code: false"
+display(() => {
+  const div = document.createElement("div");
+  div.style.width = "100px";
+  div.style.height = "100px";
+  div.style.background = "steelblue";
+  return div;
+});
+```
+
 ## Dispose Block
 
 ```js | dom
