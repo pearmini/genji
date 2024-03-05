@@ -16,6 +16,7 @@ function injectGlobal(global) {
       Object.assign(node, { __dispose__: callback });
       return node;
     },
+    Observable,
   });
 }
 
@@ -69,12 +70,15 @@ function normalize(node, options) {
 }
 
 function mount(block, node) {
-  const previous = block.previousElementSibling;
-  if (previous && previous.classList.contains("genji-cell")) previous.remove();
   const cell = document.createElement("div");
   cell.classList.add("genji-cell");
   cell.appendChild(normalize(node));
-  block.parentNode.insertBefore(cell, block);
+
+  const previous = block.previousElementSibling;
+  const exist = previous && previous.classList.contains("genji-cell");
+
+  if (exist) block.parentNode.replaceChild(cell, previous);
+  else block.parentNode.insertBefore(cell, block);
 }
 
 function unmount(node) {
@@ -163,6 +167,20 @@ function lines(...L) {
   return L.join(`\n`);
 }
 
+function debounce(callback, wait = 10) {
+  let timeout;
+  return function () {
+    const context = this;
+    const args = arguments;
+    const later = function () {
+      timeout = null;
+      callback.apply(context, args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
 function render(module, { isDark }) {
   module.dispose();
 
@@ -206,6 +224,13 @@ function render(module, { isDark }) {
               .catch((e) => {
                 throw e;
               });
+          } else if (node instanceof Observable) {
+            node.subscribe({
+              next: (d) => next(d),
+              error: (e) => {
+                throw e;
+              },
+            });
           } else {
             next(node);
           }
@@ -219,8 +244,8 @@ function render(module, { isDark }) {
       });
 
       const observer = {
-        next: (node) => mount(block, node),
-        error: (node) => mount(block, node),
+        next: debounce((node) => mount(block, node)),
+        error: debounce((node) => mount(block, node)),
       };
 
       module.add(observable, observer);
