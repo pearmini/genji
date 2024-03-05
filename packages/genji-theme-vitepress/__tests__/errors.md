@@ -30,3 +30,21 @@ display(() => {
   return null;
 })();
 ```
+
+## Promise Error
+
+```js | dom
+new Promise((resolve) => {
+  const a = 1;
+  a = 2;
+});
+```
+
+## Observable Error
+
+```js | dom
+new Observable((observer) => {
+  const a = 1;
+  a = 2;
+});
+```
