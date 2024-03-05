@@ -87,75 +87,12 @@ function unmount(node) {
   node.remove();
 }
 
-// Determined by new Function body.
-function actualNumber(lineNumber) {
-  return lineNumber - 2;
-}
-
-function extractLeadingWhitespace(str) {
-  const match = str.match(/^\s*/);
-  return match ? match[0] : "";
-}
-
-function renderError(e, { pre }) {
+function renderError(e, { script }) {
+  const [error] = e.stack.split("\n");
   const node = document.createElement("div");
   node.classList.add("genji-error");
-
-  const regex = /\((.*?):(\d+):(\d+)\)/;
-  const stacks = e.stack.split("\n");
-
-  // Render error message.
-  const [error, ...traces] = stacks;
-  node.textContent = error;
-
-  // Render error lines.
-  const metaByLine = new Map(
-    traces.map((d) => {
-      const match = d.match(regex);
-      if (!match) return [d, null];
-      const [, name, line] = match;
-      return [d, [name, +line]];
-    })
-  );
-
-  // Only display error lines from the cell.
-  const errorTraces = traces.filter((d) => {
-    const match = metaByLine.get(d);
-    if (!match) return false;
-    const [name] = match;
-    return name.startsWith(SCRIPT_PREFIX);
-  });
-
-  const removes = [];
-  for (const at of errorTraces) {
-    const [, lineNumber] = metaByLine.get(at);
-    const actual = actualNumber(lineNumber);
-
-    // Get the line and highlight it.
-    const lines = pre.getElementsByClassName("line");
-    const errorLine = lines[actual - 1];
-    const spans = errorLine.getElementsByTagName("span");
-
-    // Extract leading whitespace and insert it into the first span.
-    const [first] = spans;
-    const leadingWhitespace = extractLeadingWhitespace(first.textContent);
-    const leadingSpan = first.cloneNode(true);
-    leadingSpan.textContent = leadingWhitespace;
-    first.textContent = first.textContent.trimStart();
-    errorLine.insertBefore(leadingSpan, first);
-
-    // Add error class to the line.
-    for (const span of spans) span.classList.add("genji-error-line");
-    leadingSpan.classList.remove("genji-error-line");
-
-    removes.push(() => {
-      for (const span of spans) span.classList.remove("genji-error-line");
-    });
-  }
-
-  node.__dispose__ = () => {
-    for (const remove of removes) remove();
-  };
+  node.textContent = `${script}: ${error} (Open console for more details.)`;
+  console.error(`${script}:`, e);
   return node;
 }
 
@@ -201,16 +138,19 @@ function render(module, { isDark }) {
     if (P.length) {
       const pre = block.getElementsByClassName("shiki")[0];
       const code = pre.textContent;
+      const script = `${SCRIPT_PREFIX}-${i}.js`;
+
       if (showCode === "false") block.style.display = "none";
 
       const observable = new Observable((observer) => {
         let normalized;
         try {
           const parsed = parseCode(code, P);
+
           const node = new Function(
             lines(
               `const value = ${parsed}`,
-              `return value //# sourceURL=${SCRIPT_PREFIX}-${i}.js`
+              `return value //# sourceURL=${script}`
             )
           )();
           const next = (node) => {
@@ -235,8 +175,7 @@ function render(module, { isDark }) {
             next(node);
           }
         } catch (e) {
-          console.error(e);
-          normalized = renderError(e, { isDark, pre });
+          normalized = renderError(e, { script });
           observer.error(normalized);
         } finally {
           return () => unmount(normalized);
