@@ -1,15 +1,20 @@
 {
   "name": "genji-theme-vitepress",
   "version": "0.0.1",
-  "description": "A VitePress theme to enable Genji Markdown extension.",
-  "main": "index.js",
+  "description": "A VitePress theme to enable Genji interactive Markdown extension.",
+  "main": "src/index.js",
+  "exports": {
+    "config": "./src/config.js"
+  },
+  "files": [
+    "src"
+  ],
   "scripts": {
     "test:dev": "vitepress dev __tests__",
     "test:build": "vitepress build __tests__",
     "test:preview": "vitepress preview __tests__"
   },
-  "keywords": [],
-  "author": "pearmini",
+  "author": "https://github.com/pearmini",
   "license": "MIT",
   "repository": {
     "type": "git",
