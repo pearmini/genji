@@ -89,7 +89,7 @@ function unmount(node) {
 
 function renderError(e, { script }) {
   const [error] = e.stack.split("\n");
-  const node = document.createElement("div");
+  const node = document.createElement("span");
   node.classList.add("genji-error");
   node.textContent = `${script}: ${error} (Open console for more details.)`;
   console.error(`${script}:`, e);
@@ -144,6 +144,17 @@ function render(module, { isDark }) {
 
       const observable = new Observable((observer) => {
         let normalized;
+
+        const next = (node) => {
+          normalized = normalize(node, { isDark });
+          observer.next(normalized);
+        };
+
+        const error = (e) => {
+          normalized = renderError(e, { script });
+          observer.error(normalized);
+        };
+
         try {
           const parsed = parseCode(code, P);
 
@@ -153,30 +164,17 @@ function render(module, { isDark }) {
               `return value //# sourceURL=${script}`
             )
           )();
-          const next = (node) => {
-            normalized = normalize(node, { isDark });
-            observer.next(normalized);
-          };
+
           if (node instanceof Promise) {
             next(renderLoading());
-            node
-              .then((d) => next(d))
-              .catch((e) => {
-                throw e;
-              });
+            node.then(next).catch(error);
           } else if (node instanceof Observable) {
-            node.subscribe({
-              next: (d) => next(d),
-              error: (e) => {
-                throw e;
-              },
-            });
+            node.subscribe({ next, error });
           } else {
             next(node);
           }
         } catch (e) {
-          normalized = renderError(e, { script });
-          observer.error(normalized);
+          error(e);
         } finally {
           return () => unmount(normalized);
         }
