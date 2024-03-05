@@ -49,7 +49,7 @@ function renderObjectInspector(data, { isDark }) {
   // Rerender when theme changes.
   window.addEventListener("theme-change", (event) => {
     const { isDark } = event.detail;
-    render(isDark);
+    if (root.isMounted) render(isDark);
   });
 
   node.__dispose__ = () => root.unmount();

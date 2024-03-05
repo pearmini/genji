@@ -1,6 +1,6 @@
 <script setup>
 import { defineProps } from "vue";
-import { useRender } from './render';
+import { useRender } from "./render";
 
 const { global = {}, Theme } = defineProps(["global", "Theme"]);
 
