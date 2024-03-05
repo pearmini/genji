@@ -22,6 +22,7 @@ export default defineConfig({
           { text: "Errors", link: "/errors" },
           { text: "Promise", link: "/promise-cell" },
           { text: "Parser", link: "/parser" },
+          { text: "Observable", link: "/observable" },
         ],
       },
     ],
