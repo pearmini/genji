@@ -1,4 +1,3 @@
-const regexType = /\|\s*([^\s]+)/;
 const regexDIV = /(\<div class="[^"]*")/;
 const regexQuote = /['"]([^'"]+)['"]/;
 
@@ -9,10 +8,10 @@ export function attrs(md) {
     const [tokens, idx] = args;
     const token = tokens[idx];
     const { info } = token;
+    const infoTokens = info.split(" ");
 
-    // Block type.
-    const matchType = info.match(regexType);
-    const type = matchType ? matchType[1] : null;
+    const shouldEval = infoTokens.includes("eval");
+    if (!shouldEval) return fence(...args);
 
     // Language.
     const lang = info.split(" ")[0];
@@ -28,11 +27,10 @@ export function attrs(md) {
           .join(" ")
       : "";
 
-    if (!type) return fence(...args);
     const html = fence(...args);
     const newHTML = html.replace(
       regexDIV,
-      `$1 data-genji="${type}" data-lang="${lang}" ${options}`
+      `$1 data-genji="dom" data-lang="${lang}" ${options}`
     );
     return newHTML;
   };

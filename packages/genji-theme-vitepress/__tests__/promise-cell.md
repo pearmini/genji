@@ -2,7 +2,7 @@
 
 ## Promise
 
-```js | dom
+```js eval
 new Promise((resolve) => {
   setTimeout(() => resolve(block("orange")), 3000);
 });
@@ -10,7 +10,7 @@ new Promise((resolve) => {
 
 ## Async Function
 
-```js | dom
+```js eval
 (async () => {
   await new Promise((resolve) => {
     setTimeout(() => resolve(), 1000);
@@ -19,7 +19,7 @@ new Promise((resolve) => {
 })();
 ```
 
-```js | dom
+```js eval
 display(async () => {
   await new Promise((resolve) => {
     setTimeout(() => resolve(), 1000);

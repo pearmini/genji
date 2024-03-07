@@ -1,6 +1,6 @@
 {
   "name": "genji-theme-vitepress",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A VitePress theme to enable Genji interactive Markdown extension.",
   "main": "src/index.js",
   "exports": {

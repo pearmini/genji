@@ -4,7 +4,7 @@ Test Genji' built-in Markdown Extensions.
 
 ## Pure Block
 
-It should not render without `| dom` markup with `js`.
+It should not render without `eval` markup with `js`.
 
 ```js
 display(() => {
@@ -18,9 +18,9 @@ display(() => {
 
 ## Renderable Block
 
-It should render with `| dom` markup with `js`.
+It should render with `eval` markup with `js`.
 
-```js | dom {0,4}
+```js eval {0,4}
 display(() => {
   const div = document.createElement("div");
   div.style.width = "100px";
@@ -32,15 +32,15 @@ display(() => {
 
 ## JavaScript Block
 
-It should render with `| dom` markup with `javascript`.
+It should render with `eval` markup with `javascript`.
 
-```javascript | dom
+```javascript eval
 block("orange");
 ```
 
 ## Hide Code
 
-```js | dom "code: false"
+```js eval "code: false"
 display(() => {
   const div = document.createElement("div");
   div.style.width = "100px";
@@ -52,7 +52,7 @@ display(() => {
 
 ## Dispose Block
 
-```js | dom
+```js eval
 display(() => {
   const span = document.createElement("span");
   span.textContent = 1;
