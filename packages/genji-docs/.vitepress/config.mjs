@@ -20,7 +20,7 @@ export default defineConfig({
         ],
       },
     ],
-
+    logo: "/logo.png",
     socialLinks: [
       { icon: "github", link: "https://github.com/vuejs/vitepress" },
     ],

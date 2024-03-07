@@ -11,5 +11,6 @@
   "license": "MIT",
   "devDependencies": {
     "vitepress": "^1.0.0-rc.44"
-  }
+  },
+  "repository": "git@github.com:pearmini/genji-notebook.git"
 }
