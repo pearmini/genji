@@ -2,25 +2,25 @@
 
 ## Number
 
-```js | dom
+```js eval
 a = 1;
 ```
 
 ## Boolean
 
-```js | dom
+```js eval
 a = true;
 ```
 
 ## Array
 
-```js | dom
+```js eval
 a = ["Apple", null, Promise];
 ```
 
 ## Function
 
-```js | dom
+```js eval
 function add(x, y) {
   return x + y;
 }
@@ -28,7 +28,7 @@ function add(x, y) {
 
 ## Object
 
-```js | dom
+```js eval
 a = {
   string: "a",
   add(x, y) {
@@ -40,7 +40,7 @@ a = {
 
 ## Class
 
-```js | dom
+```js eval
 display(() => {
   class N {
     add(x, y) {

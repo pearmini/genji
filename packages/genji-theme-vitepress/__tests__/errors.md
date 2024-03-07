@@ -2,14 +2,14 @@
 
 ## Simple Error
 
-```js | dom
+```js eval
 display(() => {
   const a = 1;
   a = 2;
 });
 ```
 
-```js | dom
+```js eval
 (() => {
   const a = 1;
   a = 2;
@@ -18,7 +18,7 @@ display(() => {
 
 ## Function Error
 
-```js | dom
+```js eval
 (() => {
   function error() {
     const a = 1;
@@ -33,7 +33,7 @@ display(() => {
 
 ## Promise Error
 
-```js | dom
+```js eval
 new Promise((resolve) => {
   const a = 1;
   a = 2;
@@ -42,7 +42,7 @@ new Promise((resolve) => {
 
 ## Observable Error
 
-```js | dom
+```js eval
 new Observable((observer) => {
   const a = 1;
   a = 2;

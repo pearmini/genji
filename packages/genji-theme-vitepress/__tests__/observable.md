@@ -2,7 +2,7 @@
 
 ## Basic
 
-```js | dom
+```js eval
 count = new Observable((observer) => {
   let count = 0;
   observer.next(count++);
@@ -13,7 +13,7 @@ count = new Observable((observer) => {
 
 ## Mouse
 
-```js | dom
+```js eval
 pointer = new Observable((observer) => {
   const pointermoved = (event) => observer.next([event.clientX, event.clientY]);
   addEventListener("pointermove", pointermoved);
