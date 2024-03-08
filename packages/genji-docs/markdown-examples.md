@@ -2,6 +2,16 @@
 
 This page demonstrates some of the built-in markdown extensions provided by VitePress.
 
+```js eval {0,4}
+display(() => {
+  const div = document.createElement("div");
+  div.style.width = "100px";
+  div.style.height = "100px";
+  div.style.background = "red";
+  return div;
+});
+```
+
 ## Syntax Highlighting
 
 VitePress provides Syntax Highlighting powered by [Shiki](https://github.com/shikijs/shiki), with additional features like line-highlighting:

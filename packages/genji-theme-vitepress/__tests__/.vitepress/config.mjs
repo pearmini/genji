@@ -1,5 +1,5 @@
 import { defineConfig } from "vitepress";
-import { config } from "../../src/config";
+import config from "../../src/node/config.mjs";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({

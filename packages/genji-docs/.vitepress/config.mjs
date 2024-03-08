@@ -1,7 +1,9 @@
 import { defineConfig } from "vitepress";
+import config from "genji-theme-vitepress/config";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  extends: config,
   title: "Genji",
   description: "The Interactive Markdown extension",
   themeConfig: {

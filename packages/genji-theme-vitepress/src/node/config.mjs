@@ -1,7 +1,7 @@
 import { defineConfig } from "vitepress";
-import { attrs } from "./attrs";
+import { attrs } from "./attrs.mjs";
 
-export const config = defineConfig({
+export default defineConfig({
   markdown: {
     config: (md) => {
       md.use(attrs);
