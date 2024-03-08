@@ -1,5 +1,5 @@
 import DefaultTheme from "vitepress/theme";
-import { enhanceTheme } from "../../../src";
+import { enhanceTheme } from "../../../src/client";
 
 const Theme = enhanceTheme(DefaultTheme, {
   global: {

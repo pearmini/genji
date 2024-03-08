@@ -10,7 +10,12 @@
   "author": "https://github.com/pearmini",
   "license": "MIT",
   "devDependencies": {
+    "genji-theme-vitepress": "^0.0.2",
     "vitepress": "^1.0.0-rc.44"
   },
-  "repository": "git@github.com:pearmini/genji-notebook.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pearmini/genji.git",
+    "directory": "packages/genji-docs"
+  }
 }
