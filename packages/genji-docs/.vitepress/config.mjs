@@ -7,7 +7,7 @@ export default defineConfig({
   title: "Genji",
   description: "The Interactive Markdown extension",
   head: [
-    ["link", {rel: "icon", type: "image/png", href: "/title.png"}],
+    ["link", {rel: "icon", type: "image/png", href: "/icon.png"}],
   ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
