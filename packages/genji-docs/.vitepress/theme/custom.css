@@ -1,22 +1,25 @@
 :root {
-  --vp-c-indigo-1: #50a752;
-  --vp-c-indigo-3: #a7eb4f;
-  --vp-c-indigo-2: #92dba6;
+  --vp-c-indigo-1: #52b577;
+  --vp-c-indigo-2: #6edc8c;
+  --vp-c-indigo-3: #7bf69c;
   --vp-home-hero-image-filter: blur(68px);
 }
 
 :root {
   --vp-home-hero-name-background: -webkit-linear-gradient(
-    120deg,
-    #a7eb4f 30%,
-    #50a752
-  );
-  --vp-home-hero-image-background-image: linear-gradient(
-    -45deg,
-    #a7eb4f 50%,
-    #50a752 50%
+    315deg,
+    var(--vp-c-indigo-3) 25%,
+    var(--vp-c-indigo-1)
   );
   --vp-home-hero-name-color: transparent;
+}
+
+:root {
+  --vp-home-hero-image-background-image: linear-gradient(
+    -45deg,
+    var(--vp-c-indigo-3) 50%,
+    var(--vp-c-indigo-1)
+  );
 }
 
 .clip {
