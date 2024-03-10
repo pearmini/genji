@@ -7,7 +7,7 @@ hero:
   text: "The interactive Markdown extension"
   tagline: Author interactive documents with just Markdown.
   image:
-    src: /logo.png
+    src: /logo.svg
     alt: Genji
   actions:
     - theme: brand
