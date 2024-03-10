@@ -1,1 +1,3 @@
-module.exports = require("../../jest.config");
+module.exports = {
+  testMatch: ["**/__tests__/**/*.spec.js"],
+};
