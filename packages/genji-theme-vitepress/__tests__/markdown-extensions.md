@@ -40,7 +40,7 @@ block("orange");
 
 ## Hide Code
 
-```js eval "code: false"
+```js eval code=false
 display(() => {
   const div = document.createElement("div");
   div.style.width = "100px";
@@ -78,9 +78,9 @@ def add(x, y):
 
 ## Python Block2
 
-It should not render python block with `| dom` markup.
+It should not render python block with `eval` markup.
 
-```python | dom
+```python eval
 def add(x, y):
   return x + y
 ```
