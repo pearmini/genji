@@ -21,7 +21,7 @@ export default defineConfig({
           { text: "Object Inspector", link: "/object-inspector" },
           { text: "Errors", link: "/errors" },
           { text: "Promise", link: "/promise-cell" },
-          { text: "Parser", link: "/parser" },
+          { text: "Transform", link: "/transform" },
           { text: "Observable", link: "/observable" },
         ],
       },

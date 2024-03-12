@@ -15,17 +15,6 @@
   background-color: transparent !important;
 }
 
-.genji-error {
-  color: #ff0000;
-}
-
-.genji-error-line {
-  text-decoration: underline;
-  text-decoration-color: #ff0000;
-  text-decoration-style: wavy;
-  text-decoration-skip-ink: none;
-}
-
 .genji-loading {
   width: 12px;
   height: 12px;
