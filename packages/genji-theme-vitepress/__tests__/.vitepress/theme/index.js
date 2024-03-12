@@ -1,7 +1,8 @@
 import DefaultTheme from "vitepress/theme";
-import { enhanceTheme } from "../../../src/client";
+import Layout from "../../../src/client/Layout.vue";
+import { h } from "vue";
 
-const Theme = enhanceTheme(DefaultTheme, {
+const props = {
   global: {
     block: (color) => {
       const div = document.createElement("div");
@@ -12,14 +13,16 @@ const Theme = enhanceTheme(DefaultTheme, {
     },
     parseDiv: (code) => {
       return `(() => {
-          ${code}
-          return div;
-        })()
-      `;
+      ${code}
+      return div;
+    })()
+  `;
     },
   },
-});
+  Theme: DefaultTheme,
+};
 
 export default {
-  extends: Theme,
+  extends: DefaultTheme,
+  Layout: () => h(Layout, props),
 };
