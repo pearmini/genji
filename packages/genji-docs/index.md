@@ -3,7 +3,7 @@
 layout: home
 
 hero:
-  name: "Genji"
+  name: "Markdown Genji"
   text: "The interactive Markdown extension"
   tagline: Author interactive documents with just Markdown.
   image:
@@ -12,10 +12,10 @@ hero:
   actions:
     - theme: brand
       text: Get Started
-      link: /markdown-examples
+      link: /getting-started
     - theme: alt
       text: What is Genji?
-      link: /api-examples
+      link: /what-is-genji
 
 features:
   - title: Executable code blocks

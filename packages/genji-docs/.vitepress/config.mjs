@@ -6,28 +6,36 @@ export default defineConfig({
   extends: config,
   title: "Genji",
   description: "The Interactive Markdown extension",
-  head: [
-    ["link", {rel: "icon", type: "image/png", href: "/icon.png"}],
-  ],
+  head: [["link", { rel: "icon", type: "image/png", href: "/icon.png" }]],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: "Guide", link: "/markdown-examples" },
-      { text: "Reference", link: "/api-examples" },
+      { text: "Home", link: "/" },
+      { text: "Docs", link: "/getting-started" },
     ],
-
     sidebar: [
       {
-        text: "Examples",
+        text: "Introduction",
         items: [
-          { text: "Markdown Examples", link: "/markdown-examples" },
-          { text: "Runtime API Examples", link: "/api-examples" },
+          { text: "What is Genji?", link: "/what-is-genji" },
+          { text: "Why Genji?", link: "/why-genji" },
+          { text: "Getting Started", link: "/getting-started" },
+        ],
+      },
+      {
+        text: "Features",
+        items: [
+          { text: "Code Blocks", link: "/features/code-blocks" },
+          { text: "Libraries", link: "/features/libraries" },
+          { text: "Inputs", link: "/features/inputs" },
+          { text: "Transforms", link: "/features/transforms" },
+          { text: "Layout", link: "/features/layout" },
         ],
       },
     ],
     logo: "/logo.svg",
     socialLinks: [
-      { icon: "github", link: "https://github.com/vuejs/vitepress" },
+      { icon: "github", link: "https://github.com/pearmini/genji" },
     ],
   },
 });
