@@ -10,7 +10,7 @@
   "author": "https://github.com/pearmini",
   "license": "MIT",
   "devDependencies": {
-    "genji-theme-vitepress": "^0.0.2",
+    "genji-theme-vitepress": "^0.0.5",
     "vitepress": "^1.0.0-rc.44"
   },
   "repository": {

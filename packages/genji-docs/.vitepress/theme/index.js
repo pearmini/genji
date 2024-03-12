@@ -1,9 +1,14 @@
 import DefaultTheme from "vitepress/theme";
-import { enhanceTheme } from "genji-theme-vitepress";
+import { h } from "vue";
+import Layout from "genji-theme-vitepress";
 import "./custom.css";
 
-const Theme = enhanceTheme(DefaultTheme, {});
+const props = {
+  global: {},
+  Theme: DefaultTheme,
+};
 
 export default {
-  extends: Theme,
+  extends: DefaultTheme,
+  Layout: () => h(Layout, props),
 };
