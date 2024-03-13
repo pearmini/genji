@@ -29,6 +29,7 @@ export default defineConfig({
           { text: "Libraries", link: "/features/libraries" },
           { text: "Inputs", link: "/features/inputs" },
           { text: "Transforms", link: "/features/transforms" },
+          { text: "Inspectors", link: "/features/inspectors" },
           { text: "Layout", link: "/features/layout" },
         ],
       },
