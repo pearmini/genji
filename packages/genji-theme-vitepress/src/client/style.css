@@ -9,6 +9,10 @@
   margin-top: 0px !important;
 }
 
+.genji-object-inspector {
+  margin-bottom: 4px;
+}
+
 .genji-object-inspector * {
   font-size: 16px !important;
   background-color: transparent !important;
@@ -31,6 +35,10 @@
   border-top-color: transparent;
   border-radius: 100%;
   animation: circle infinite 0.75s linear;
+}
+
+.genji-cell :not([class^="genji-"]) {
+  all: revert;
 }
 
 @keyframes circle {
