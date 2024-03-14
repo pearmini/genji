@@ -1,10 +1,10 @@
 import { useRoute, useData } from "vitepress";
 import { onMounted, watch } from "vue";
-import { Module } from "./module";
 import { createElement } from "react";
 import { createRoot } from "react-dom/client";
 import { ObjectInspector } from "react-inspector";
 import { Observable } from "./observable";
+import { tokenize, parseScript } from "esprima";
 
 const SCRIPT_PREFIX = "cell";
 
@@ -64,7 +64,7 @@ function renderLoading() {
   return node;
 }
 
-function normalize(node, options) {
+function renderInspector(node, options) {
   if (isMountableNode(node)) return node;
   return renderObjectInspector(node, options);
 }
@@ -72,13 +72,17 @@ function normalize(node, options) {
 function mount(block, node) {
   const cell = document.createElement("div");
   cell.classList.add("genji-cell");
-  cell.appendChild(normalize(node));
+  cell.appendChild(node);
 
   const previous = block.previousElementSibling;
   const exist = previous && previous.classList.contains("genji-cell");
 
-  if (exist) block.parentNode.replaceChild(cell, previous);
-  else block.parentNode.insertBefore(cell, block);
+  if (exist) {
+    if (previous.__dispose__) previous.__dispose__();
+    block.parentNode.replaceChild(cell, previous);
+  } else {
+    block.parentNode.insertBefore(cell, block);
+  }
 }
 
 function unmount(node) {
@@ -118,8 +122,201 @@ function debounce(callback, wait = 10) {
   };
 }
 
+function splitByEqual(content) {
+  const index = content.split("").findIndex((d) => d === "=");
+  const before = content.slice(0, index);
+  const after = content.slice(index + 1, content.length);
+  return [before, after];
+}
+
+function createAssignmentNode(code, ast) {
+  const [name, value] = splitByEqual(code);
+  const params = ast.body[0]?.expression?.right?.params || [];
+  return [name.trim(), value.trim(), params];
+}
+
+function createVariableNode(code, ast) {
+  const [prefix, value] = splitByEqual(code);
+  const name = prefix.trim().split(" ").pop();
+  const params = ast.body[0]?.declarations[0]?.init?.params || [];
+  return [name.trim(), value.trim(), params];
+}
+
+function createFunctionNode(code, ast) {
+  const { name } = ast.body[0].id;
+  const { params } = ast.body[0];
+  return [name, code, params];
+}
+
+function createCallNode(code, ast) {
+  return [, code];
+}
+
+function createExpressionNode(code, ast) {
+  return [, code];
+}
+
+function typeOfExpression(ast) {
+  return ast.body[0]?.expression?.type;
+}
+
+function typeOfBody(ast) {
+  return ast.body[0]?.type;
+}
+
+function isAssignment(ast) {
+  return typeOfExpression(ast) === "AssignmentExpression";
+}
+
+function isCall(ast) {
+  return typeOfExpression(ast) === "CallExpression";
+}
+
+function isVariableDeclaration(ast) {
+  return typeOfBody(ast) === "VariableDeclaration";
+}
+
+function isFunctionDeclaration(ast) {
+  return typeOfBody(ast) === "FunctionDeclaration";
+}
+
+function isExpression(ast) {
+  return typeOfBody(ast) === "ExpressionStatement";
+}
+
+function normalizeVariable(ast, code) {
+  if (isAssignment(ast)) return createAssignmentNode(code, ast);
+  if (isCall(ast)) return createCallNode(code);
+  if (isFunctionDeclaration(ast)) return createFunctionNode(code, ast);
+  if (isVariableDeclaration(ast)) return createVariableNode(code, ast);
+  if (isExpression(ast)) return createExpressionNode(code, ast);
+  return [undefined, ""];
+}
+
+function parseVariable(code) {
+  const tokens = tokenize(code);
+  const ast = parseScript(code);
+  const [name, expression, params = []] = normalizeVariable(ast, code);
+  const paramNames = params.map((d) => d.name);
+  return { name, expression, tokens, ast, params: paramNames };
+}
+
+function createVariable(block, index) {
+  const { lang, t = "" } = block.dataset;
+  const P = [transforms[lang], ...t.split(",").map((d) => window[d])].filter(
+    Boolean
+  );
+
+  if (!P.length) return null;
+
+  const dom = block.getElementsByClassName("shiki")[0];
+  const code = dom.textContent;
+  const parsed = parseCode(code, P);
+  return {
+    code: parsed,
+    id: index,
+    ...parseVariable(parsed),
+  };
+}
+
+function createGraph(nodes) {
+  const relationById = new Map(nodes.map((n) => [n.id, { from: [], to: [] }]));
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const n1 = nodes[i];
+      const n2 = nodes[j];
+      const r1 = relationById.get(n1.id);
+      const r2 = relationById.get(n2.id);
+      const ref1 = isReference(n1, n2);
+      const ref2 = isReference(n2, n1);
+      if (ref1 && ref2) {
+        throw new Error(`Circular Reference for ${n1.name} and ${n2.name}`);
+      }
+      if (ref1) {
+        r1.to.push(n2.id);
+        r2.from.push(n1.id);
+      } else if (ref2) {
+        r1.from.push(n2.id);
+        r2.to.push(n1.id);
+      }
+    }
+  }
+  return relationById;
+}
+
+function isReference(n1, n2) {
+  const { name } = n1;
+  const { tokens, params } = n2;
+  return tokens
+    .filter((d) => !params.includes(d.value))
+    .some((d) => d.type === "Identifier" && d.value === name);
+}
+
+function rootsOf(relationById) {
+  return Array.from(relationById.entries())
+    .filter(([, d]) => d.from.length === 0)
+    .map(([id]) => id);
+}
+
+function execute(id, nodeById, relationById, valueById, countById, hooks) {
+  const loading = debounce(hooks.loading, 0);
+  const success = debounce(hooks.success, 0);
+  const error = debounce(hooks.error, 0);
+
+  const node = nodeById.get(id);
+  loading(node);
+
+  const { expression } = node;
+  const relation = relationById.get(id);
+  const { from, to } = relation;
+  const names = from.map((id) => nodeById.get(id).name);
+  const deps = from.map((id) => valueById.get(id));
+
+  const executeDeps = () => {
+    for (const toId of to) {
+      const count = countById.get(toId);
+      if (count - 1 <= 0) {
+        countById.set(toId, 0);
+        execute(toId, nodeById, relationById, valueById, countById, hooks);
+      } else {
+        countById.set(toId, count - 1);
+      }
+    }
+  };
+
+  Promise.all(deps)
+    .then((values) => {
+      const output = new Function(
+        ...names,
+        lines(
+          `const value = ${expression}`,
+          `return value //# sourceURL=${SCRIPT_PREFIX}-${id}.js`
+        )
+      )(...values);
+
+      const promise = Promise.resolve(output)
+        .then((value) => {
+          valueById.set(id, value);
+          success(node);
+          return Promise.resolve(value);
+        })
+        .catch((e) => error(e, node));
+
+      valueById.set(id, promise);
+
+      executeDeps();
+    })
+    .catch((e) => error(e, node));
+}
+
+function dispose(module) {
+  const values = module.values();
+  for (const value of values) if (value) value();
+  module.clear();
+}
+
 function render(module, { isDark }) {
-  module.dispose();
+  dispose(module);
 
   const codes = document.querySelectorAll("[data-genji]");
   const blocks = Array.from(codes).filter((code) => {
@@ -129,80 +326,54 @@ function render(module, { isDark }) {
 
   if (!blocks.length) return;
 
-  for (let i = 0; i < blocks.length; i++) {
-    const block = blocks[i];
-    const { dataset } = block;
-    const { lang, t = "", code: showCode } = dataset;
-    const P = [transforms[lang], ...t.split(",").map((d) => window[d])].filter(
-      Boolean
-    );
+  const variables = blocks.map(createVariable).filter(Boolean);
+  const relationById = createGraph(variables);
+  const nodeById = new Map(variables.map((d) => [d.id, d]));
+  const valueById = new Map(variables.map((d) => [d.id, undefined]));
+  const countById = new Map(
+    variables.map((d) => [d.id, relationById.get(d.id).from.length])
+  );
+  const roots = rootsOf(relationById);
 
-    if (P.length) {
-      const pre = block.getElementsByClassName("shiki")[0];
-      const code = pre.textContent;
-      const script = `${SCRIPT_PREFIX}-${i}.js`;
-
-      if (showCode === "false") block.style.display = "none";
-
-      const observable = new Observable((observer) => {
-        let normalized;
-
-        const next = (node) => {
-          normalized = normalize(node, { isDark });
-          observer.next(normalized);
-        };
-
-        const error = (e) => {
-          normalized = renderError(e, { script });
-          observer.error(normalized);
-        };
-
-        try {
-          const parsed = parseCode(code, P);
-
-          const node = new Function(
-            lines(
-              `const value = ${parsed}`,
-              `return value //# sourceURL=${script}`
-            )
-          )();
-
-          if (node instanceof Promise) {
-            next(renderLoading());
-            node.then(next).catch(error);
-          } else if (node instanceof Observable) {
-            node.subscribe({ next, error });
-          } else {
-            next(node);
-          }
-        } catch (e) {
-          error(e);
-        } finally {
-          return () => unmount(normalized);
-        }
-      });
-
-      const observer = {
-        next: debounce((node) => mount(block, node)),
-        error: debounce((node) => mount(block, node)),
-      };
-
-      module.add(observable, observer);
-    }
+  for (const root of roots) {
+    execute(root, nodeById, relationById, valueById, countById, {
+      loading: ({ id }) => {
+        const block = blocks[id];
+        const node = renderLoading();
+        mount(block, node);
+        module.set(id, () => unmount(node));
+      },
+      success: ({ id }) => {
+        const block = blocks[id];
+        const node = valueById.get(id);
+        const normalized = renderInspector(node, { isDark });
+        module.set(id, () => unmount(normalized));
+        mount(block, normalized);
+      },
+      error: (e, { id }) => {
+        const block = blocks[id];
+        const error = renderError(e, {
+          script: `${SCRIPT_PREFIX}-${id}.js`,
+        });
+        module.set(id, () => unmount(error));
+        mount(block, error);
+      },
+    });
   }
 }
 
 export function useRender({ global }) {
   const route = useRoute();
   const { isDark } = useData();
-  const module = new Module();
+  const module = new Map();
+
   const renderModule = () => {
     render(module, { isDark: isDark.value });
   };
 
   // Avoid mount multiple times because of hot reload in development.
   if (import.meta.env.DEV) {
-    if (window.__module__) window.__module__.dispose();
+    if (window.__module__) dispose(window.__module__);
     window.__module__ = module;
   }
 

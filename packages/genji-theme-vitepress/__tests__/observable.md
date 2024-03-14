@@ -1,6 +1,8 @@
 # Observable
 
-## Basic
+> WIP
+
+<!-- ## Basic
 
 ```js eval
 count = new Observable((observer) => {
@@ -21,3 +23,7 @@ pointer = new Observable((observer) => {
   return () => removeEventListener("pointermove", pointermoved);
 });
 ```
+
+```js eval
+[count, ...pointer];
+``` -->

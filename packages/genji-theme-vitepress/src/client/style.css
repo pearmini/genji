@@ -11,8 +11,17 @@
 }
 
 .genji-object-inspector * {
-  font-size: 16px;
+  font-size: 16px !important;
   background-color: transparent !important;
+}
+
+.genji-object-inspector li {
+  margin-top: 4px !important;
+}
+
+.genji-error {
+  color: #cb4538;
+  margin-bottom: 4px;
 }
 
 .genji-loading {
@@ -22,7 +31,7 @@
   border-top-color: transparent;
   border-radius: 100%;
   animation: circle infinite 0.75s linear;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 @keyframes circle {

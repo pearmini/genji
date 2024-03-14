@@ -3,9 +3,7 @@
 ## Promise
 
 ```js eval
-new Promise((resolve) => {
-  setTimeout(() => resolve(block("orange")), 3000);
-});
+new Promise((resolve) => {});
 ```
 
 ## Async Function
