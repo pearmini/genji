@@ -56,14 +56,18 @@ display(() => {
 display(() => {
   const span = document.createElement("span");
   span.textContent = 1;
+
   const timer = setInterval(
     () => (span.textContent = +span.textContent + 1),
     1000
   );
-  return dispose(span, () => {
+
+  unsubscribe(() => {
     clearInterval(timer);
     console.log("Dispose Block");
   });
+
+  return span;
 });
 ```
 

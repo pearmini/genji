@@ -12,10 +12,6 @@ function injectGlobal(global) {
   Object.assign(window, {
     ...global,
     display: (callback) => callback(),
-    dispose: (node, callback) => {
-      Object.assign(node, { __dispose__: callback });
-      return node;
-    },
     Observable,
   });
 }
@@ -52,20 +48,18 @@ function renderObjectInspector(data, { isDark }) {
     if (root.isMounted) render(isDark);
   });
 
-  node.__dispose__ = () => root.unmount();
-
-  return node;
+  return [node, () => root.unmount()];
 }
 
 function renderLoading() {
   const node = document.createElement("div");
   node.id = "genji-loading";
   node.classList.add("genji-loading");
-  return node;
+  return [node, () => {}];
 }
 
 function renderInspector(node, options) {
-  if (isMountableNode(node)) return node;
+  if (isMountableNode(node)) return [node, () => {}];
   return renderObjectInspector(node, options);
 }
 
@@ -73,15 +67,8 @@ function mount(block, node) {
   const previous = block.previousElementSibling;
   const exist = previous && previous.classList.contains("genji-cell");
   if (!exist) return;
-  if (previous.__dispose__) previous.__dispose__();
   previous.innerHTML = "";
   previous.appendChild(node);
-}
-
-function unmount(node) {
-  if (!node) return;
-  if (node.__dispose__) node.__dispose__();
-  node.remove();
 }
 
 function renderError(e, { script }) {
@@ -90,7 +77,7 @@ function renderError(e, { script }) {
   node.classList.add("genji-error");
   node.textContent = `${script}: ${error} (Open console for more details.)`;
   console.error(`${script}:`, e);
-  return node;
+  return [node, () => {}];
 }
 
 function parseCode(code, parsers) {
@@ -251,7 +238,15 @@ function rootsOf(relationById) {
     .map(([id]) => id);
 }
 
-function execute(id, nodeById, relationById, valueById, countById, hooks) {
+function execute(
+  id,
+  nodeById,
+  relationById,
+  valueById,
+  countById,
+  disposeById,
+  hooks
+) {
   const loading = debounce(hooks.loading, 0);
   const success = debounce(hooks.success, 0);
   const error = debounce(hooks.error, 0);
@@ -270,7 +265,15 @@ function execute(id, nodeById, relationById, valueById, countById, hooks) {
       const count = countById.get(toId);
       if (count - 1 <= 0) {
         countById.set(toId, 0);
-        execute(toId, nodeById, relationById, valueById, countById, hooks);
+        execute(
+          toId,
+          nodeById,
+          relationById,
+          valueById,
+          countById,
+          disposeById,
+          hooks
+        );
       } else {
         countById.set(toId, count - 1);
       }
@@ -279,17 +282,25 @@ function execute(id, nodeById, relationById, valueById, countById, hooks) {
 
   Promise.all(deps)
     .then((values) => {
+      let dispose = () => {};
+      const unsubscribe = (callback) => (dispose = callback);
+
       const output = new Function(
+        "unsubscribe",
         ...names,
         lines(
           `const value = ${expression}`,
           `return value //# sourceURL=${SCRIPT_PREFIX}-${id}.js`
         )
-      )(...values);
+      )(unsubscribe, ...values);
 
       const promise = Promise.resolve(output)
         .then((value) => {
+          const preDispose = disposeById.get(id);
+          if (preDispose) preDispose();
+
           valueById.set(id, value);
+          disposeById.set(id, dispose);
           success(node);
           return Promise.resolve(value);
         })
@@ -306,6 +317,15 @@ function dispose(module) {
   const values = module.values();
   for (const value of values) if (value) value();
   module.clear();
+}
+
+function addDispose(module, id, dispose) {
+  const oldDispose = module.get(id);
+  const newDispose = () => {
+    oldDispose && oldDispose();
+    dispose && dispose();
+  };
+  module.set(id, newDispose);
 }
 
 function createCells(blocks) {
@@ -342,27 +362,27 @@ function render(module, { isDark }) {
   const roots = rootsOf(relationById);
 
   for (const root of roots) {
-    execute(root, nodeById, relationById, valueById, countById, {
+    execute(root, nodeById, relationById, valueById, countById, module, {
       loading: ({ id }) => {
         const block = blocks[id];
-        const node = renderLoading();
+        const [node, dispose] = renderLoading();
         mount(block, node);
-        module.set(id, () => unmount(node));
+        addDispose(module, id, dispose);
       },
       success: ({ id }) => {
         const block = blocks[id];
         const node = valueById.get(id);
-        const normalized = renderInspector(node, { isDark });
-        module.set(id, () => unmount(normalized));
+        const [normalized, dispose] = renderInspector(node, { isDark });
         mount(block, normalized);
+        addDispose(module, id, dispose);
       },
       error: (e, { id }) => {
         const block = blocks[id];
-        const error = renderError(e, {
+        const [error, dispose] = renderError(e, {
           script: `${SCRIPT_PREFIX}-${id}.js`,
         });
-        module.set(id, () => unmount(error));
         mount(block, error);
+        addDispose(module, id, dispose);
       },
     });
   }
