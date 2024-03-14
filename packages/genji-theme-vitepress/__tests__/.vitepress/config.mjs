@@ -24,6 +24,7 @@ export default defineConfig({
           { text: "Promise", link: "/promise-cell" },
           { text: "Transform", link: "/transform" },
           { text: "Observable", link: "/observable" },
+          { text: "Dispose", link: "/dispose" },
         ],
       },
     ],

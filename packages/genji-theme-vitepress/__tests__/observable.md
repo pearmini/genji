@@ -1,8 +1,6 @@
 # Observable
 
-> WIP
-
-<!-- ## Basic
+## Basic
 
 ```js eval
 count = new Observable((observer) => {
@@ -24,6 +22,25 @@ pointer = new Observable((observer) => {
 });
 ```
 
+## Deps
+
 ```js eval
-[count, ...pointer];
-``` -->
+`My name is ${name}, I'm at <${pointer[0].toFixed(2)}, ${pointer[1].toFixed(
+  2
+)}> and counting to ${count}.`;
+```
+
+## Input
+
+```js eval
+name = new Observable((observer) => {
+  const input = document.createElement("input");
+  observer.resolve(input);
+
+  const onChange = (e) => observer.next(e.target.value);
+  input.addEventListener("input", onChange);
+  observer.next("");
+
+  return () => input.removeEventListener("input", onChange);
+});
+```
