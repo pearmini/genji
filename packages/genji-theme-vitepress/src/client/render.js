@@ -70,19 +70,12 @@ function renderInspector(node, options) {
 }
 
 function mount(block, node) {
-  const cell = document.createElement("div");
-  cell.classList.add("genji-cell");
-  cell.appendChild(node);
-
   const previous = block.previousElementSibling;
   const exist = previous && previous.classList.contains("genji-cell");
-
-  if (exist) {
-    if (previous.__dispose__) previous.__dispose__();
-    block.parentNode.replaceChild(cell, previous);
-  } else {
-    block.parentNode.insertBefore(cell, block);
-  }
+  if (!exist) return;
+  if (previous.__dispose__) previous.__dispose__();
+  previous.innerHTML = "";
+  previous.appendChild(node);
 }
 
 function unmount(node) {
@@ -315,6 +308,17 @@ function dispose(module) {
   module.clear();
 }
 
+function createCells(blocks) {
+  const oldBlocks = document.querySelectorAll(".genji-cell");
+  oldBlocks.forEach((block) => block.remove());
+
+  for (const block of blocks) {
+    const container = document.createElement("div");
+    container.classList.add("genji-cell");
+    block.parentNode.insertBefore(container, block);
+  }
+}
+
 function render(module, { isDark }) {
   dispose(module);
 
@@ -323,6 +327,8 @@ function render(module, { isDark }) {
     if (!code.dataset.genji) return false;
     return true;
   });
+
+  createCells(blocks);
 
   if (!blocks.length) return;
 
