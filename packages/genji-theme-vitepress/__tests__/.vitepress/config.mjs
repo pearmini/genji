@@ -18,6 +18,7 @@ export default defineConfig({
         text: "Tests",
         items: [
           { text: "Markdown Extensions", link: "/markdown-extensions" },
+          { text: "Dataflow", link: "/dataflow" },
           { text: "Object Inspector", link: "/object-inspector" },
           { text: "Errors", link: "/errors" },
           { text: "Promise", link: "/promise-cell" },

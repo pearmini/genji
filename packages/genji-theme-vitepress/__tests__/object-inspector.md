@@ -3,19 +3,19 @@
 ## Number
 
 ```js eval
-a = 1;
+n = 1;
 ```
 
 ## Boolean
 
 ```js eval
-a = true;
+bool = true;
 ```
 
 ## Array
 
 ```js eval
-a = ["Apple", null, Promise];
+A = ["Apple", null, Promise];
 ```
 
 ## Function
@@ -29,7 +29,7 @@ function add(x, y) {
 ## Object
 
 ```js eval
-a = {
+o = {
   string: "a",
   add(x, y) {
     return x + y;
