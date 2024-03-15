@@ -1,3 +1,7 @@
+:root {
+  --syntax_normal: var(--vp-c-text-1);
+}
+
 .genji-cell {
   display: flex;
   align-items: center;
@@ -37,7 +41,7 @@
   animation: circle infinite 0.75s linear;
 }
 
-.genji-cell :not([class^="genji-"]) {
+.genji-cell :not([class^="genji-"]):not([class^="observablehq-"]) {
   all: revert;
 }
 

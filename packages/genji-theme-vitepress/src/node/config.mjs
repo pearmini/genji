@@ -7,9 +7,4 @@ export default defineConfig({
       md.use(attrs);
     },
   },
-  vite: {
-    optimizeDeps: {
-      include: ["react", "react-dom/client"],
-    },
-  },
 });
