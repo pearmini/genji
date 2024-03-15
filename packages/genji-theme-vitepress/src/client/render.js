@@ -1,10 +1,8 @@
 import { useRoute, useData } from "vitepress";
 import { onMounted, watch } from "vue";
-import { createElement } from "react";
-import { createRoot } from "react-dom/client";
-import { ObjectInspector } from "react-inspector";
-import { Signal } from "./signal";
 import { tokenize, parseScript } from "esprima";
+import { Inspector } from "@observablehq/inspector";
+import { Signal } from "./signal";
 
 const SCRIPT_PREFIX = "cell";
 
@@ -25,30 +23,12 @@ function isMountableNode(node) {
   return node instanceof HTMLElement || node instanceof SVGElement;
 }
 
-function renderObjectInspector(data, { isDark }) {
+function renderObjectInspector(data) {
   const node = document.createElement("div");
   node.classList.add("genji-object-inspector");
-
-  const root = createRoot(node);
-  const render = (isDark) => {
-    root.render(
-      createElement(ObjectInspector, {
-        data,
-        showNonenumerable: true,
-        theme: isDark ? "chromeDark" : "chromeLight",
-      })
-    );
-  };
-
-  render(isDark);
-
-  // Rerender when theme changes.
-  window.addEventListener("theme-change", (event) => {
-    const { isDark } = event.detail;
-    if (root.isMounted) render(isDark);
-  });
-
-  return [node, () => root.unmount()];
+  const inspector = new Inspector(node);
+  inspector.fulfilled(data);
+  return [node, () => {}];
 }
 
 function renderLoading() {
@@ -249,7 +229,7 @@ function execute(
   disposeById,
   hooks
 ) {
-  const delay = 10;
+  const delay = 0;
   const loading = debounce(hooks.loading, delay);
   const success = debounce(hooks.success, delay);
   const error = debounce(hooks.error, delay);
