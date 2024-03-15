@@ -3,7 +3,7 @@ import { onMounted, watch } from "vue";
 import { createElement } from "react";
 import { createRoot } from "react-dom/client";
 import { ObjectInspector } from "react-inspector";
-import { Observable } from "./observable";
+import { Signal } from "./signal";
 import { tokenize, parseScript } from "esprima";
 
 const SCRIPT_PREFIX = "cell";
@@ -12,7 +12,7 @@ function injectGlobal(global) {
   Object.assign(window, {
     ...global,
     display: (callback) => callback(),
-    Observable,
+    Signal,
   });
 }
 
@@ -295,29 +295,30 @@ function execute(
       )
     )(unsubscribe, ...values);
 
-    if (output instanceof Observable) {
+    if (output instanceof Signal) {
       let resolved = false;
 
-      const subscription = output.subscribe({
-        next: (value) => {
-          if (resolved) {
-            // If a node is mounted, there is new need to update the node.
-            setTimeout(() => {
-              valueById.set(id, value);
-              executeDeps();
-            }, delay);
-          } else {
+      const next = (value) => {
+        if (resolved) {
+          // If a node is mounted, there is new need to update the node.
+          setTimeout(() => {
             valueById.set(id, value);
             executeDeps();
-            success(node);
-          }
-        },
-        resolve: (value) => {
-          resolved = true;
+          }, delay);
+        } else {
           valueById.set(id, value);
+          executeDeps();
           success(node);
-        },
-      });
+        }
+      };
+
+      const view = (value) => {
+        resolved = true;
+        valueById.set(id, value);
+        success(node);
+      };
+
+      const subscription = output.subscribe(next, view);
 
       const prevDispose = disposeById.get(id);
       prevDispose && prevDispose();

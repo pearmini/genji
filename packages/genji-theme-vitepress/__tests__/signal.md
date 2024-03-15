@@ -1,12 +1,12 @@
-# Observable
+# Signal
 
 ## Basic
 
 ```js eval
-count = new Observable((observer) => {
+count = new Signal((next) => {
   let count = 0;
-  observer.next(count++);
-  const timer = setInterval(() => observer.next(count++), 1000);
+  next(count++);
+  const timer = setInterval(() => next(count++), 1000);
   return () => clearInterval(timer);
 });
 ```
@@ -14,10 +14,10 @@ count = new Observable((observer) => {
 ## Mouse
 
 ```js eval
-pointer = new Observable((observer) => {
-  const pointermoved = (event) => observer.next([event.clientX, event.clientY]);
+pointer = new Signal((next) => {
+  const pointermoved = (event) => next([event.clientX, event.clientY]);
   addEventListener("pointermove", pointermoved);
-  observer.next([0, 0]);
+  next([0, 0]);
   return () => removeEventListener("pointermove", pointermoved);
 });
 ```
@@ -33,13 +33,13 @@ pointer = new Observable((observer) => {
 ## Input
 
 ```js eval
-name = new Observable((observer) => {
+name = new Signal((next, view) => {
   const input = document.createElement("input");
-  observer.resolve(input);
+  view(input);
 
-  const onChange = (e) => observer.next(e.target.value);
+  const onChange = (e) => next(e.target.value);
   input.addEventListener("input", onChange);
-  observer.next("");
+  next("");
 
   return () => input.removeEventListener("input", onChange);
 });
