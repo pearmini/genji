@@ -27,6 +27,7 @@
     "vitepress": "^1.0.0-rc.44"
   },
   "dependencies": {
+    "@observablehq/inputs": "^0.10.6",
     "@observablehq/inspector": "^5.0.0",
     "esprima": "^4.0.1"
   }
