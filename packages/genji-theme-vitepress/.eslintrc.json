@@ -1,0 +1,16 @@
+{
+  "extends": ["eslint:recommended", "prettier"],
+  "env": {
+    "es2020": true,
+    "node": true,
+    "browser": true
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": "latest"
+  },
+  "rules": {
+    "no-dupe-keys": "off",
+    "no-constant-condition": "off"
+  }
+}

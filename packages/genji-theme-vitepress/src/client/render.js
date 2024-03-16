@@ -112,12 +112,12 @@ function createFunctionNode(code, ast) {
   return [name, code, params];
 }
 
-function createCallNode(code, ast) {
-  return [, code];
+function createCallNode(code) {
+  return [undefined, code];
 }
 
-function createExpressionNode(code, ast) {
-  return [, code];
+function createExpressionNode(code) {
+  return [undefined, code];
 }
 
 function typeOfExpression(ast) {
@@ -167,9 +167,7 @@ function parseVariable(code) {
 
 function createVariable(block, index) {
   const { lang, t = "", ...rest } = block.dataset;
-  const P = [transforms[lang], ...t.split(",").map((d) => window[d])].filter(
-    Boolean
-  );
+  const P = [transforms[lang], ...t.split(",").map((d) => window[d])].filter(Boolean);
 
   if (!P.length) return null;
 
@@ -243,16 +241,7 @@ function rootsOf(relationById) {
     .map(([id]) => id);
 }
 
-function execute(
-  id,
-  nodeById,
-  relationById,
-  valueById,
-  countById,
-  disposeById,
-  idByName,
-  hooks
-) {
+function execute(id, nodeById, relationById, valueById, countById, disposeById, idByName, hooks) {
   const delay = 0;
   const loading = debounce(hooks.loading, delay);
   const success = debounce(hooks.success, delay);
@@ -263,10 +252,7 @@ function execute(
   const { expression, name } = node;
 
   if (name !== undefined && idByName.get(name) !== id) {
-    error(
-      new SyntaxError(`Identifier ${name} has already been declared.`),
-      node
-    );
+    error(new SyntaxError(`Identifier ${name} has already been declared.`), node);
     return;
   }
 
@@ -288,16 +274,7 @@ function execute(
       const count = countById.get(toId);
       if (count - 1 <= 0) {
         countById.set(toId, 0);
-        execute(
-          toId,
-          nodeById,
-          relationById,
-          valueById,
-          countById,
-          disposeById,
-          idByName,
-          hooks
-        );
+        execute(toId, nodeById, relationById, valueById, countById, disposeById, idByName, hooks);
       } else {
         countById.set(toId, count - 1);
       }
@@ -313,10 +290,7 @@ function execute(
       output = new Function(
         "unsubscribe",
         ...names,
-        lines(
-          `const value = ${expression}`,
-          `return value //# sourceURL=${SCRIPT_PREFIX}-${id}.js`
-        )
+        lines(`const value = ${expression}`, `return value //# sourceURL=${SCRIPT_PREFIX}-${id}.js`),
       )(unsubscribe, ...values);
     } catch (e) {
       error(e, node);
@@ -428,9 +402,7 @@ function render(module, { isDark }) {
   const nodeById = new Map(variables.map((d) => [d.id, d]));
   const valueById = new Map(variables.map((d) => [d.id, undefined]));
   const optionsById = new Map(variables.map((d) => [d.id, d.options]));
-  const countById = new Map(
-    variables.map((d) => [d.id, relationById.get(d.id).from.length])
-  );
+  const countById = new Map(variables.map((d) => [d.id, relationById.get(d.id).from.length]));
   const idByName = new Map();
   for (const { name, id } of variables) {
     if (!idByName.has(name) && name !== undefined) idByName.set(name, id);
@@ -448,38 +420,29 @@ function render(module, { isDark }) {
   const executeIds = onlys.length ? onlys : nonskips;
 
   for (const root of executeIds) {
-    execute(
-      root,
-      nodeById,
-      relationById,
-      valueById,
-      countById,
-      module,
-      idByName,
-      {
-        loading: ({ id }) => {
-          const block = blocks[id];
-          const [node, dispose] = renderLoading();
-          node.__dispose__ = dispose;
-          mount(block, node);
-        },
-        success: ({ id }) => {
-          const block = blocks[id];
-          const node = valueById.get(id);
-          const [normalized, dispose] = renderInspector(node, { isDark });
-          normalized.__dispose__ = dispose;
-          mount(block, normalized);
-        },
-        error: (e, { id }) => {
-          const block = blocks[id];
-          const [error, dispose] = renderError(e, {
-            script: `${SCRIPT_PREFIX}-${id}.js`,
-          });
-          error.__dispose__ = dispose;
-          mount(block, error);
-        },
-      }
-    );
+    execute(root, nodeById, relationById, valueById, countById, module, idByName, {
+      loading: ({ id }) => {
+        const block = blocks[id];
+        const [node, dispose] = renderLoading();
+        node.__dispose__ = dispose;
+        mount(block, node);
+      },
+      success: ({ id }) => {
+        const block = blocks[id];
+        const node = valueById.get(id);
+        const [normalized, dispose] = renderInspector(node, { isDark });
+        normalized.__dispose__ = dispose;
+        mount(block, normalized);
+      },
+      error: (e, { id }) => {
+        const block = blocks[id];
+        const [error, dispose] = renderError(e, {
+          script: `${SCRIPT_PREFIX}-${id}.js`,
+        });
+        error.__dispose__ = dispose;
+        mount(block, error);
+      },
+    });
   }
 }
 
@@ -500,16 +463,14 @@ export function useRender({ global }) {
 
   watch(
     () => route.path,
-    () => setTimeout(() => renderModule())
+    () => setTimeout(() => renderModule()),
   );
 
   watch(
     () => isDark.value,
     () => {
-      window.dispatchEvent(
-        new CustomEvent("theme-change", { detail: { isDark: isDark.value } })
-      );
-    }
+      window.dispatchEvent(new CustomEvent("theme-change", { detail: { isDark: isDark.value } }));
+    },
   );
 
   onMounted(() => {

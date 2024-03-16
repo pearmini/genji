@@ -1,4 +1,4 @@
-const regexDIV = /(\<div class="[^"]*")/;
+const regexDIV = /(<div class="[^"]*")/;
 
 export function attrs(md) {
   const fence = md.renderer.rules.fence;
@@ -12,9 +12,7 @@ export function attrs(md) {
     if (!infoTokens.length) return fence(...args);
 
     const valueTokens = infoTokens.map((d) => d.split("="));
-    const shouldEval = valueTokens.find(
-      ([k, v]) => k === "eval" && (v === "true" || v === undefined)
-    );
+    const shouldEval = valueTokens.find(([k, v]) => k === "eval" && (v === "true" || v === undefined));
     if (!shouldEval) return fence(...args);
 
     // Language.
@@ -24,10 +22,7 @@ export function attrs(md) {
     const options = valueTokens.map((d) => `data-${d[0]}="${d[1]}"`).join(" ");
 
     const html = fence(...args);
-    const newHTML = html.replace(
-      regexDIV,
-      `$1 data-genji="dom" data-lang="${lang}" ${options}`
-    );
+    const newHTML = html.replace(regexDIV, `$1 data-genji="dom" data-lang="${lang}" ${options}`);
     return newHTML;
   };
 }

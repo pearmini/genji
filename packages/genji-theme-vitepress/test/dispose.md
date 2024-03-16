@@ -7,10 +7,7 @@ display(() => {
   const span = document.createElement("span");
   span.textContent = 1;
 
-  const timer = setInterval(
-    () => (span.textContent = +span.textContent + 1),
-    1000
-  );
+  const timer = setInterval(() => (span.textContent = +span.textContent + 1), 1000);
 
   unsubscribe(() => {
     clearInterval(timer);
@@ -28,10 +25,7 @@ display(() => {
   const span = document.createElement("span");
   span.textContent = 1;
 
-  const timer = setInterval(
-    () => (span.textContent = +span.textContent + 1),
-    1000
-  );
+  const timer = setInterval(() => (span.textContent = +span.textContent + 1), 1000);
 
   unsubscribe(() => {
     clearInterval(timer);
