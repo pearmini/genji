@@ -1,3 +1,3 @@
 module.exports = {
-  testMatch: ["**/__tests__/**/*.spec.js"],
+  testMatch: ["**/test/**/*.spec.js"],
 };
