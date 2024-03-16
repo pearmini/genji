@@ -423,21 +423,29 @@ function render(module, { isDark }) {
 
   const variables = blocks.map(createVariable).filter(Boolean);
   const relationById = createGraph(variables);
-  console.log(relationById);
   const nodeById = new Map(variables.map((d) => [d.id, d]));
   const valueById = new Map(variables.map((d) => [d.id, undefined]));
+  const optionsById = new Map(variables.map((d) => [d.id, d.options]));
   const countById = new Map(
     variables.map((d) => [d.id, relationById.get(d.id).from.length])
   );
   const idByName = new Map();
-
-  const roots = rootsOf(relationById);
-
   for (const { name, id } of variables) {
     if (!idByName.has(name) && name !== undefined) idByName.set(name, id);
   }
 
-  for (const root of roots) {
+  const roots = rootsOf(relationById);
+  const nonskips = roots.filter((id) => {
+    const { skip } = optionsById.get(id);
+    return skip === undefined || skip === "false";
+  });
+  const onlys = nonskips.filter((id) => {
+    const { only } = optionsById.get(id);
+    return only === "undefined" || only === "true";
+  });
+  const executeIds = onlys.length ? onlys : nonskips;
+
+  for (const root of executeIds) {
     execute(
       root,
       nodeById,
