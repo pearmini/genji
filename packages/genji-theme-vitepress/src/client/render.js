@@ -3,6 +3,7 @@ import { onMounted, watch } from "vue";
 import { tokenize, parseScript } from "esprima";
 import { Inspector } from "@observablehq/inspector";
 import { Signal } from "./signal";
+import * as Inputs from "./inputs";
 
 const SCRIPT_PREFIX = "cell";
 
@@ -11,6 +12,7 @@ function injectGlobal(global) {
     ...global,
     display: (callback) => callback(),
     Signal,
+    Inputs,
   });
 }
 

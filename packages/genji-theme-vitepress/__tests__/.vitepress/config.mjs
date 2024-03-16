@@ -19,6 +19,7 @@ export default defineConfig({
         items: [
           { text: "Markdown Extensions", link: "/markdown-extensions" },
           { text: "Dataflow", link: "/dataflow" },
+          { text: "Inputs", link: "/inputs" },
           { text: "Object Inspector", link: "/object-inspector" },
           { text: "Errors", link: "/errors" },
           { text: "Promise", link: "/promise-cell" },

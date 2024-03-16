@@ -1,8 +1,10 @@
 <script setup>
 import { defineProps } from "vue";
 import { useRender } from "./render";
-import "./inspector.css";
+import "./reset.css";
 import "./style.css";
+import "./inspector.css";
+import "./inputs.css";
 
 const { global = {}, Theme } = defineProps(["global", "Theme"]);
 

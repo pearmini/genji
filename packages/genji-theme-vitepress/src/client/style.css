@@ -1,5 +1,8 @@
 :root {
   --syntax_normal: var(--vp-c-text-1);
+  --sans-serif: -apple-system, BlinkMacSystemFont, "avenir next", avenir,
+    helvetica, "helvetica neue", ubuntu, roboto, noto, "segoe ui", arial,
+    sans-serif;
 }
 
 .genji-cell {
@@ -19,7 +22,6 @@
 
 .genji-object-inspector * {
   font-size: 16px !important;
-  background-color: transparent !important;
   margin-bottom: 4px;
 }
 
@@ -41,10 +43,6 @@
   animation: circle infinite 0.75s linear;
 }
 
-.genji-cell :not([class^="genji-"]):not([class^="observablehq-"]) {
-  all: revert;
-}
-
 @keyframes circle {
   0% {
     transform: rotate(0);
@@ -52,4 +50,17 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.__ns__-table th {
+  font-weight: bold;
+}
+
+.__ns__-table * {
+  font-size: 13px !important;
+}
+
+.__ns__-table table {
+  display: table !important;
+  width: 100%;
 }
