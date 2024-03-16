@@ -35,3 +35,17 @@ display(() => {
   return span;
 });
 ```
+
+## Signal
+
+```js eval
+count = Signals.define((next) => {
+  let count = 0;
+  next(count++);
+  const timer = setInterval(() => next(count++), 1000);
+  return () => {
+    clearInterval(timer);
+    alert("Dispose Signal");
+  };
+});
+```
