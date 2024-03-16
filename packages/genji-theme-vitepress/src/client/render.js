@@ -2,8 +2,9 @@ import { useRoute, useData } from "vitepress";
 import { onMounted, watch } from "vue";
 import { tokenize, parseScript } from "esprima";
 import { Inspector } from "@observablehq/inspector";
-import { Signal } from "./signal";
+import * as Signals from "./signal";
 import * as Inputs from "./inputs";
+import Signal from "./signal";
 
 const SCRIPT_PREFIX = "cell";
 
@@ -11,7 +12,7 @@ function injectGlobal(global) {
   Object.assign(window, {
     ...global,
     display: (callback) => callback(),
-    Signal,
+    Signals,
     Inputs,
   });
 }
@@ -46,6 +47,7 @@ function renderInspector(node, options) {
 }
 
 function mount(block, node) {
+  if (!block) return;
   const previous = block.previousElementSibling;
   const exist = previous && previous.classList.contains("genji-cell");
   if (!exist) return;
@@ -180,6 +182,25 @@ function createVariable(block, index) {
     options: rest,
     ...parseVariable(parsed),
   };
+}
+
+function builtinVariable(variables) {
+  const builtins = [
+    ["width", "width = Signals.width()"],
+    ["now", "now = Signals.now()"],
+  ];
+  const names = new Set(variables.map((d) => d.name));
+  for (const [name, code] of builtins) {
+    if (names.has(name)) continue;
+    const variable = {
+      code,
+      id: variables.length,
+      options: {},
+      ...parseVariable(code),
+    };
+    variables.push(variable);
+  }
+  return variables;
 }
 
 function createGraph(nodes) {
@@ -398,6 +419,8 @@ function render(module, { isDark }) {
   if (!blocks.length) return;
 
   const variables = blocks.map(createVariable).filter(Boolean);
+  builtinVariable(variables);
+
   const relationById = createGraph(variables);
   const nodeById = new Map(variables.map((d) => [d.id, d]));
   const valueById = new Map(variables.map((d) => [d.id, undefined]));
@@ -430,6 +453,7 @@ function render(module, { isDark }) {
       success: ({ id }) => {
         const block = blocks[id];
         const node = valueById.get(id);
+        if (!block) return;
         const [normalized, dispose] = renderInspector(node, { isDark });
         normalized.__dispose__ = dispose;
         mount(block, normalized);
@@ -451,7 +475,7 @@ export function useRender({ global }) {
   const { isDark } = useData();
   const module = new Map();
 
-  const renderModule = () => {
+  const renderPage = () => {
     render(module, { isDark: isDark.value });
   };
 
@@ -463,7 +487,7 @@ export function useRender({ global }) {
 
   watch(
     () => route.path,
-    () => setTimeout(() => renderModule()),
+    () => setTimeout(() => renderPage()),
   );
 
   watch(
@@ -475,6 +499,6 @@ export function useRender({ global }) {
 
   onMounted(() => {
     injectGlobal(global);
-    renderModule();
+    renderPage();
   });
 }

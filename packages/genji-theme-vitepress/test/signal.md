@@ -3,7 +3,7 @@
 ## Basic
 
 ```js eval
-count = new Signal((next) => {
+count = Signals.define((next) => {
   let count = 0;
   next(count++);
   const timer = setInterval(() => next(count++), 1000);
@@ -14,7 +14,7 @@ count = new Signal((next) => {
 ## Mouse
 
 ```js eval
-pointer = new Signal((next) => {
+pointer = Signals.define((next) => {
   const pointermoved = (event) => next([event.clientX, event.clientY]);
   addEventListener("pointermove", pointermoved);
   next([0, 0]);
@@ -31,7 +31,7 @@ pointer = new Signal((next) => {
 ## Input
 
 ```js eval
-name = new Signal((next, view) => {
+name = Signals.define((next, view) => {
   const input = document.createElement("input");
   view(input);
 
@@ -41,4 +41,30 @@ name = new Signal((next, view) => {
 
   return () => input.removeEventListener("input", onChange);
 });
+```
+
+## Now
+
+```js eval
+Signals.now();
+```
+
+```js eval
+now;
+```
+
+## Width
+
+```js eval
+Signals.width();
+```
+
+```js eval
+(() => {
+  const div = document.createElement("div");
+  div.style.width = width / 2 + "px";
+  div.style.height = "50px";
+  div.style.background = "steelblue";
+  return div;
+})();
 ```
