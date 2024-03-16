@@ -12,9 +12,9 @@
     "src"
   ],
   "scripts": {
-    "test:dev": "vitepress dev __tests__",
-    "test:build": "vitepress build __tests__",
-    "test:preview": "vitepress preview __tests__"
+    "test:dev": "vitepress dev test",
+    "test:build": "vitepress build test",
+    "test:preview": "vitepress preview test"
   },
   "author": "https://github.com/pearmini",
   "license": "MIT",
