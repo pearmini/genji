@@ -164,7 +164,7 @@ function parseVariable(code) {
 }
 
 function createVariable(block, index) {
-  const { lang, t = "" } = block.dataset;
+  const { lang, t = "", ...rest } = block.dataset;
   const P = [transforms[lang], ...t.split(",").map((d) => window[d])].filter(
     Boolean
   );
@@ -177,6 +177,7 @@ function createVariable(block, index) {
   return {
     code: parsed,
     id: index,
+    options: rest,
     ...parseVariable(parsed),
   };
 }
@@ -191,13 +192,11 @@ function createGraph(nodes) {
       const r2 = relationById.get(n2.id);
       const ref1 = isReference(n1, n2);
       const ref2 = isReference(n2, n1);
-      if (ref1 && ref2) {
-        throw new Error(`Circular Reference for ${n1.name} and ${n2.name}`);
-      }
       if (ref1) {
         r1.to.push(n2.id);
         r2.from.push(n1.id);
-      } else if (ref2) {
+      }
+      if (ref2) {
         r1.from.push(n2.id);
         r2.to.push(n1.id);
       }
@@ -211,12 +210,34 @@ function isReference(n1, n2) {
   const { tokens, params } = n2;
   return tokens
     .filter((d) => !params.includes(d.value))
-    .some((d) => d.type === "Identifier" && d.value === name);
+    .some((d, i) => {
+      return (
+        d.type === "Identifier" &&
+        d.value === name &&
+        // Is not a variable assignment.
+        (!tokens[i + 1] || tokens[i + 1].value !== "=") &&
+        // Is not a variable declaration.
+        (!tokens[i - 1] || tokens[i - 1].value !== "let") &&
+        (!tokens[i - 1] || tokens[i - 1].value !== "const") &&
+        (!tokens[i - 1] || tokens[i - 1].value !== "var")
+      );
+    });
+}
+
+function isCircular(relationById, id) {
+  const relation = relationById.get(id);
+  const { from, to } = relation;
+  return from.some((id) => to.includes(id));
 }
 
 function rootsOf(relationById) {
   return Array.from(relationById.entries())
-    .filter(([, d]) => d.from.length === 0)
+    .filter(([, d]) => {
+      const { from } = d;
+      if (from.length === 0) return true;
+      if (from.every((d) => isCircular(relationById, d))) return true;
+      return false;
+    })
     .map(([id]) => id);
 }
 
@@ -227,6 +248,7 @@ function execute(
   valueById,
   countById,
   disposeById,
+  idByName,
   hooks
 ) {
   const delay = 0;
@@ -236,11 +258,28 @@ function execute(
 
   const node = nodeById.get(id);
 
-  const { expression } = node;
+  const { expression, name } = node;
+
+  if (name !== undefined && idByName.get(name) !== id) {
+    error(
+      new SyntaxError(`Identifier ${name} has already been declared.`),
+      node
+    );
+    return;
+  }
+
   const relation = relationById.get(id);
   const { from, to } = relation;
   const names = from.map((id) => nodeById.get(id).name);
   const deps = from.map((id) => valueById.get(id));
+
+  for (const fromId of from) {
+    const { from: fromIds } = relationById.get(fromId);
+    if (fromIds.includes(id)) {
+      error(new SyntaxError(`Circular dependency detected.`), node);
+      return;
+    }
+  }
 
   const executeDeps = () => {
     for (const toId of to) {
@@ -254,6 +293,7 @@ function execute(
           valueById,
           countById,
           disposeById,
+          idByName,
           hooks
         );
       } else {
@@ -266,45 +306,56 @@ function execute(
     let dispose = () => {};
     const unsubscribe = (callback) => (dispose = callback);
 
-    const output = new Function(
-      "unsubscribe",
-      ...names,
-      lines(
-        `const value = ${expression}`,
-        `return value //# sourceURL=${SCRIPT_PREFIX}-${id}.js`
-      )
-    )(unsubscribe, ...values);
+    let output;
+    try {
+      output = new Function(
+        "unsubscribe",
+        ...names,
+        lines(
+          `const value = ${expression}`,
+          `return value //# sourceURL=${SCRIPT_PREFIX}-${id}.js`
+        )
+      )(unsubscribe, ...values);
+    } catch (e) {
+      error(e, node);
+      return;
+    }
 
     if (output instanceof Signal) {
-      let resolved = false;
+      try {
+        let resolved = false;
 
-      const next = (value) => {
-        if (resolved) {
-          // If a node is mounted, there is new need to update the node.
-          setTimeout(() => {
+        const next = (value) => {
+          if (resolved) {
+            // If a node is mounted, there is new need to update the node.
+            setTimeout(() => {
+              valueById.set(id, value);
+              executeDeps();
+            }, delay);
+          } else {
             valueById.set(id, value);
             executeDeps();
-          }, delay);
-        } else {
+            success(node);
+          }
+        };
+
+        const view = (value) => {
+          resolved = true;
           valueById.set(id, value);
-          executeDeps();
           success(node);
-        }
-      };
+        };
 
-      const view = (value) => {
-        resolved = true;
-        valueById.set(id, value);
-        success(node);
-      };
+        const subscription = output.subscribe(next, view);
 
-      const subscription = output.subscribe(next, view);
+        const prevDispose = disposeById.get(id);
+        prevDispose && prevDispose();
 
-      const prevDispose = disposeById.get(id);
-      prevDispose && prevDispose();
-
-      dispose = () => subscription.unsubscribe();
-      disposeById.set(id, dispose);
+        dispose = () => subscription.unsubscribe();
+        disposeById.set(id, dispose);
+      } catch (e) {
+        error(e, node);
+        return;
+      }
     } else {
       if (output instanceof Promise) loading(node);
 
@@ -372,37 +423,53 @@ function render(module, { isDark }) {
 
   const variables = blocks.map(createVariable).filter(Boolean);
   const relationById = createGraph(variables);
+  console.log(relationById);
   const nodeById = new Map(variables.map((d) => [d.id, d]));
   const valueById = new Map(variables.map((d) => [d.id, undefined]));
   const countById = new Map(
     variables.map((d) => [d.id, relationById.get(d.id).from.length])
   );
+  const idByName = new Map();
+
   const roots = rootsOf(relationById);
 
+  for (const { name, id } of variables) {
+    if (!idByName.has(name) && name !== undefined) idByName.set(name, id);
+  }
+
   for (const root of roots) {
-    execute(root, nodeById, relationById, valueById, countById, module, {
-      loading: ({ id }) => {
-        const block = blocks[id];
-        const [node, dispose] = renderLoading();
-        node.__dispose__ = dispose;
-        mount(block, node);
-      },
-      success: ({ id }) => {
-        const block = blocks[id];
-        const node = valueById.get(id);
-        const [normalized, dispose] = renderInspector(node, { isDark });
-        normalized.__dispose__ = dispose;
-        mount(block, normalized);
-      },
-      error: (e, { id }) => {
-        const block = blocks[id];
-        const [error, dispose] = renderError(e, {
-          script: `${SCRIPT_PREFIX}-${id}.js`,
-        });
-        error.__dispose__ = dispose;
-        mount(block, error);
-      },
-    });
+    execute(
+      root,
+      nodeById,
+      relationById,
+      valueById,
+      countById,
+      module,
+      idByName,
+      {
+        loading: ({ id }) => {
+          const block = blocks[id];
+          const [node, dispose] = renderLoading();
+          node.__dispose__ = dispose;
+          mount(block, node);
+        },
+        success: ({ id }) => {
+          const block = blocks[id];
+          const node = valueById.get(id);
+          const [normalized, dispose] = renderInspector(node, { isDark });
+          normalized.__dispose__ = dispose;
+          mount(block, normalized);
+        },
+        error: (e, { id }) => {
+          const block = blocks[id];
+          const [error, dispose] = renderError(e, {
+            script: `${SCRIPT_PREFIX}-${id}.js`,
+          });
+          error.__dispose__ = dispose;
+          mount(block, error);
+        },
+      }
+    );
   }
 }
 
