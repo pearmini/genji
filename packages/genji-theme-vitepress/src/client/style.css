@@ -1,8 +1,7 @@
 :root {
   --syntax_normal: var(--vp-c-text-1);
-  --sans-serif: -apple-system, BlinkMacSystemFont, "avenir next", avenir,
-    helvetica, "helvetica neue", ubuntu, roboto, noto, "segoe ui", arial,
-    sans-serif;
+  --sans-serif: -apple-system, BlinkMacSystemFont, "avenir next", avenir, helvetica, "helvetica neue", ubuntu, roboto,
+    noto, "segoe ui", arial, sans-serif;
 }
 
 .genji-cell {
@@ -14,10 +13,6 @@
 
 .genji-cell + div {
   margin-top: 0px !important;
-}
-
-.genji-object-inspector {
-  margin-bottom: 4px;
 }
 
 .genji-object-inspector * {

@@ -11,10 +11,7 @@ replay = Inputs.button("Replay", { label: "click me" });
   replay;
   const span = document.createElement("span");
   span.textContent = 0;
-  const timer = setInterval(
-    () => (span.textContent = +span.textContent + 1),
-    1000
-  );
+  const timer = setInterval(() => (span.textContent = +span.textContent + 1), 1000);
   unsubscribe(() => clearInterval(timer));
   return span;
 })();

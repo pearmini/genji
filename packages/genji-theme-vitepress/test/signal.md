@@ -25,9 +25,7 @@ pointer = new Signal((next) => {
 ## Deps
 
 ```js eval
-`My name is ${name}, I'm at <${pointer[0].toFixed(2)}, ${pointer[1].toFixed(
-  2
-)}> and counting to ${count}.`;
+`My name is ${name}, I'm at <${pointer[0].toFixed(2)}, ${pointer[1].toFixed(2)}> and counting to ${count}.`;
 ```
 
 ## Input

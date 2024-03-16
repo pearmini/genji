@@ -12,9 +12,12 @@
     "src"
   ],
   "scripts": {
-    "test:dev": "vitepress dev test",
-    "test:build": "vitepress build test",
-    "test:preview": "vitepress preview test"
+    "dev": "vitepress dev test",
+    "test": "npm run test:lint && npm run test:format",
+    "test:lint": "eslint src test",
+    "test:format": "prettier --check src test",
+    "build": "vitepress build test",
+    "preview": "vitepress preview test"
   },
   "author": "https://github.com/pearmini",
   "license": "MIT",
@@ -24,6 +27,9 @@
     "directory": "packages/genji-theme-vitepress"
   },
   "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.2.5",
     "vitepress": "^1.0.0-rc.44"
   },
   "dependencies": {
