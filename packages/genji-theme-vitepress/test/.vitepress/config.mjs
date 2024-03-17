@@ -28,6 +28,7 @@ export default defineConfig({
           { text: "Dispose", link: "/dispose" },
           { text: "Only", link: "/only" },
           { text: "Skip", link: "/skip" },
+          { text: "Reference", link: "/reference" },
         ],
       },
     ],
