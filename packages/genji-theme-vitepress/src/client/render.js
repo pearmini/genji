@@ -5,6 +5,7 @@ import { Inspector } from "@observablehq/inspector";
 import * as Signals from "./signal";
 import * as Inputs from "./inputs";
 import Signal from "./signal";
+import { dev } from "./dev";
 
 const SCRIPT_PREFIX = "cell";
 
@@ -159,12 +160,25 @@ function normalizeVariable(ast, code) {
   return [undefined, ""];
 }
 
+function getReferences(ast) {
+  const references = [];
+  const walk = (node) => {
+    if (node.type === "Identifier") references.push(node);
+    for (const key in node) {
+      if (node[key] && typeof node[key] === "object") walk(node[key]);
+    }
+  };
+  walk(ast);
+  return references;
+}
+
 function parseVariable(code) {
   const tokens = tokenize(code);
   const ast = parseScript(code);
   const [name, expression, params = []] = normalizeVariable(ast, code);
+  const references = getReferences(ast);
   const paramNames = params.map((d) => d.name);
-  return { name, expression, tokens, ast, params: paramNames };
+  return { name, expression, tokens, ast, params: paramNames, references };
 }
 
 function createVariable(block, index) {
@@ -240,7 +254,9 @@ function isReference(n1, n2) {
         // Is not a variable declaration.
         (!tokens[i - 1] || tokens[i - 1].value !== "let") &&
         (!tokens[i - 1] || tokens[i - 1].value !== "const") &&
-        (!tokens[i - 1] || tokens[i - 1].value !== "var")
+        (!tokens[i - 1] || tokens[i - 1].value !== "var") &&
+        // Is not a object property.
+        (!tokens[i - 1] || tokens[i - 1].value !== ".")
       );
     });
 }
@@ -251,7 +267,7 @@ function isCircular(relationById, id) {
   return from.some((id) => to.includes(id));
 }
 
-function rootsOf(relationById) {
+function leavesOf(relationById) {
   return Array.from(relationById.entries())
     .filter(([, d]) => {
       const { from } = d;
@@ -259,6 +275,12 @@ function rootsOf(relationById) {
       if (from.every((d) => isCircular(relationById, d))) return true;
       return false;
     })
+    .map(([id]) => id);
+}
+
+function rootsOf(relationById) {
+  return Array.from(relationById.entries())
+    .filter(([, d]) => d.to.length === 0)
     .map(([id]) => id);
 }
 
@@ -397,7 +419,6 @@ function dispose(module) {
 function createCells(blocks) {
   const oldBlocks = document.querySelectorAll(".genji-cell");
   oldBlocks.forEach((block) => block.remove());
-
   for (const block of blocks) {
     const container = document.createElement("div");
     container.classList.add("genji-cell");
@@ -405,7 +426,27 @@ function createCells(blocks) {
   }
 }
 
-function render(module, { isDark }) {
+function printDevTrees(path, relationById, variables) {
+  const head = "=".repeat(5) + " " + path.replace("/", "") + " " + "=".repeat(5);
+  console.log(`\n${head}`);
+  const roots = rootsOf(relationById);
+  const print = (id, level = 0) => {
+    const { expression } = variables.find((d) => d.id === id);
+    const relation = relationById.get(id);
+    const { from } = relation;
+    const space = "....".repeat(level);
+    const lines = expression
+      .split("\n")
+      .map((d) => `${space}${d}`)
+      .join("\n");
+    console.log(lines);
+    for (const id of from) print(id, level + 1);
+  };
+  for (const id of roots) print(id);
+  console.log("=".repeat(head.length));
+}
+
+function render(module, { isDark, path }) {
   dispose(module);
 
   const codes = document.querySelectorAll("[data-genji]");
@@ -431,8 +472,8 @@ function render(module, { isDark }) {
     if (!idByName.has(name) && name !== undefined) idByName.set(name, id);
   }
 
-  const roots = rootsOf(relationById);
-  const nonskips = roots.filter((id) => {
+  const leaves = leavesOf(relationById);
+  const nonskips = leaves.filter((id) => {
     const { skip } = optionsById.get(id);
     return skip === undefined || skip === "false";
   });
@@ -441,6 +482,8 @@ function render(module, { isDark }) {
     return only === "undefined" || only === "true";
   });
   const executeIds = onlys.length ? onlys : nonskips;
+
+  dev(() => printDevTrees(path, relationById, variables));
 
   for (const root of executeIds) {
     execute(root, nodeById, relationById, valueById, countById, module, idByName, {
@@ -476,14 +519,14 @@ export function useRender({ global }) {
   const module = new Map();
 
   const renderPage = () => {
-    render(module, { isDark: isDark.value });
+    render(module, { isDark: isDark.value, path: route.path });
   };
 
   // Avoid mount multiple times because of hot reload in development.
-  if (import.meta.env.DEV) {
+  dev(() => {
     if (window.__module__) dispose(window.__module__);
     window.__module__ = module;
-  }
+  });
 
   watch(
     () => route.path,
