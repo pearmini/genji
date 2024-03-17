@@ -1,6 +1,7 @@
 import { useRoute, useData } from "vitepress";
 import { onMounted, watch } from "vue";
 import { tokenize, parseScript } from "esprima";
+import { traverse } from "estraverse";
 import { Inspector } from "@observablehq/inspector";
 import * as Signals from "./signal";
 import * as Inputs from "./inputs";
@@ -160,25 +161,22 @@ function normalizeVariable(ast, code) {
   return [undefined, ""];
 }
 
-function getReferences(ast) {
-  const references = [];
-  const walk = (node) => {
-    if (node.type === "Identifier") references.push(node);
-    for (const key in node) {
-      if (node[key] && typeof node[key] === "object") walk(node[key]);
-    }
-  };
-  walk(ast);
-  return references;
+// TODO
+function getExternalDeps(ast) {
+  const externalDeps = [];
+  traverse(ast, {
+    enter: function () {},
+  });
+  return externalDeps;
 }
 
 function parseVariable(code) {
   const tokens = tokenize(code);
   const ast = parseScript(code);
   const [name, expression, params = []] = normalizeVariable(ast, code);
-  const references = getReferences(ast);
+  const deps = getExternalDeps(ast);
   const paramNames = params.map((d) => d.name);
-  return { name, expression, tokens, ast, params: paramNames, references };
+  return { name, expression, tokens, ast, params: paramNames, deps };
 }
 
 function createVariable(block, index) {
@@ -240,6 +238,7 @@ function createGraph(nodes) {
   return relationById;
 }
 
+// TODO: work with deps to avoid wrong execution order.
 function isReference(n1, n2) {
   const { name } = n1;
   const { tokens, params } = n2;
@@ -483,7 +482,7 @@ function render(module, { isDark, path }) {
   });
   const executeIds = onlys.length ? onlys : nonskips;
 
-  dev(() => printDevTrees(path, relationById, variables));
+  dev(() => printDevTrees(path, relationById, variables), false);
 
   for (const root of executeIds) {
     execute(root, nodeById, relationById, valueById, countById, module, idByName, {

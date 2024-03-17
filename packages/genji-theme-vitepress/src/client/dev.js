@@ -1,3 +1,3 @@
-export function dev(callback) {
-  if (import.meta.env.DEV) callback();
+export function dev(callback, run = true) {
+  if (import.meta.env.DEV && run) callback();
 }
