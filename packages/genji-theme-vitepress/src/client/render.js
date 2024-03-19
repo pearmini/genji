@@ -181,9 +181,13 @@ function parseVariable(code) {
   return { name, expression, tokens, ast, params: paramNames, deps };
 }
 
+function identity(d) {
+  return d;
+}
+
 function createVariable(block, index, customTransforms) {
   const { lang, t = "", ...rest } = block.dataset;
-  const P = [transforms[lang], ...t.split(",").map((d) => customTransforms[d])].filter(Boolean);
+  const P = [transforms[lang] || identity, ...t.split(",").map((d) => customTransforms[d])].filter(Boolean);
 
   if (!P.length) return null;
 
@@ -204,11 +208,12 @@ function builtinVariable(variables) {
     ["now", "now = Signals.now()"],
   ];
   const names = new Set(variables.map((d) => d.name));
+  let id = -1;
   for (const [name, code] of builtins) {
     if (names.has(name)) continue;
     const variable = {
       code,
-      id: variables.length,
+      id: id--,
       options: {},
       ...parseVariable(code),
     };
@@ -463,19 +468,27 @@ function render(module, { isDark, path, transform = {} }) {
     return true;
   });
 
-  createCells(blocks);
-
   if (!blocks.length) return;
 
-  const variables = blocks.map((d, i) => createVariable(d, i, transform)).filter(Boolean);
-  builtinVariable(variables);
+  const errors = [];
+  const variables = blocks
+    .map((d, i) => {
+      try {
+        return createVariable(d, i, transform);
+      } catch (e) {
+        errors.push([i, e]);
+        return null;
+      }
+    })
+    .filter(Boolean);
 
+  builtinVariable(variables);
+  createCells(blocks);
   hideCells(blocks);
 
   const relationById = createGraph(variables);
   const nodeById = new Map(variables.map((d) => [d.id, d]));
   const valueById = new Map(variables.map((d) => [d.id, undefined]));
-  const optionsById = new Map(variables.map((d) => [d.id, d.options]));
   const countById = new Map(variables.map((d) => [d.id, relationById.get(d.id).from.length]));
   const idByName = new Map();
   for (const { name, id } of variables) {
@@ -483,44 +496,43 @@ function render(module, { isDark, path, transform = {} }) {
   }
 
   const leaves = leavesOf(relationById);
-  const nonskips = leaves.filter((id) => {
-    const { skip } = optionsById.get(id);
-    return skip === undefined || skip === "false";
-  });
-  const onlys = nonskips.filter((id) => {
-    const { only } = optionsById.get(id);
-    return only === "undefined" || only === "true";
-  });
-  const executeIds = onlys.length ? onlys : nonskips;
 
   dev(() => printDevTrees(path, relationById, variables), false);
 
-  for (const root of executeIds) {
+  const loading = ({ id }) => {
+    const block = blocks[id];
+    const [node, dispose] = renderLoading();
+    node.__dispose__ = dispose;
+    mount(block, node);
+  };
+
+  const success = ({ id }) => {
+    const block = blocks[id];
+    const node = valueById.get(id);
+    if (!block) return;
+    const [normalized, dispose] = renderInspector(node, { isDark });
+    normalized.__dispose__ = dispose;
+    mount(block, normalized);
+  };
+
+  const error = (e, { id }) => {
+    const block = blocks[id];
+    const [error, dispose] = renderError(e, {
+      script: `${SCRIPT_PREFIX}-${id}.js`,
+    });
+    error.__dispose__ = dispose;
+    mount(block, error);
+  };
+
+  for (const root of leaves) {
     execute(root, nodeById, relationById, valueById, countById, module, idByName, {
-      loading: ({ id }) => {
-        const block = blocks[id];
-        const [node, dispose] = renderLoading();
-        node.__dispose__ = dispose;
-        mount(block, node);
-      },
-      success: ({ id }) => {
-        const block = blocks[id];
-        const node = valueById.get(id);
-        if (!block) return;
-        const [normalized, dispose] = renderInspector(node, { isDark });
-        normalized.__dispose__ = dispose;
-        mount(block, normalized);
-      },
-      error: (e, { id }) => {
-        const block = blocks[id];
-        const [error, dispose] = renderError(e, {
-          script: `${SCRIPT_PREFIX}-${id}.js`,
-        });
-        error.__dispose__ = dispose;
-        mount(block, error);
-      },
+      loading,
+      success,
+      error,
     });
   }
+
+  for (const [id, e] of errors) error(e, { id });
 }
 
 export function useRender({ library, transform }) {
