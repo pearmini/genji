@@ -7,7 +7,7 @@ Test Genji' built-in Markdown Extensions.
 It should not render without `eval` markup with `js`.
 
 ```js
-display(() => {
+call(() => {
   const div = document.createElement("div");
   div.style.width = "100px";
   div.style.height = "100px";
@@ -21,7 +21,7 @@ display(() => {
 It should render with `eval` markup with `js`.
 
 ```js eval {0,4}
-display(() => {
+call(() => {
   const div = document.createElement("div");
   div.style.width = "100px";
   div.style.height = "100px";
@@ -41,7 +41,7 @@ block("orange");
 ## Hide Code
 
 ```js eval code=false
-display(() => {
+call(() => {
   const div = document.createElement("div");
   div.style.width = "100px";
   div.style.height = "100px";

@@ -3,7 +3,7 @@
 ## unsubscribe
 
 ```js eval
-display(() => {
+call(() => {
   const span = document.createElement("span");
   span.textContent = 1;
 
@@ -21,7 +21,7 @@ display(() => {
 ## Error
 
 ```js eval
-display(() => {
+call(() => {
   const span = document.createElement("span");
   span.textContent = 1;
 

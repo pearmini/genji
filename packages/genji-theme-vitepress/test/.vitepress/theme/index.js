@@ -3,7 +3,7 @@ import Layout from "../../../src/client/Layout.vue";
 import { h } from "vue";
 
 const props = {
-  global: {
+  library: {
     block: (color) => {
       const div = document.createElement("div");
       div.style.width = "100px";
@@ -11,6 +11,8 @@ const props = {
       div.style.background = color;
       return div;
     },
+  },
+  transform: {
     parseDiv: (code) => {
       return `(() => {
       ${code}
