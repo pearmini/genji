@@ -3,7 +3,7 @@
 ## Simple Error
 
 ```js eval
-display(() => {
+call(() => {
   const a = 1;
   a = 2;
 });

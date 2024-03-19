@@ -6,9 +6,9 @@ import "./style.css";
 import "./inspector.css";
 import "./inputs.css";
 
-const { global = {}, Theme } = defineProps(["global", "Theme"]);
+const { transform = {}, library = {}, Theme } = defineProps(["transform", "library", "Theme"]);
 
-useRender({ global });
+useRender({ transform, library });
 </script>
 
 <template>

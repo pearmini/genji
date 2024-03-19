@@ -5,15 +5,16 @@ import { traverse } from "estraverse";
 import { Inspector } from "@observablehq/inspector";
 import * as Signals from "./signal";
 import * as Inputs from "./inputs";
+import * as libs from "./stdlib";
 import Signal from "./signal";
 import { dev } from "./dev";
 
 const SCRIPT_PREFIX = "cell";
 
-function injectGlobal(global) {
+function injectGlobal(global = {}) {
   Object.assign(window, {
     ...global,
-    display: (callback) => callback(),
+    ...libs,
     Signals,
     Inputs,
   });
@@ -152,6 +153,7 @@ function isExpression(ast) {
   return typeOfBody(ast) === "ExpressionStatement";
 }
 
+// TODO: const add = (a, b = 10) => a + b;
 function normalizeVariable(ast, code) {
   if (isAssignment(ast)) return createAssignmentNode(code, ast);
   if (isCall(ast)) return createCallNode(code);
@@ -179,9 +181,9 @@ function parseVariable(code) {
   return { name, expression, tokens, ast, params: paramNames, deps };
 }
 
-function createVariable(block, index) {
+function createVariable(block, index, customTransforms) {
   const { lang, t = "", ...rest } = block.dataset;
-  const P = [transforms[lang], ...t.split(",").map((d) => window[d])].filter(Boolean);
+  const P = [transforms[lang], ...t.split(",").map((d) => customTransforms[d])].filter(Boolean);
 
   if (!P.length) return null;
 
@@ -425,6 +427,13 @@ function createCells(blocks) {
   }
 }
 
+function hideCells(blocks) {
+  for (const block of blocks) {
+    const { code } = block.dataset;
+    if (code === "false") block.style.display = "none";
+  }
+}
+
 function printDevTrees(path, relationById, variables) {
   const head = "=".repeat(5) + " " + path.replace("/", "") + " " + "=".repeat(5);
   console.log(`\n${head}`);
@@ -445,7 +454,7 @@ function printDevTrees(path, relationById, variables) {
   console.log("=".repeat(head.length));
 }
 
-function render(module, { isDark, path }) {
+function render(module, { isDark, path, transform = {} }) {
   dispose(module);
 
   const codes = document.querySelectorAll("[data-genji]");
@@ -458,8 +467,10 @@ function render(module, { isDark, path }) {
 
   if (!blocks.length) return;
 
-  const variables = blocks.map(createVariable).filter(Boolean);
+  const variables = blocks.map((d, i) => createVariable(d, i, transform)).filter(Boolean);
   builtinVariable(variables);
+
+  hideCells(blocks);
 
   const relationById = createGraph(variables);
   const nodeById = new Map(variables.map((d) => [d.id, d]));
@@ -512,13 +523,13 @@ function render(module, { isDark, path }) {
   }
 }
 
-export function useRender({ global }) {
+export function useRender({ library, transform }) {
   const route = useRoute();
   const { isDark } = useData();
   const module = new Map();
 
   const renderPage = () => {
-    render(module, { isDark: isDark.value, path: route.path });
+    render(module, { isDark: isDark.value, path: route.path, transform });
   };
 
   // Avoid mount multiple times because of hot reload in development.
@@ -540,7 +551,7 @@ export function useRender({ global }) {
   );
 
   onMounted(() => {
-    injectGlobal(global);
+    injectGlobal(library);
     renderPage();
   });
 }

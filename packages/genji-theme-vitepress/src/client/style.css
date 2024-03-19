@@ -9,6 +9,7 @@
   align-items: center;
   margin: 16px 0px 0px 0px;
   min-height: 30px;
+  overflow: auto;
 }
 
 .genji-cell + div {
@@ -58,4 +59,10 @@
 .__ns__-table table {
   display: table !important;
   width: 100%;
+}
+
+.observablehq--caret {
+  margin-right: 4px;
+  vertical-align: baseline;
+  margin-bottom: 2px;
 }

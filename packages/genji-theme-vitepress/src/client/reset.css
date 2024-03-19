@@ -1,6 +1,6 @@
 /** Reset CSS defined by VitePress through element selector: element {} */
 .genji-cell * {
-  all: revert;
+  all: revert-layer;
 }
 
 /** Reset CSS defined by VitePress through class selector: .vp-doc [element] {}*/

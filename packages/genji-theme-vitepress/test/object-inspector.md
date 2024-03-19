@@ -41,7 +41,7 @@ o = {
 ## Class
 
 ```js eval
-display(() => {
+call(() => {
   class N {
     add(x, y) {
       return x + y;
