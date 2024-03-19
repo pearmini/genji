@@ -6,6 +6,7 @@ export default defineConfig({
   extends: config,
   title: "Genji",
   description: "The Interactive Markdown extension",
+  cleanUrls: true,
   head: [["link", { rel: "icon", type: "image/png", href: "/icon.png" }]],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config

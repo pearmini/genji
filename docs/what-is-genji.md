@@ -322,11 +322,12 @@ Now say:
 
 ````md
 ```js eval t=cm
-app.data(cm.range(10)).append(cm.circle, {
+app.data(cm.range(100)).append(cm.circle, {
   x: () => cm.random(app.prop("width")),
   y: () => cm.random(app.prop("height")),
-  r: 50,
-  fill: "black",
+  fill: "rgba(175, 175, 175, 0.5)",
+  stroke: cm.rgb(0),
+  r: 16,
 });
 ```
 ````
