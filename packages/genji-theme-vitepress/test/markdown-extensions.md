@@ -61,7 +61,7 @@ def add(x, y):
 
 ## Python Block2
 
-It should not render python block with `eval` markup.
+It should throw error when rendering python block with `eval` markup.
 
 ```python eval
 def add(x, y):
