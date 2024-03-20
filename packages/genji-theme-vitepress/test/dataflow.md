@@ -5,7 +5,11 @@ add(a, b);
 ```
 
 ```js eval
-function add(a, b) {
+add(1);
+```
+
+```js eval
+function add(a, b = 10) {
   return a + b;
 }
 ```
