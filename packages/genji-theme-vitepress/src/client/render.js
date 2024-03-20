@@ -8,6 +8,7 @@ import * as Inputs from "./inputs";
 import * as libs from "./stdlib";
 import Signal from "./signal";
 import { dev } from "./dev";
+import { onHMR } from "./hmr";
 
 const SCRIPT_PREFIX = "cell";
 
@@ -541,11 +542,13 @@ function render(module, { isDark, path, transform = {} }) {
 
 export function useRender({ library, transform }) {
   const route = useRoute();
-  const { isDark } = useData();
+  const { isDark, site } = useData();
   const module = new Map();
 
   const renderPage = () => {
-    render(module, { isDark: isDark.value, path: route.path, transform });
+    setTimeout(() => {
+      render(module, { isDark: isDark.value, path: route.path, transform });
+    }, 20);
   };
 
   // Avoid mount multiple times because of hot reload in development.
@@ -554,9 +557,13 @@ export function useRender({ library, transform }) {
     window.__module__ = module;
   });
 
+  dev(() => {
+    onHMR(() => renderPage(), site.value.base);
+  });
+
   watch(
     () => route.path,
-    () => setTimeout(() => renderPage()),
+    () => renderPage(),
   );
 
   watch(
