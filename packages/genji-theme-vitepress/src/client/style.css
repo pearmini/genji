@@ -10,6 +10,12 @@
   margin: 16px 0px 0px 0px;
   min-height: 30px;
   overflow: auto;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+}
+
+.genji-cell::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari and new Edge */
 }
 
 .genji-cell + div {
