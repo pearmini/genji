@@ -114,7 +114,12 @@ function createVariableNode(code, ast) {
 function createFunctionNode(code, ast) {
   const { name } = ast.body[0].id;
   const { params } = ast.body[0];
-  return [name, code, params];
+  const normalized = params.map((d) => {
+    // function add(a, b = 10) { return a + b; }
+    if (d.type === "AssignmentPattern") return d.left;
+    return d;
+  });
+  return [name, code, normalized];
 }
 
 function createCallNode(code) {
@@ -153,7 +158,6 @@ function isExpression(ast) {
   return typeOfBody(ast) === "ExpressionStatement";
 }
 
-// TODO: const add = (a, b = 10) => a + b;
 function normalizeVariable(ast, code) {
   if (isAssignment(ast)) return createAssignmentNode(code, ast);
   if (isCall(ast)) return createCallNode(code);
