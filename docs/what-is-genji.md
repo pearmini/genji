@@ -151,7 +151,7 @@ size = Inputs.range([50, 300], { label: "size", step: 1 });
 ```
 
 ```js eval code=false
-color = Inputs.range({ label: "color", value: "#58A65C" });
+color = Inputs.color({ label: "color", value: "#58A65C" });
 ```
 
 ```js eval
@@ -166,7 +166,7 @@ size = Inputs.range([50, 300], { label: "size", step: 1 });
 ```
 
 ```js eval code=false
-color = Inputs.range({ label: "color", value: "#58A65C" });
+color = Inputs.color({ label: "color", value: "#58A65C" });
 ```
 
 ```js eval
