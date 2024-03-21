@@ -4,9 +4,9 @@ import { h } from "vue";
 
 const props = {
   library: {
-    block: (color) => {
+    block: (color, size = 100) => {
       const div = document.createElement("div");
-      div.style.width = "100px";
+      div.style.width = size + "px";
       div.style.height = "100px";
       div.style.background = color;
       return div;

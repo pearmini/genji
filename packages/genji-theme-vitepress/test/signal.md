@@ -68,3 +68,17 @@ Signals.width();
   return div;
 })();
 ```
+
+## Multiple
+
+```js eval code=false
+size = Inputs.range([50, 300], { label: "size", step: 1, value: 60 });
+```
+
+```js eval code=false
+color = Inputs.color({ label: "color", value: "#78B856" });
+```
+
+```js eval
+block(color, size);
+```
