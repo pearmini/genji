@@ -150,6 +150,10 @@ For example, to see how _size_ parameters affects `block` function, using `code=
 size = Inputs.range([50, 300], { label: "size", step: 1 });
 ```
 
+```js eval code=false
+color = Inputs.range({ label: "color", value: "#58A65C" });
+```
+
 ```js eval
 block(color, size);
 ```
@@ -161,8 +165,12 @@ This produces:
 size = Inputs.range([50, 300], { label: "size", step: 1 });
 ```
 
+```js eval code=false
+color = Inputs.range({ label: "color", value: "#58A65C" });
+```
+
 ```js eval
-block("steelblue", size);
+block(color, size);
 ```
 
 ## Reactive Signals
