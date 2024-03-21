@@ -1,5 +1,5 @@
 :root {
-  --syntax_normal: var(--vp-c-text-1);
+  --syntax_normal: var(--vp-c-text-1) !important;
   --sans-serif: -apple-system, BlinkMacSystemFont, "avenir next", avenir, helvetica, "helvetica neue", ubuntu, roboto,
     noto, "segoe ui", arial, sans-serif;
 }
