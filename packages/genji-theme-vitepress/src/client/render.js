@@ -355,18 +355,21 @@ function execute(id, nodeById, relationById, valueById, countById, disposeById, 
       try {
         let resolved = false;
 
+        // Make sure next is called after view is called.
         const next = (value) => {
-          if (resolved) {
+          setTimeout(() => {
             // If a node is mounted, there is new need to update the node.
-            setTimeout(() => {
+            if (resolved) {
+              setTimeout(() => {
+                valueById.set(id, value);
+                executeDeps();
+              }, delay);
+            } else {
               valueById.set(id, value);
               executeDeps();
-            }, delay);
-          } else {
-            valueById.set(id, value);
-            executeDeps();
-            success(node);
-          }
+              success(node);
+            }
+          }, delay);
         };
 
         const view = (value) => {

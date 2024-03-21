@@ -26,8 +26,8 @@ export function fromElement(element) {
   return define((next, view) => {
     const onInput = () => next(element.value);
     element.addEventListener("input", onInput);
-    next(element.value);
     view(element);
+    next(element.value);
     return () => element.removeEventListener("input", onInput);
   });
 }
