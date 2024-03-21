@@ -1,7 +1,7 @@
 import DefaultTheme from "vitepress/theme";
 import { h } from "vue";
 import Layout from "genji-theme-vitepress";
-import { dot } from "@observablehq/plot";
+import { dot, barY } from "@observablehq/plot";
 import { json } from "d3-fetch";
 import { app, range, circle, random, rgb } from "@charming-art/charming";
 import "./custom.css";
@@ -9,7 +9,7 @@ import "./custom.css";
 const props = {
   library: {
     d3: { json },
-    Plot: { dot },
+    Plot: { dot, barY },
     cm: { app, range, circle, random, rgb },
   },
   transform: {
