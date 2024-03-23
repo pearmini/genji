@@ -1,4 +1,4 @@
-# Stdlib
+# Libraries
 
 Some built-in variables or functions can be accessed in code blocks.
 
