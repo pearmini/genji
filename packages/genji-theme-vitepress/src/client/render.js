@@ -17,6 +17,7 @@ function injectGlobal(global = {}) {
     ...global,
     ...libs,
     Signals,
+    Signal,
     Inputs,
   });
 }

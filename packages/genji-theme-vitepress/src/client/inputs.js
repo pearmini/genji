@@ -20,10 +20,10 @@ import {
   // password as _password,
   // textarea as _textarea,
 } from "@observablehq/inputs";
-import { define } from "./signal";
+import Signal from "./signal";
 
 export function fromElement(element) {
-  return define((next, view) => {
+  return new Signal((next, view) => {
     const onInput = () => next(element.value);
     element.addEventListener("input", onInput);
     view(element);

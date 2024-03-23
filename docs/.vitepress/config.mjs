@@ -37,7 +37,7 @@ export default defineConfig({
         text: "Reference",
         items: [
           { text: "Directives", link: "/reference/directives" },
-          { text: "Globals", link: "/reference/globals" },
+          { text: "Stdlib", link: "/reference/stdlib" },
           { text: "Inputs", link: "/reference/inputs" },
           { text: "Props", link: "/reference/props" },
         ],
@@ -45,7 +45,7 @@ export default defineConfig({
     ],
     footer: {
       message: "Released under the MIT License.",
-      copyright: "Copyright © 2024-present Bairui SU",
+      copyright: `Copyright © 2024-${new Date().getUTCFullYear()} Bairui SU`,
     },
     logo: "/logo.svg",
     socialLinks: [

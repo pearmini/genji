@@ -185,7 +185,7 @@ For example, to define a signal to produce the current mouse position:
 
 ````md
 ```js eval
-pointer = Signals.define((next) => {
+pointer = new Signal((next) => {
   const pointermoved = (event) => next([event.clientX, event.clientY]);
   addEventListener("pointermove", pointermoved);
   next([0, 0]);
@@ -201,7 +201,7 @@ pointer = Signals.define((next) => {
 This produces:
 
 ```js eval
-pointer = Signals.define((next) => {
+pointer = new Signal((next) => {
   const pointermoved = (event) => next([event.clientX, event.clientY]);
   addEventListener("pointermove", pointermoved);
   next([0, 0]);
@@ -219,7 +219,7 @@ For example, let's define a custom text input:
 
 ````md
 ```js eval
-name = Signals.define((next, view) => {
+name = new Signal((next, view) => {
   const input = document.createElement("input");
   const onChange = (e) => next(e.target.value);
   input.addEventListener("input", onChange);
@@ -237,7 +237,7 @@ name = Signals.define((next, view) => {
 This produces:
 
 ```js eval
-name = Signals.define((next, view) => {
+name = new Signal((next, view) => {
   const input = document.createElement("input");
   const onChange = (e) => next(e.target.value);
   input.addEventListener("input", onChange);

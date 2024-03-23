@@ -3,7 +3,7 @@
 ## Basic
 
 ```js eval
-count = Signals.define((next) => {
+count = new Signal((next) => {
   let count = 0;
   next(count++);
   const timer = setInterval(() => next(count++), 1000);
@@ -14,7 +14,7 @@ count = Signals.define((next) => {
 ## Mouse
 
 ```js eval
-pointer = Signals.define((next) => {
+pointer = new Signal((next) => {
   const pointermoved = (event) => next([event.clientX, event.clientY]);
   addEventListener("pointermove", pointermoved);
   next([0, 0]);
@@ -31,7 +31,7 @@ pointer = Signals.define((next) => {
 ## Input
 
 ```js eval
-name = Signals.define((next, view) => {
+name = new Signal((next, view) => {
   const input = document.createElement("input");
   view(input);
 
