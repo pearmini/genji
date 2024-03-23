@@ -33,7 +33,20 @@ export default defineConfig({
           { text: "Transforms", link: "/features/transforms" },
         ],
       },
+      {
+        text: "Reference",
+        items: [
+          { text: "Directives", link: "/reference/directives" },
+          { text: "Globals", link: "/reference/globals" },
+          { text: "Inputs", link: "/reference/inputs" },
+          { text: "Props", link: "/reference/props" },
+        ],
+      },
     ],
+    footer: {
+      message: "Released under the MIT License.",
+      copyright: "Copyright © 2024-present Bairui SU",
+    },
     logo: "/logo.svg",
     socialLinks: [
       { icon: "github", link: "https://github.com/pearmini/genji" },

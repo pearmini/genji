@@ -5,8 +5,8 @@
 :root {
   --vp-home-hero-name-background: linear-gradient(
     -30deg,
-    hsl(200deg 100% 65%),
-    #a463f2
+    #a463f2,
+    hsl(200deg 100% 65%)
   );
   --vp-home-hero-name-color: transparent;
 }
