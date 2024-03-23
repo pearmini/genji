@@ -10,12 +10,8 @@ export default class Signal {
   }
 }
 
-export function define(callback) {
-  return new Signal(callback);
-}
-
 export function now() {
-  return define((next) => {
+  return new Signal((next) => {
     let frame = requestAnimationFrame(function update() {
       next(Date.now());
       frame = requestAnimationFrame(update);
@@ -27,7 +23,7 @@ export function now() {
 
 export function width(element = document.querySelector("main")) {
   if (element === undefined) throw new Error("Element is undefined.");
-  return define((next) => {
+  return new Signal((next) => {
     const observer = new ResizeObserver(() => next(element.offsetWidth));
     observer.observe(element);
     next(element.offsetWidth);

@@ -39,7 +39,7 @@ call(() => {
 ## Signal
 
 ```js eval
-count = Signals.define((next) => {
+count = new Signal((next) => {
   let count = 0;
   next(count++);
   const timer = setInterval(() => next(count++), 1000);
