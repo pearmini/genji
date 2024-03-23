@@ -342,10 +342,11 @@ function execute(id, nodeById, relationById, valueById, countById, disposeById, 
 
     let output;
     try {
+      const e = expression === "" ? "undefined" : expression;
       output = new Function(
         "unsubscribe",
         ...names,
-        lines(`const value = ${expression}`, `return value //# sourceURL=${SCRIPT_PREFIX}-${id}.js`),
+        lines(`const value = ${e}`, `return value //# sourceURL=${SCRIPT_PREFIX}-${id}.js`),
       )(unsubscribe, ...values);
     } catch (e) {
       error(e, node);
