@@ -1,6 +1,6 @@
 # Directives
 
-Options for code blocks, in the format of
+Options for code blocks, in the format of:
 
 ````md
 ```lang d d1 d2 ...

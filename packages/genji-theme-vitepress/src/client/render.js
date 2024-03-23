@@ -1,5 +1,5 @@
 import { useRoute, useData } from "vitepress";
-import { onMounted, watch } from "vue";
+import { onMounted, watch, onBeforeUnmount } from "vue";
 import { tokenize, parseScript } from "esprima";
 import { traverse } from "estraverse";
 import { Inspector } from "@observablehq/inspector";
@@ -422,6 +422,7 @@ function execute(id, nodeById, relationById, valueById, countById, disposeById, 
 }
 
 function dispose(module) {
+  module._scrolled = false;
   const values = module.values();
   try {
     for (const value of values) if (value) value();
@@ -469,6 +470,19 @@ function printDevTrees(path, relationById, variables) {
   console.log("=".repeat(head.length));
 }
 
+function getAnchorInCurrentURL() {
+  const url = new URL(window.location.href);
+  return url.hash.slice(1);
+}
+
+function scrollToAnchor() {
+  const anchor = getAnchorInCurrentURL();
+  if (!anchor) return;
+  const a = document.querySelector(`a[href="#${anchor}"]`);
+  if (!a) return;
+  a.click();
+}
+
 function render(module, { isDark, path, transform = {} }) {
   dispose(module);
 
@@ -477,6 +491,7 @@ function render(module, { isDark, path, transform = {} }) {
     if (!code.dataset.genji) return false;
     return true;
   });
+  const scroll = debounce(scrollToAnchor);
 
   if (!blocks.length) return;
 
@@ -523,6 +538,7 @@ function render(module, { isDark, path, transform = {} }) {
     const [normalized, dispose] = renderInspector(node, { isDark });
     normalized.__dispose__ = dispose;
     mount(block, normalized);
+    if (!module._scrolled) scroll();
   };
 
   const error = (e, { id }) => {
@@ -549,6 +565,8 @@ export function useRender({ library, transform }) {
   const route = useRoute();
   const { isDark, site } = useData();
   const module = new Map();
+
+  module._scrolled = false;
 
   const renderPage = () => {
     setTimeout(() => {
@@ -578,8 +596,17 @@ export function useRender({ library, transform }) {
     },
   );
 
+  const onScroll = () => {
+    module._scrolled = true;
+  };
+
   onMounted(() => {
     injectGlobal(library);
     renderPage();
+    window.addEventListener("wheel", onScroll);
+  });
+
+  onBeforeUnmount(() => {
+    window.removeEventListener("wheel", onScroll);
   });
 }

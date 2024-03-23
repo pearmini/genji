@@ -37,7 +37,7 @@ export default defineConfig({
         text: "Reference",
         items: [
           { text: "Directives", link: "/reference/directives" },
-          { text: "Stdlib", link: "/reference/stdlib" },
+          { text: "Libraries", link: "/reference/libraries" },
           { text: "Inputs", link: "/reference/inputs" },
           { text: "Props", link: "/reference/props" },
         ],
@@ -51,5 +51,8 @@ export default defineConfig({
     socialLinks: [
       { icon: "github", link: "https://github.com/pearmini/genji" },
     ],
+    search: {
+      provider: "local",
+    },
   },
 });
