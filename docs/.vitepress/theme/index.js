@@ -6,11 +6,20 @@ import { json } from "d3-fetch";
 import { app, range, circle, random, rgb } from "@charming-art/charming";
 import "./custom.css";
 
+function block(color) {
+  const div = document.createElement("div");
+  div.style.width = "100px";
+  div.style.height = "100px";
+  div.style.background = color;
+  return div;
+}
+
 const props = {
   library: {
     d3: { json },
     Plot: { dot, barY },
     cm: { app, range, circle, random, rgb },
+    block,
   },
   transform: {
     py(code) {
