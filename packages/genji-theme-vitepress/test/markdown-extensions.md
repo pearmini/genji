@@ -50,6 +50,12 @@ call(() => {
 });
 ```
 
+## Empty Block
+
+```js eval
+// Empty
+```
+
 ## Python Block
 
 It should not render python block.
