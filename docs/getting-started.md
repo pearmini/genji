@@ -1,95 +1,70 @@
-# Markdown Extension Examples
+# Getting started
 
-This page demonstrates some of the built-in markdown extensions provided by VitePress.
+Currently Genji can be used in [VitePress](https://vitepress.dev/) via the custom theme: genji-theme-vitepress. And there are plans to develop additional Genji themes and plugins for other SSGs in the future, such as [Docusaurus](https://docusaurus.io/), [Nextra](https://nextra.site/), [Rspress](https://rspress.dev/) and more.
 
-```js eval {0,4}
-display(() => {
+## Try It Online
+
+You can try VitePress and Genji directly in your browser on [StackBlitz](https://stackblitz.com/edit/vite-p5brzc?file=package.json).
+
+## Installing
+
+First, you should install VitePress and create a basic project following the instructions in the [Getting Started](https://vitepress.dev/guide/getting-started) section of the VitePress official guide. Then install `genji-theme-vitepress` from NPM:
+
+```bash
+$ npm install genji-theme-vitepress
+```
+
+To consume `genji-theme-vitpress`, override the default `Layout` component from the chosen theme:
+
+```js
+// .vitepress/theme/index.js
+import DefaultTheme from "vitepress/theme";
+import Layout from "genji-theme-vitepress";
+import { h } from "vue";
+
+const props = {
+  Theme: DefaultTheme,
+};
+
+export default {
+  extends: DefaultTheme,
+  Layout: () => h(Layout, props),
+};
+```
+
+Genji also requires special VitePress config, extend it in the config:
+
+```js
+// .vitepress/config.js
+import config from "genji-theme-vitpress/config";
+
+export default {
+  extends: config,
+};
+```
+
+If everything goes where, insert the following code snippet into one of your Markdown files, excluding `index.md`:
+
+````md
+```js eval
+(() => {
   const div = document.createElement("div");
   div.style.width = "100px";
   div.style.height = "100px";
-  div.style.background = "red";
+  div.style.background = "steelblue";
   return div;
-});
-```
-
-## Syntax Highlighting
-
-VitePress provides Syntax Highlighting powered by [Shiki](https://github.com/shikijs/shiki), with additional features like line-highlighting:
-
-**Input**
-
-````md
-```js{4}
-export default {
-  data () {
-    return {
-      msg: 'Highlighted!'
-    }
-  }
-}
+})();
 ```
 ````
 
-**Output**
+This produces:
 
-```js{4}
-export default {
-  data () {
-    return {
-      msg: 'Highlighted!'
-    }
-  }
-}
+```js eval
+(() => {
+  const div = document.createElement("div");
+  div.style.width = "100px";
+  div.style.height = "100px";
+  div.style.background = "steelblue";
+  return div;
+})();
 ```
-
-## Custom Containers
-
-**Input**
-
-```md
-::: info
-This is an info box.
-:::
-
-::: tip
-This is a tip.
-:::
-
-::: warning
-This is a warning.
-:::
-
-::: danger
-This is a dangerous warning.
-:::
-
-::: details
-This is a details block.
-:::
-```
-
-**Output**
-
-::: info
-This is an info box.
-:::
-
-::: tip
-This is a tip.
-:::
-
-::: warning
-This is a warning.
-:::
-
-::: danger
-This is a dangerous warning.
-:::
-
-::: details
-This is a details block.
-:::
-
-## More
-
-Check out the documentation for the [full list of markdown extensions](https://vitepress.dev/guide/markdown).
