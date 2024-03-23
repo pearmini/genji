@@ -1,6 +1,10 @@
 # What is Genji?
 
-Genji is the markdown extension for authoring interactive documents, named after the coolest [hero](https://overwatch.blizzard.com/zh-tw/heroes/genji/) in [Overwatch](https://overwatch.blizzard.com/). It is inspired by [Observable Notebook](https://observablehq.com/) and can be used in popular Static Site Generator (SSG) frameworks, such as [VitePress](https://vitepress.dev/), through the use of plugins and themes.
+Genji is the markdown extension for authoring interactive documents, named after the coolest [hero](https://overwatch.blizzard.com/zh-tw/heroes/genji/) in [Overwatch](https://overwatch.blizzard.com/).
+
+![overwatch-genji](https://images.blz-contentstack.com/v3/assets/blt2477dcaf4ebd440c/bltc878fc10bd8ab2cb/63880951443fa70e71d4bfc5/genji-02.jpg?format=webply&quality=90)
+
+It is inspired by [Observable Notebook](https://observablehq.com/) and can be used in popular Static Site Generator (SSG) frameworks, such as [VitePress](https://vitepress.dev/), through the use of plugins and themes.
 
 The foundation of Genji's features rests on two principles:
 
@@ -11,7 +15,7 @@ Here's a quick overview of Genji's core features.
 
 ## Executable Code Blocks
 
-In Genji, every fenced codeblock marked with `eval` in Genji is **executable**. Each code block should contain only one _statement_ or _expression_ in each codeblock. The evaluated result of the code block will be inspected and rendered into the document.
+In Genji, every fenced codeblock marked with `eval` in Genji is **executable**. Each code block should contain only one _statement_ or _expression_. The evaluated result of the code block will be inspected and rendered into the document.
 
 For example, to render a red block:
 
