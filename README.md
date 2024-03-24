@@ -6,6 +6,8 @@
 
 ## Documentation 📚
 
+> WIP
+
 ## Packages 📦
 
 - [genji-theme-vitepress](./packages/genji-theme-vitepress/) - A [VitePress](https://vitepress.dev/) theme to enable Genji Markdown extension.
