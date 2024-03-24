@@ -4,7 +4,9 @@ Signal constructor and some built-in signals.
 
 ## Signal(_executor_) {#signal}
 
-Defines a new signal with specified _executor_. The _executor_ is a function executed by the constructor, which receives two functions as parameters: _next_ and _view_. The _next_ function is used to produce new values continuously and can be called multiple times. The _view_ function is used to resolve the mounted element and can be called only one time.
+Defines a new signal with specified _executor_.
+
+The _executor_ is a function executed by the constructor, which receives two functions as parameters: _next_ and _view_ and returns a disposal _hook_. The _next_ function is used to produce new values continuously and can be called multiple times. The _view_ function is used to resolve the mounted element and can be called only one time. The disposal _hook_ should dispose some resources the Signal allocates, say to cancel an animation loop or remove event listeners.
 
 In Genji, if the _view_ function of a signal is not called, the new values produced by the _next_ function will be inspected into the document. For example, to track the mouse position:
 
