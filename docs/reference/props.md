@@ -28,10 +28,6 @@ $ npm i @observablehq/plot
 
 ```js
 // .vitepress/theme/index.js
-import DefaultTheme from "vitepress/theme";
-import Layout from "genji-theme-vitepress";
-import { h } from "vue";
-
 // Imports Plot.
 import * as Plot from "@observablehq/plot";
 
@@ -51,10 +47,7 @@ const props = {
   },
 };
 
-export default {
-  extends: DefaultTheme,
-  Layout: () => h(Layout, props),
-};
+ //...
 ```
 
 Genji assigns the specified _library_ to _window_, allowing you access _Plot_ and _block_ directly:
@@ -83,14 +76,6 @@ Specifies the transforms to transform code in code blocks before executing. For 
 ```js
 // .vitepress/theme/index.js
 import * as Plot from "@observablehq/plot";
-
-function block(color) {
-  const div = document.createElement("div");
-  div.style.width = "100px";
-  div.style.height = "100px";
-  div.style.background = color;
-  return div;
-}
 
 const props = {
   transform: {

@@ -54,7 +54,7 @@ size = Inputs.range([0, 300], { label: "size", value: 100, step: 1 });
 
 ## t
 
-Specifies transforms.
+Specifies [transforms](/features/transforms).
 
 ````md
 ```py t=py
