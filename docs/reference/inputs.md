@@ -2,6 +2,18 @@
 
 Reactive inputs, adapted from [@observablehq/inputs](https://github.com/observablehq/inputs). (Currently Genji exports only a selection of inputs in @observablehq/inputs, you can open a PR if you want more.)
 
+## fromElement(_element_) {#fromElement}
+
+Returns a input that produce new value whenever the given _element_ emits an _input_ event, with the given element’s current _value_.
+
+```js eval
+custom = Inputs.fromElement(document.createElement("input"));
+```
+
+```js eval
+`custom is ${custom}.`;
+```
+
 ## button(_content[, options]_) {#button}
 
 Returns a button input. For more information, refer to the [@observablehq/inputs#button](https://github.com/observablehq/inputs?tab=readme-ov-file#button) documentation.
