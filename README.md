@@ -6,12 +6,12 @@
 
 ## Documentation 📚
 
-> WIP
+https://genji-md.dev/
 
 ## Packages 📦
 
 - [genji-theme-vitepress](./packages/genji-theme-vitepress/) - A [VitePress](https://vitepress.dev/) theme to enable Genji Markdown extension.
-- [genji-notebook](./packages/genji-notebook/) - A simple static site generator with builtin Genji Markdown extension.
+- [genji-notebook](./packages/genji-notebook/) - A demo static site generator with builtin Genji Markdown extension.
 
 ## License 📄
 
