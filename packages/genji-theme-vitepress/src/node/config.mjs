@@ -7,4 +7,9 @@ export default defineConfig({
       md.use(attrs);
     },
   },
+  vite: {
+    optimizeDeps: {
+      include: ["esprima", "estraverse"],
+    },
+  },
 });
