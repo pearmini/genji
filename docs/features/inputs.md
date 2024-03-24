@@ -1,6 +1,6 @@
 # Inputs
 
-Inputs are functions that mount given elements like _button_, _slider_ and return a [signal](/feautres/signal) to accept data from a user and enable interaction.
+**Inputs** are functions that mount given elements like _button_, _slider_ and return a [signal](/feautres/signal) to accept data from a user and enable interaction.
 
 Genji provides some built-in inputs, adapting from [@observablehq/inputs](https://github.com/observablehq/inputs), and you can also wrapper custom elements you design, such as chart, into inputs by [_Inputs.fromElement(element)_](/reference/inputs#fromElement).
 

@@ -1,6 +1,6 @@
 # Code Blocks
 
-In Genji Each fenced code block marked with `eval` directive, typically JavaScript code block(_\`\`\`js eval_), is executable. These code blocks are supposed to have only one _statement_ or _expression_. The evaluated result of executing a code block will be inspected and displayed in the document.
+In Genji each fenced code block marked with `eval` directive, typically JavaScript code block(_\`\`\`js eval_), is executable. These code blocks are supposed to have only one _statement_ or _expression_. The evaluated result of executing a code block will be inspected and displayed in the document.
 
 ````md
 ```js eval

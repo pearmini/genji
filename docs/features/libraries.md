@@ -1,6 +1,6 @@
 # Libraries
 
-Libraries are collections of variables or functions can be accessed in code blocks.
+**Libraries** are collections of variables or functions can be accessed in code blocks.
 
 ## Built-in libraries
 
