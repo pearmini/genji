@@ -37,9 +37,10 @@ export default defineConfig({
         text: "Reference",
         items: [
           { text: "Directives", link: "/reference/directives" },
-          { text: "Libraries", link: "/reference/libraries" },
+          { text: "Globals", link: "/reference/globals" },
           { text: "Inputs", link: "/reference/inputs" },
           { text: "Props", link: "/reference/props" },
+          { text: "Signals", link: "/reference/signals" },
         ],
       },
     ],
