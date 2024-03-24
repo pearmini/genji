@@ -15,7 +15,7 @@ Here's a quick overview of Genji's core features.
 
 ## Executable Code Blocks
 
-In Genji, every fenced codeblock marked with `eval` in Genji is **executable**. Each code block should contain only one _statement_ or _expression_. The evaluated result of the code block will be inspected and rendered into the document.
+In Genji, every fenced codeblock marked with `eval` [directive](/reference/directives) in Genji is **executable**. Each code block should contain only one _statement_ or _expression_. The evaluated result of the code block will be inspected and rendered into the document.
 
 For example, to render a red block:
 
