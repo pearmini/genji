@@ -28,8 +28,14 @@ $ npm i @observablehq/plot
 
 ```js
 // .vitepress/theme/index.js
+import DefaultTheme from "vitepress/theme";
+import Layout from "genji-theme-vitepress";
+import { h } from "vue";
+
+// Imports Plot.
 import * as Plot from "@observablehq/plot";
 
+// Define a custom helper.
 function block(color) {
   const div = document.createElement("div");
   div.style.width = "100px";
@@ -43,6 +49,11 @@ const props = {
     Plot,
     block,
   },
+};
+
+export default {
+  extends: DefaultTheme,
+  Layout: () => h(Layout, props),
 };
 ```
 
