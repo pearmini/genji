@@ -72,29 +72,16 @@ print(1, 2)
 
 The other usage of transform is to hide certain parts of the code that you don't want to display.
 
-For example, to hide setup and teardown operations when using [Charming](https://github.com/charming-art/charming):
+For example, to hide the creating and returning statements when manipulating a div element:
 
 ````md
 ```js eval
 call(() => {
-  const app = cm.app({ width: 600, height: 200 });
-
-  app.data(cm.range(10)).append(cm.circle, {
-    x: () => cm.random(0, app.prop("width")),
-    y: () => cm.random(0, app.prop("height")),
-    r: 50,
-    fill: "black",
-  });
-
-  function dispose(app) {
-    unsubscribe(() => app.dispose());
-  }
-
-  function border(app) {
-    app.node().style.border = "solid #000 1px";
-  }
-
-  return app.call(dispose).call(border).render().node();
+  const div = document.createElement("div");
+  div.style.width = "100px";
+  div.style.height = "100px";
+  div.style.background = "red";
+  return div;
 });
 ```
 ````
@@ -102,23 +89,13 @@ call(() => {
 With the `cm` function is defined:
 
 ```js
-function cm(code) {
+function div(code) {
   return `
     call(() => {
-      const app = cm.app({ width: 600, height: 200 });
-
+      const div = document.createElement('div')
       ${code}
-    
-      function dispose(app) {
-        unsubscribe(() => app.dispose());
-      }
-
-      function border(app) {
-        app.node().style.border = "solid #000 1px";
-      }
-
-      return app.call(dispose).call(border).render().node();
-    })
+      return div;
+    });
   `;
 }
 ```
@@ -126,25 +103,17 @@ function cm(code) {
 Now say:
 
 ````md
-```js eval t=cm
-app.data(cm.range(100)).append(cm.circle, {
-  x: () => cm.random(app.prop("width")),
-  y: () => cm.random(app.prop("height")),
-  fill: "rgba(175, 175, 175, 0.5)",
-  stroke: cm.rgb(0),
-  r: 16,
-});
+```js eval t=div
+div.style.width = "100px";
+div.style.height = "100px";
+div.style.background = "red";
 ```
 ````
 
 This produces:
 
-```js eval t=cm
-app.data(cm.range(100)).append(cm.circle, {
-  x: () => cm.random(app.prop("width")),
-  y: () => cm.random(app.prop("height")),
-  fill: "rgba(175, 175, 175, 0.5)",
-  stroke: cm.rgb(0),
-  r: 16,
-});
+```js eval t=div
+div.style.width = "100px";
+div.style.height = "100px";
+div.style.background = "red";
 ```
