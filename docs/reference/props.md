@@ -28,10 +28,8 @@ $ npm i @observablehq/plot
 
 ```js
 // .vitepress/theme/index.js
-// Imports Plot.
 import * as Plot from "@observablehq/plot";
 
-// Define a custom helper.
 function block(color) {
   const div = document.createElement("div");
   div.style.width = "100px";
@@ -47,7 +45,7 @@ const props = {
   },
 };
 
- //...
+//...
 ```
 
 Genji assigns the specified _library_ to _window_, allowing you access _Plot_ and _block_ directly:
