@@ -41,7 +41,7 @@ call(() => {
 
 ## unsubscribe(_hook_) {#unsubscribe}
 
-Registers a deposal hook for the given code block, which will be called before the code block is re-run". It is useful to "clean up" a code block, say to cancel an animation loop or close a socket.
+Registers a disposal hook for the given code block, which will be called before the code block is re-run". It is useful to "clean up" a code block, say to cancel an animation loop or close a socket.
 
 ```js eval code=false
 reset = Inputs.button("Reset", { label: "click me" });
