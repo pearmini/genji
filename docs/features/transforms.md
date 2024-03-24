@@ -2,7 +2,7 @@
 
 **Transforms** are functions that transform code in code blocks before evaluating. It can be used to make non-JavaScript code block executable or hide parts of code which are unnecessary to display.
 
-Transforms are specified via `t` [directive](/features/directive):
+Transforms are specified via `t` [directive](/reference/directives):
 
 ````md
 ```py t=y

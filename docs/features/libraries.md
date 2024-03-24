@@ -4,7 +4,7 @@
 
 ## Built-in libraries
 
-Genji provides some out-of-the-box libraries, such as [Globals](/reference/globals), [Inputs](/reference/inputs) and [Signals](/refernce/signals). You can access them directly in any code blocks. For example, to define a [range input](/reference/inputs#range):
+Genji provides some out-of-the-box libraries, such as [Globals](/reference/globals), [Inputs](/reference/inputs) and [Signals](/reference/signals). You can access them directly in any code blocks. For example, to define a [range input](/reference/inputs#range):
 
 ```js eval
 number = Inputs.range([0, 100], { value: 30, label: "number" });
