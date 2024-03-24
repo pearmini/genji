@@ -36,7 +36,7 @@ Genji also requires special VitePress config, extend it in the config:
 
 ```js
 // .vitepress/config.js
-import config from "genji-theme-vitpress/config";
+import config from "genji-theme-vitepress/config";
 
 export default {
   extends: config,
