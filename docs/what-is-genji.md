@@ -1,6 +1,6 @@
 # What is Genji?
 
-Genji is the markdown extension for authoring interactive documents, named after the coolest [hero](https://overwatch.blizzard.com/zh-tw/heroes/genji/) in [Overwatch](https://overwatch.blizzard.com/).
+**Markdown Genji** is the markdown extension for authoring interactive documents, named after the coolest [hero](https://overwatch.blizzard.com/zh-tw/heroes/genji/) in [Overwatch](https://overwatch.blizzard.com/).
 
 ![overwatch-genji](https://images.blz-contentstack.com/v3/assets/blt2477dcaf4ebd440c/bltc878fc10bd8ab2cb/63880951443fa70e71d4bfc5/genji-02.jpg?format=webply&quality=90)
 
