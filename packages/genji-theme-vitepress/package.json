@@ -9,7 +9,8 @@
     "./config": "./src/node/config.mjs"
   },
   "files": [
-    "src"
+    "src",
+    "img"
   ],
   "scripts": {
     "dev": "vitepress dev test",
