@@ -26,6 +26,8 @@ call(() => {
 });
 ```
 
+Refer to [reference](/reference/inputs) for more built-in inputs.
+
 ::: tip Want More?
 Currently Genji only exports a subset of inputs in @observablehq/inputs, you can open a PR if you want more.
 :::

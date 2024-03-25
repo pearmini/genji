@@ -92,9 +92,9 @@ Generally speaking, the syntax of Genji largely revolves around **code blocks**.
 
 ## Genji is just Markdown
 
-Unlike some advanced tools like [Idyll](https://idyll-lang.org/docs), which introduce a comprehensive syntax for authoring complex interactive documents, Genji focuses on simplicity by sticking to just Markdown. **This means Genji is easy to learn, particularly for developers**. For beginners, there's only one rule to remember: fenced JavaScript code blocks marked with eval are executable and mountable.
+Unlike some advanced tools like [Idyll](https://idyll-lang.org/docs), which introduce a comprehensive syntax for authoring complex interactive documents, Genji focuses on simplicity by sticking to just Markdown. **This means Genji is easy to learn, particularly for developers**. For beginners, there's only one rule to remember: fenced JavaScript code blocks marked with `eval` are executable and mountable.
 
-As demonstrated, simply adding an `eval` marker will make the following code block executable:
+As demonstrated, simply adding an `eval` directive will make the following code block executable:
 
 ````md
 ```js eval
@@ -130,9 +130,9 @@ Genji employs pure JavaScript, without any custom syntax, unlike Observable Note
 
 ## Genji is just extension
 
-Conceptually, Genji is simply an extension of Markdown, defined as a specification for the interactive syntax and desired outcome. This means any tools can incorporate Genji by implementing the described specification, making it particularly suitable for SSGs. Currently Genji can be used in VitePress via the custom theme: genji-theme-vitepress. And there are plans to develop additional Genji themes and plugins for other SSGs in the future, such as [Docusaurus](https://docusaurus.io/), [Nextra](https://nextra.site/), [Rspress](https://rspress.dev/) and more.
+Conceptually, Genji is simply an extension of Markdown, defined as a specification for the interactive syntax and desired outcome. This means any tools can incorporate Genji by implementing the described specification, making it particularly suitable for SSGs. Currently Genji can be used in VitePress via the custom theme: [genji-theme-vitepress](https://github.com/pearmini/genji/tree/main/packages/genji-theme-vitepress). And there are plans to develop additional Genji themes and plugins for other SSGs in the future, such as [Docusaurus](https://docusaurus.io/), [Nextra](https://nextra.site/), [Rspress](https://rspress.dev/) and more.
 
-One great thing about the extension approach is that allows you to leverage the existing features of the chosen SSG. Interactivity is just one aspect of what SSGs offer, and there's no need to develop a new SSG solely to support interactive syntax.
+**One great thing about the extension approach is that allows you to leverage the existing features of the chosen SSG.** Interactivity is just one aspect of what SSGs offer, and there's no need to develop a new SSG solely to support interactive syntax.
 
 Moreover, it solves an issue that has troubled me for a long time: Observable Notebook can't serve locally. While an online platform is excellent for exploration, SSGs are more appropriate for writing documentation or creating personal blogs, as they offer the following advantages:
 
