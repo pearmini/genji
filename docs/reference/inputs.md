@@ -1,6 +1,10 @@
 # Inputs
 
-Reactive inputs, adapted from [@observablehq/inputs](https://github.com/observablehq/inputs). (Currently Genji exports only a selection of inputs in @observablehq/inputs, you can open a PR if you want more.)
+Reactive inputs, adapted from [@observablehq/inputs](https://github.com/observablehq/inputs).
+
+::: tip Want More?
+Currently Genji only exports a subset of inputs in @observablehq/inputs, you can open a PR if you want more.
+:::
 
 ## fromElement(_element_) {#fromElement}
 

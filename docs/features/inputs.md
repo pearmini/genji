@@ -6,8 +6,6 @@ Genji provides some built-in inputs, adapting from [@observablehq/inputs](https:
 
 ## Built-in inputs
 
-> Currently Genji exports only a subset of inputs in @observablehq/inputs, you can open a PR if you want more.
-
 Built-in inputs can be accessed directly through _Inputs_ namespace.
 
 For example, to define a [range input](/reference/inputs#range):
@@ -27,6 +25,10 @@ call(() => {
   return div;
 });
 ```
+
+::: tip Want More?
+Currently Genji only exports a subset of inputs in @observablehq/inputs, you can open a PR if you want more.
+:::
 
 ## Custom inputs
 
