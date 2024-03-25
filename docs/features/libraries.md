@@ -58,7 +58,11 @@ Plot.barY(
 ).plot();
 ```
 
-## Custom Helpers
+:::tip
+For [Observable Notebook](https://observablehq.com) users, you could install and register [@observablehq/stdlib](https://github.com/observablehq/stdlib) for better writing experiences.
+:::
+
+## Custom helpers
 
 You can also register some helper functions or variables. For example, to define a _block_ function:
 
@@ -91,3 +95,48 @@ Then:
 ```js eval
 block("black");
 ```
+
+## Dynamic libraries
+
+If you don't want to import your libraries at build time, you can use [d3-require](https://github.com/d3/d3-require/tree/main) to import them at runtime, which can help you reduce bundle size of the website.
+
+For example, to use [Jquery](https://jquery.com/) dynamically:
+
+```bash
+$ npm i d3-require
+```
+
+Then registers _d3-require_ in the theme:
+
+```js
+// .vitepress/theme/index.js
+import DefaultTheme from "vitepress/theme";
+import Layout from "genji-theme-vitepress";
+import { h } from "vue";
+
+// Imports d3-require
+import { require } from "d3-require";
+
+const props = {
+  library: {
+    d3: { require },
+  },
+};
+
+export default {
+  extends: DefaultTheme,
+  Layout: () => h(Layout, props),
+};
+```
+
+Require _Jquery_ and assign it to the variable _$_:
+
+```js eval
+$ = d3.require("jquery");
+```
+
+```js eval
+$("<div></div>").width(100).height(100).css("background", "orange").get(0);
+```
+
+Refer to _d3-require_'s [documentation](https://github.com/d3/d3-require/tree/main) for more information.

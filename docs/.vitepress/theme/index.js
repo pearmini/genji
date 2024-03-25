@@ -3,6 +3,7 @@ import { h } from "vue";
 import Layout from "genji-theme-vitepress";
 import { dot, barY, plot } from "@observablehq/plot";
 import { json } from "d3-fetch";
+import { require } from "d3-require";
 import "./custom.css";
 
 function block(color) {
@@ -15,7 +16,7 @@ function block(color) {
 
 const props = {
   library: {
-    d3: { json },
+    d3: { json, require },
     Plot: { dot, barY, plot },
     block,
   },

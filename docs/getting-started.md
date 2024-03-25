@@ -6,11 +6,11 @@ Currently Genji can be used in [VitePress](https://vitepress.dev/) via the custo
 There are plans to develop additional Genji themes and plugins for other SSGs in the future, such as [Docusaurus](https://docusaurus.io/), [Nextra](https://nextra.site/), [Rspress](https://rspress.dev/) and more.
 :::
 
-## Try It Online
+## Try Genji online
 
 You can try VitePress and Genji directly in your browser on [StackBlitz](https://stackblitz.com/edit/vite-p5brzc?file=package.json).
 
-## Installing
+## Installing from NPM
 
 First, you should install VitePress and create a basic project following the instructions in the [Getting Started](https://vitepress.dev/guide/getting-started) section of the VitePress official guide.
 
@@ -49,15 +49,21 @@ export default {
 };
 ```
 
+## A quick example
+
 If everything goes where, insert the following code snippet into one of your Markdown files, excluding `index.md`:
 
 ````md
+```js eval code=false
+size = Inputs.range([50, 300], { label: "siz", value: 100, step: 1 });
+```
+
 ```js eval
 (() => {
   const div = document.createElement("div");
-  div.style.width = "100px";
+  div.style.width = size + "px";
   div.style.height = "100px";
-  div.style.background = "steelblue";
+  div.style.background = "orange";
   return div;
 })();
 ```
@@ -65,12 +71,16 @@ If everything goes where, insert the following code snippet into one of your Mar
 
 This produces:
 
+```js eval code=false
+size = Inputs.range([50, 300], { label: "siz", value: 100, step: 1 });
+```
+
 ```js eval
 (() => {
   const div = document.createElement("div");
-  div.style.width = "100px";
+  div.style.width = size + "px";
   div.style.height = "100px";
-  div.style.background = "steelblue";
+  div.style.background = "orange";
   return div;
 })();
 ```
