@@ -86,7 +86,7 @@ call(() => {
 ```
 ````
 
-With the `cm` function is defined:
+With the `div` function is defined:
 
 ```js
 function div(code) {

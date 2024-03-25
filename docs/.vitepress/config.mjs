@@ -12,7 +12,7 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "Home", link: "/" },
-      { text: "Docs", link: "/getting-started" },
+      { text: "Docs", link: "/what-is-genji" },
     ],
     sidebar: [
       {

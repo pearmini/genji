@@ -2,7 +2,7 @@
 
 **Markdown Genji** is the markdown extension for authoring interactive documents, named after the coolest [hero](https://overwatch.blizzard.com/zh-tw/heroes/genji/) in [Overwatch](https://overwatch.blizzard.com/). It is inspired by [Observable Notebook](https://observablehq.com/) and can be used in popular Static Site Generator (SSG) frameworks, such as [VitePress](https://vitepress.dev/), through the use of plugins and themes.
 
-![genji-demo-in-mac](/mac.png)
+![genji-demo-in-mac](/mac.webp)
 
 The foundation of Genji's features rests on two principles:
 
@@ -291,7 +291,7 @@ call(() => {
 ```
 ````
 
-With the `cm` function is defined:
+With the `div` function is defined:
 
 ```js
 function div(code) {
