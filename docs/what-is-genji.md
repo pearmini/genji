@@ -1,10 +1,8 @@
 # What is Genji?
 
-**Markdown Genji** is the markdown extension for authoring interactive documents, named after the coolest [hero](https://overwatch.blizzard.com/zh-tw/heroes/genji/) in [Overwatch](https://overwatch.blizzard.com/).
+**Markdown Genji** is the markdown extension for authoring interactive documents, named after the coolest [hero](https://overwatch.blizzard.com/zh-tw/heroes/genji/) in [Overwatch](https://overwatch.blizzard.com/). It is inspired by [Observable Notebook](https://observablehq.com/) and can be used in popular Static Site Generator (SSG) frameworks, such as [VitePress](https://vitepress.dev/), through the use of plugins and themes.
 
-![overwatch-genji](https://images.blz-contentstack.com/v3/assets/blt2477dcaf4ebd440c/bltc878fc10bd8ab2cb/63880951443fa70e71d4bfc5/genji-02.jpg?format=webply&quality=90)
-
-It is inspired by [Observable Notebook](https://observablehq.com/) and can be used in popular Static Site Generator (SSG) frameworks, such as [VitePress](https://vitepress.dev/), through the use of plugins and themes.
+![genji-demo-in-mac](/mac.png)
 
 The foundation of Genji's features rests on two principles:
 
