@@ -442,9 +442,9 @@ function createCells(blocks) {
 
 function hideCells(blocks) {
   for (const block of blocks) {
-    const { code, inspect } = block.dataset;
+    const { code, inspector } = block.dataset;
     if (code === "false") block.style.display = "none";
-    if (inspect === "false") {
+    if (inspector === "false") {
       const sibling = block.previousElementSibling;
       if (sibling.classList.contains("genji-cell")) {
         sibling.style.display = "none";
