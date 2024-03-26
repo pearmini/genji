@@ -297,10 +297,7 @@ function rootsOf(relationById) {
 }
 
 function execute(id, nodeById, relationById, valueById, countById, disposeById, idByName, hooks) {
-  const delay = 0;
-  const loading = debounce(hooks.loading, delay);
-  const success = debounce(hooks.success, delay);
-  const error = debounce(hooks.error, delay);
+  const { loading, success, error } = hooks;
 
   const node = nodeById.get(id);
 
@@ -365,13 +362,13 @@ function execute(id, nodeById, relationById, valueById, countById, disposeById, 
               setTimeout(() => {
                 valueById.set(id, value);
                 executeDeps();
-              }, delay);
+              }, 0);
             } else {
               valueById.set(id, value);
               executeDeps();
               success(node);
             }
-          }, delay);
+          }, 0);
         };
 
         const view = (value) => {
@@ -445,8 +442,14 @@ function createCells(blocks) {
 
 function hideCells(blocks) {
   for (const block of blocks) {
-    const { code } = block.dataset;
+    const { code, inspect } = block.dataset;
     if (code === "false") block.style.display = "none";
+    if (inspect === "false") {
+      const sibling = block.previousElementSibling;
+      if (sibling.classList.contains("genji-cell")) {
+        sibling.style.display = "none";
+      }
+    }
   }
 }
 

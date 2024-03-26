@@ -1,7 +1,7 @@
 import {
   button as _button,
   // checkbox as _checkbox,
-  // radio as _radio,
+  radio as _radio,
   // toggle as _toggle,
   color as _color,
   // date as _date,
@@ -9,7 +9,7 @@ import {
   // fileOf as _fileOf,
   range as _range,
   // number as _number,
-  // search as _search,
+  search as _search,
   // searchFilter as _searchFilter,
   select as _select,
   table as _table,
@@ -44,3 +44,5 @@ export const range = input(_range);
 export const select = input(_select);
 export const table = input(_table);
 export const text = input(_text);
+export const radio = input(_radio);
+export const search = input(_search);

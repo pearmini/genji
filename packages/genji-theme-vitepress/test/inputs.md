@@ -72,3 +72,23 @@ name = Inputs.text({ label: "Input your name" });
 ```js eval
 `My name is ${name}`;
 ```
+
+## Radio
+
+```js eval
+radio = Inputs.radio(["A", "B", "C"]);
+```
+
+```js eval
+radio;
+```
+
+## Search
+
+```js eval
+search = Inputs.search("A", "A B", "C");
+```
+
+```js eval
+search;
+```
