@@ -3,6 +3,7 @@
   "private": true,
   "description": "The documentation for Genji",
   "scripts": {
+    "preinstall": "cd ../packages/genji-theme-vitepress && npm install",
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview"
@@ -10,7 +11,7 @@
   "author": "https://github.com/pearmini",
   "license": "MIT",
   "devDependencies": {
-    "genji-theme-vitepress": "^0.1.0",
+    "genji-theme-vitepress": "file:../packages/genji-theme-vitepress",
     "vitepress": "^1.0.0-rc.44"
   },
   "repository": {
