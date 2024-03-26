@@ -38,7 +38,7 @@ call(() => {
 
 ## code
 
-Wether to hide the code block or not; defaults to false.
+Wether to show the code block or not; defaults to true.
 
 ````md
 ```js eval code=false
@@ -50,6 +50,34 @@ This produces:
 
 ```js eval code=false
 size = Inputs.range([0, 300], { label: "size", value: 100, step: 1 });
+```
+
+## Inspector
+
+Wether to show the evaluated results or not; defaults to true.
+
+````md
+```js eval code=false inspector=false
+function add(x, y) {
+  return x + y;
+}
+```
+
+```js eval
+add(1, 2);
+```
+````
+
+This produces:
+
+```js eval code=false inspector=false
+function add(x, y) {
+  return x + y;
+}
+```
+
+```js eval
+add(1, 2);
 ```
 
 ## t

@@ -100,6 +100,27 @@ call(() => {
 });
 ```
 
+## radio(_data[, options]_) {#radio}
+
+Returns a radio input. For more information, refer to the [@observablehq/inputs#radio](https://github.com/observablehq/inputs?tab=readme-ov-file#radio) documentation.
+
+```js eval
+color = Inputs.radio(["red", "green", "blue"], {
+  label: "Color",
+  value: "red",
+});
+```
+
+```js eval
+call(() => {
+  const div = document.createElement("div");
+  div.style.width = 100 + "px";
+  div.style.height = 100 + "px";
+  div.style.background = color;
+  return div;
+});
+```
+
 ## table(_data[, options]_) {#table}
 
 Returns a table input. For more information, refer to the [@observablehq/inputs#table](https://github.com/observablehq/inputs?tab=readme-ov-file#table) documentation.
@@ -116,6 +137,21 @@ data = Inputs.table([
 
 ```js eval
 data;
+```
+
+## search(_data[,options]_) {#search}
+
+Returns a search input. For more information, refer to the [@observablehq/inputs#search](https://github.com/observablehq/inputs?tab=readme-ov-file#search) documentation.
+
+```js eval
+state = Inputs.search(
+  ["Alabama", "Alaska", "Arizona", "Arkansas", "California"],
+  { label: "State" }
+);
+```
+
+```js eval
+state;
 ```
 
 ## text(_options_) {#text}
