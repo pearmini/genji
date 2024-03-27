@@ -9,7 +9,7 @@ export default defineConfig({
   },
   vite: {
     optimizeDeps: {
-      include: ["esprima", "estraverse"],
+      include: ["genji-theme-vitepress > esprima", "genji-theme-vitepress > estraverse"],
     },
   },
 });
