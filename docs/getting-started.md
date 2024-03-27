@@ -55,7 +55,7 @@ If everything goes where, insert the following code snippet into one of your Mar
 
 ````md
 ```js eval code=false
-size = Inputs.range([50, 300], { label: "siz", value: 100, step: 1 });
+size = Inputs.range([50, 300], { label: "size", value: 100, step: 1 });
 ```
 
 ```js eval
@@ -72,7 +72,7 @@ size = Inputs.range([50, 300], { label: "siz", value: 100, step: 1 });
 This produces:
 
 ```js eval code=false
-size = Inputs.range([50, 300], { label: "siz", value: 100, step: 1 });
+size = Inputs.range([50, 300], { label: "size", value: 100, step: 1 });
 ```
 
 ```js eval

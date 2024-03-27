@@ -94,9 +94,7 @@ Say to author a smooth animation:
 box(((Math.sin(now / 1000) + 1) * width) / 2);
 ```
 
-## Appendix
-
-```js eval
+```js eval inspector=false code=false
 function box(size) {
   const div = document.createElement("div");
   div.style.width = size + "px";
