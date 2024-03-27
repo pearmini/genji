@@ -16,6 +16,9 @@ hero:
     - theme: alt
       text: Get Started
       link: /getting-started
+    - theme: alt
+      text: Examples
+      link: /examples/athletes-visualization
 
 features:
   - title: Executable code blocks
