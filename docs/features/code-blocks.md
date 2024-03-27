@@ -28,7 +28,7 @@ This produces:
 document.createTextNode("Hello, world!");
 ```
 
-Code blocks in one page are not independent and can reference each other. It can be synchronous or asynchronous, and once its value has changed, the outputs of code blocks reference it will rerender. There is no need to range code blocks explicit, because code runs in topological rather than top-down document order.
+Code blocks in one page are not independent and can reference each other. It can be synchronous or asynchronous, and once its value has changed, the outputs of code blocks reference it will rerender. There is no need to arrange code blocks explicitly because code runs in topological rather than top-down document order.
 
 ````md
 ```js eval
@@ -52,7 +52,7 @@ const add = (a, b) => a + b;
 
 ## Variables
 
-The following ways of declaring a variable have no difference, but the first one is recommended, because it makes more sense as each variable is changeable.
+The following ways of declaring a variable have no difference, but the first one is recommended for brevity.
 
 ````md
 ```js eval
@@ -98,7 +98,7 @@ async function delay(ms) {
 ```
 ````
 
-Instead of call a defined function, you can wrap complex code block into IIFE (immediately-invoked function expression) to satisfy the "one expression" constrain:
+Instead of calling a defined function, you can wrap complex code block into IIFE (immediately-invoked function expression) to satisfy the "one expression" constrain:
 
 ````md
 ```js
