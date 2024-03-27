@@ -44,7 +44,7 @@ export default {
 
 ## Transform Code
 
-Typically, only JavaScript code blocks can be executed directly, but you can use transforms to transform the non-JavaScript code into executable JavaScript code, such as TypeScript, Vue, React, Python, and more.
+Typically, only JavaScript code blocks can be executed directly, but you can use transforms to transform the non-JavaScript code into executable JavaScript code, such as [TypeScript](https://www.typescriptlang.org/), [Vue](https://vuejs.org/), [React](https://react.dev/), [Python](https://www.python.org/), and more.
 
 For example, to execute the Python print function by employing a predefined _py_ transform:
 
