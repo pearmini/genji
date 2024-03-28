@@ -1,4 +1,4 @@
-# _P5_.**Square(_...params_)** {#square}
+# _P5_.**square(_...params_)** {#square}
 
 ::: tip
 [Source](https://github.com/pearmini/genji/blob/main/docs/examples/p5js-square.md?plain=1) · This is a [genji](https://genji-md.dev/) example to write API reference for web-based library. his version is adapted from the official documentation, now enhanced with Genji's reactivity features. For reference, you can check out the [original documentation](https://p5js.org/reference/#/p5/square).
