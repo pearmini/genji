@@ -10,7 +10,7 @@ Options for code blocks, in the format of:
 
 ## eval
 
-Wether to evaluate the code block or not; defaults to false.
+Wether to evaluate the code block or not; defaults to _false_.
 
 ````md
 ```js eval
@@ -38,7 +38,7 @@ call(() => {
 
 ## code
 
-Wether to show the code block or not; defaults to true.
+Wether to show the code block or not; defaults to _true_.
 
 ````md
 ```js eval code=false
@@ -54,7 +54,7 @@ size = Inputs.range([0, 300], { label: "size", value: 100, step: 1 });
 
 ## Inspector
 
-Wether to show the evaluated results or not; defaults to true.
+Wether to show the evaluated results or not; defaults to _true_.
 
 ````md
 ```js eval code=false inspector=false
@@ -78,6 +78,34 @@ function add(x, y) {
 
 ```js eval
 add(1, 2);
+```
+
+## overflow
+
+Sets the _style.overflow_ of the container which displays the render result of the specified code block; defaults to _auto_, any of _visible_, _hidden_, _clip_, _scroll_.
+
+````md
+```js eval overflow=visible
+call(() => {
+  const div = document.createElement("div");
+  div.style.width = width + 40 + "px";
+  div.style.height = "40px";
+  div.style.background = "black";
+  return div;
+});
+```
+````
+
+This produces:
+
+```js eval overflow=visible
+call(() => {
+  const div = document.createElement("div");
+  div.style.width = width + 40 + "px";
+  div.style.height = "40px";
+  div.style.background = "black";
+  return div;
+});
 ```
 
 ## t

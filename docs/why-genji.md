@@ -29,7 +29,7 @@ Plot.barY(
 
 This produces:
 
-```js eval
+```js eval t=plot
 Plot.barY(
   [
     { genre: "Sports", sold: 275 },
@@ -84,7 +84,7 @@ data = [
 padding = Inputs.range([0, 1], { label: "padding", step: 0.1 });
 ```
 
-```js eval
+```js eval t=plot
 Plot.barY(data, { x: "genre", y: "sold" }).plot({ x: { padding } });
 ```
 

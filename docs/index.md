@@ -11,11 +11,14 @@ hero:
     alt: Genji
   actions:
     - theme: brand
+      text: Get Started
+      link: /getting-started
+    - theme: alt
       text: What is Genji?
       link: /what-is-genji
     - theme: alt
-      text: Get Started
-      link: /getting-started
+      text: Examples
+      link: /examples/athletes-visualization
 
 features:
   - title: Executable code blocks

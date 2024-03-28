@@ -50,7 +50,7 @@ const props = {
 
 Genji assigns the specified _library_ to _window_, allowing you access _Plot_ and _block_ directly:
 
-```js eval
+```js eval t=plot
 Plot.barY(
   [
     { genre: "Sports", sold: 275 },

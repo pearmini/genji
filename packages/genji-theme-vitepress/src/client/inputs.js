@@ -2,7 +2,7 @@ import {
   button as _button,
   // checkbox as _checkbox,
   radio as _radio,
-  // toggle as _toggle,
+  toggle as _toggle,
   color as _color,
   // date as _date,
   // datetime as _datetime,
@@ -46,3 +46,4 @@ export const table = input(_table);
 export const text = input(_text);
 export const radio = input(_radio);
 export const search = input(_search);
+export const toggle = input(_toggle);

@@ -440,16 +440,17 @@ function createCells(blocks) {
   }
 }
 
-function hideCells(blocks) {
+function setCells(blocks) {
   for (const block of blocks) {
-    const { code, inspector } = block.dataset;
+    const { code, inspector, overflow = "auto" } = block.dataset;
+    const sibling = block.previousElementSibling;
     if (code === "false") block.style.display = "none";
-    if (inspector === "false") {
-      const sibling = block.previousElementSibling;
-      if (sibling.classList.contains("genji-cell")) {
-        sibling.style.display = "none";
-      }
+    if (!sibling.classList.contains("genji-cell")) return;
+    if (overflow !== "auto" && overflow !== "undefined") {
+      sibling.style.overflow = overflow;
+      sibling.style.display = "block"; // TODO Remove this.
     }
+    if (inspector === "false") sibling.style.display = "none";
   }
 }
 
@@ -512,7 +513,7 @@ function render(module, { isDark, path, transform = {} }) {
 
   builtinVariable(variables);
   createCells(blocks);
-  hideCells(blocks);
+  setCells(blocks);
 
   const relationById = createGraph(variables);
   const nodeById = new Map(variables.map((d) => [d.id, d]));

@@ -67,3 +67,7 @@
 .observablehq--inspect {
   font-size: var(--vp-code-font-size) !important;
 }
+
+.__ns__-table thead th {
+  background-color: var(--vp-c-bg-soft) !important;
+}

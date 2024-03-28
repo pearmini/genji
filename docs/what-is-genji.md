@@ -137,7 +137,7 @@ cars = d3.json(
 );
 ```
 
-```js eval
+```js eval t=plot
 Plot.dot(cars, { x: "Horsepower", y: "Miles_per_Gallon" }).plot();
 ```
 

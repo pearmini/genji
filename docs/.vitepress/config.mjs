@@ -11,8 +11,8 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: "Home", link: "/" },
       { text: "Docs", link: "/what-is-genji" },
+      { text: "Examples", link: "/examples/athletes-visualization" },
     ],
     sidebar: [
       {
@@ -31,6 +31,15 @@ export default defineConfig({
           { text: "Inputs", link: "/features/inputs" },
           { text: "Signals", link: "/features/signals" },
           { text: "Transforms", link: "/features/transforms" },
+        ],
+      },
+      {
+        text: "Examples",
+        items: [
+          {
+            text: "Data Report: Athletes",
+            link: "/examples/athletes-visualization",
+          },
         ],
       },
       {
