@@ -7,7 +7,7 @@
 </style>
 
 ::: tip
-[Source](https://github.com/pearmini/genji/tree/main/athletes-visualization.md) · This is a [genji](https://genji-md.dev/) example to create _interactive data reports_ with plots and inputs.
+[Source](https://github.com/pearmini/genji/blob/main/docs/examples/athletes-visualization.md?plain=1) · This is a [genji](https://genji-md.dev/) example to create _interactive data reports_ with plots and inputs.
 :::
 
 Here is a athlete dataset for Asian Games 2023. As we see, the data is tabular, and one row correspond to one athlete.
