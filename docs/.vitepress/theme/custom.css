@@ -29,45 +29,10 @@
   -webkit-text-fill-color: var(--vp-home-hero-name-color) !important;
 }
 
-.VPBadge a {
-  cursor: pointer;
-}
-
-/** Plot **/
 .genji-cell figure {
   margin: 0;
 }
 
-.genji-cell figure svg {
-  overflow: visible;
-}
-
-/** Plot#ramp **/
-.genji-cell figure svg:first-of-type {
-  margin-left: 10px;
-}
-
-.genji-cell figure div {
-  display: flex;
-  align-items: center;
-  min-height: 33px;
-  flex-wrap: wrap;
-}
-
-.genji-cell figure div span {
-  display: inline-flex;
-  align-items: center;
-  margin-right: 1em;
-  font-family: system-ui, sans-serif;
-  font-size: 10px;
-  margin-bottom: 0.5em;
-}
-
 .dark g[aria-label="tip"] {
   --plot-background: black !important;
-}
-
-.genji-cell figure div span > svg {
-  margin-right: 0.5em;
-  overflow: visible;
 }

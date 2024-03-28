@@ -1,7 +1,6 @@
 <script setup>
 import { defineProps } from "vue";
 import { useRender } from "./render";
-import "./reset.css";
 import "./style.css";
 import "./inspector.css";
 import "./inputs.css";

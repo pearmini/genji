@@ -436,6 +436,7 @@ function createCells(blocks) {
   for (const block of blocks) {
     const container = document.createElement("div");
     container.classList.add("genji-cell");
+    container.classList.add("vp-raw");
     block.parentNode.insertBefore(container, block);
   }
 }

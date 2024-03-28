@@ -110,8 +110,8 @@ Plot.plot({
           linkOrder === "null"
             ? true
             : linkOrder === "ascending"
-              ? g.length
-              : -g.length,
+            ? g.length
+            : -g.length,
         (d) => d.sport
       )
       .reverse(),
@@ -256,6 +256,7 @@ dodgeP = Inputs.range([-1, 5], { label: "Padding", step: 0.1, value: 1 });
 ```js eval t=plot code=false overflow=visible
 Plot.plot({
   height: 720,
+  marginLeft: 50,
   width,
   fy: { padding: 0 },
   x: { grid: true, nice: true },
