@@ -16,6 +16,51 @@ function block(color) {
   return div;
 }
 
+function p5(withDraw) {
+  return (code) => `
+    call(() => {
+      const sketch = (p) => {
+        const {
+          createCanvas: _createCanvas, 
+          background: _background, 
+          square:_square,
+          rotateY:_rotateY,
+          WEBGL,
+        } = p;
+        const createCanvas = _createCanvas.bind(p);
+        const background = _background.bind(p);
+        const square = _square.bind(p);
+        const rotateY = _rotateY.bind(p);
+        window.frameCount = p.frameCount;
+        ${code}
+        p.setup = setup;
+        ${
+          withDraw
+            ? `p.draw = () => {
+                window.frameCount = p.frameCount;
+                draw();
+              };`
+            : ""
+        }
+      };
+      const div = document.createElement('div');
+      const p = new p5(sketch, div);
+      let canvas = div.firstChild;
+      const canvas2 = div.lastChild;
+      if (canvas2 !== canvas) {
+        canvas.remove();
+        canvas = canvas2;
+      }
+      canvas.style.visibility = 'visible';
+      div.style.height = canvas.style.height;
+      div.style.overflow = 'hidden';
+      document.body.appendChild(div);
+      unsubscribe(() => p.remove());
+      return div;
+    });
+  `;
+}
+
 const props = {
   library: {
     d3: { json, require, csv, autoType, sum, groups, sort, groupSort, median },
@@ -44,6 +89,8 @@ const props = {
         })
       `;
     },
+    p: p5(false),
+    pp: p5(true),
   },
   Theme: DefaultTheme,
 };

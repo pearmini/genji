@@ -40,6 +40,10 @@ export default defineConfig({
             text: "Data Report: Athletes",
             link: "/examples/athletes-visualization",
           },
+          {
+            text: "API: P5.js Square",
+            link: "/examples/p5js-square",
+          },
         ],
       },
       {
