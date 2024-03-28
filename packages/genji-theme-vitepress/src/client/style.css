@@ -45,19 +45,6 @@
   }
 }
 
-.__ns__-table th {
-  font-weight: bold;
-}
-
-.__ns__-table * {
-  font-size: 13px !important;
-}
-
-.__ns__-table table {
-  display: table !important;
-  width: 100%;
-}
-
 .observablehq--caret {
   margin-right: 4px;
   vertical-align: baseline;
@@ -66,6 +53,10 @@
 
 .observablehq--inspect {
   font-size: var(--vp-code-font-size) !important;
+}
+
+.__ns__-table table {
+  width: 100%;
 }
 
 .__ns__-table thead th {
