@@ -100,6 +100,18 @@ call(() => {
 });
 ```
 
+## toggle(_options_) {#toggle}
+
+Returns a toggle input. For more information, refer to the [@observablehq/inputs#toggle](https://github.com/observablehq/inputs?tab=readme-ov-file#toggle) documentation.
+
+```js eval
+mute = Inputs.toggle({ label: "Mute" });
+```
+
+```js eval
+mute;
+```
+
 ## radio(_data[, options]_) {#radio}
 
 Returns a radio input. For more information, refer to the [@observablehq/inputs#radio](https://github.com/observablehq/inputs?tab=readme-ov-file#radio) documentation.

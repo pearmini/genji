@@ -2,8 +2,10 @@ import DefaultTheme from "vitepress/theme";
 import { h } from "vue";
 import Layout from "genji-theme-vitepress";
 import { dot, barY, plot } from "@observablehq/plot";
-import { json } from "d3-fetch";
+import { json, csv } from "d3-fetch";
 import { require } from "d3-require";
+import { autoType } from "d3-dsv";
+import { sum, groups, sort, groupSort, median } from "d3-array";
 import "./custom.css";
 
 function block(color) {
@@ -16,7 +18,7 @@ function block(color) {
 
 const props = {
   library: {
-    d3: { json, require },
+    d3: { json, require, csv, autoType, sum, groups, sort, groupSort, median },
     Plot: { dot, barY, plot },
     block,
   },
@@ -31,6 +33,15 @@ const props = {
           ${code}
           return div;
         });
+      `;
+    },
+    plot(code) {
+      return `
+        call(() => {
+          const plot = ${code};
+          unsubscribe(() => plot.remove());
+          return plot;
+        })
       `;
     },
   },
