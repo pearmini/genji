@@ -2,7 +2,11 @@
 
 <style>
   .custom-block-title {
-    display:none
+    display: none;
+  }
+
+  figure svg {
+    overflow: visible;
   }
 </style>
 
