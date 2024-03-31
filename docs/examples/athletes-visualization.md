@@ -96,29 +96,27 @@ Next, blow we use directional arrows to indicate the difference in counts of mal
 
 ```js eval code=false
 linkOrder = Inputs.radio(["null", "ascending y", "descending y"], {
-  label: "Order",
+  label: "Order by",
   value: "null",
 });
 ```
 
 ```js eval code=false t=plot
 Plot.plot({
-  marginBottom: 100,
+  marginBottom: 125,
   x: {
     label: null,
     tickRotate: 90,
-    domain: d3
-      .groupSort(
-        data,
-        (g) =>
-          linkOrder === "null"
-            ? true
-            : linkOrder === "ascending"
-            ? g.length
-            : -g.length,
-        (d) => d.sport
-      )
-      .reverse(),
+    domain: d3.groupSort(
+      data,
+      (g) =>
+        linkOrder === "null"
+          ? true
+          : linkOrder === "ascending y"
+          ? g.length
+          : -g.length,
+      (d) => d.sport
+    ),
   },
   y: { grid: true, label: "Frequency" },
   color: {
@@ -268,6 +266,7 @@ Plot.plot({
     type: "categorical",
     legend: true,
     tickFormat: (d) => ["Gold", "Silver", "Bronze", "None"][d],
+    domain: [0, 1, 2, 3],
     range: ["#F6BD16", "#5D7092", "#CE8032", "#aaa"],
   },
   r: { range: [2, maxR] },
@@ -290,7 +289,7 @@ Plot.plot({
       Plot.dodgeY({
         x: "birthday",
         fy: sex,
-        fill: (d) => (d.gold ? 0 : d.silver ? 1 : 2),
+        fill: (d) => (d.gold ? 0 : d.silver ? 1 : d.bronze ? 2 : 3),
         sort: { channel: "fill" },
         r: (d) => d.gold + d.silver + d.bronze,
         tip: true,
