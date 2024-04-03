@@ -26,8 +26,6 @@ export default defineConfig({
           { text: "Transform", link: "/transform" },
           { text: "Signal", link: "/signal" },
           { text: "Dispose", link: "/dispose" },
-          { text: "Only", link: "/only" },
-          { text: "Skip", link: "/skip" },
         ],
       },
     ],
