@@ -50,6 +50,26 @@ export default {
 };
 ```
 
+## With other Markdown plugins
+
+If you are working with other Markdown plugins, you should register Markdown plugin _genjiAttrs_ explicitly:
+
+```js
+// .vitepress/config.js
+import { genjiAttrs } from "genji-theme-vitepress/config";
+import otherMarkdownPlugin from "other-markdown-plugin";
+
+export default {
+  extends: config,
+  markdown: {
+    config: (md) => {
+      md.use(otherMarkdownPlugin);
+      md.use(genjiAttrs);
+    },
+  },
+};
+```
+
 ## A quick example
 
 If everything goes where, insert the following code snippet into one of your Markdown files, excluding `index.md`:
