@@ -22,3 +22,5 @@ export default defineConfig({
     },
   },
 });
+
+export const genjiAttrs = attrs;
