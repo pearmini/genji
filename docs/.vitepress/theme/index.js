@@ -54,7 +54,6 @@ function p5(withDraw) {
       canvas.style.visibility = 'visible';
       div.style.height = canvas.style.height;
       div.style.overflow = 'hidden';
-      document.body.appendChild(div);
       unsubscribe(() => p.remove());
       return div;
     });
