@@ -86,6 +86,18 @@ importers:
         specifier: ^3.2.5
         version: 3.2.5
 
+  packages/genji-theme-docusaurus:
+    dependencies:
+      genji-runtime:
+        specifier: workspace:*
+        version: link:../genji-runtime
+      react:
+        specifier: ^18.0.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.0.0
+        version: 18.2.0(react@18.2.0)
+
   packages/genji-theme-vitepress:
     dependencies:
       genji-runtime:
@@ -3838,7 +3850,6 @@ packages:
 
   /js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
-    dev: true
 
   /js-yaml@3.14.1:
     resolution: {integrity: sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g==}
@@ -3992,6 +4003,13 @@ packages:
 
   /lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+
+  /loose-envify@1.4.0:
+    resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
+    hasBin: true
+    dependencies:
+      js-tokens: 4.0.0
+    dev: false
 
   /lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
@@ -4434,9 +4452,26 @@ packages:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
     dev: true
 
+  /react-dom@18.2.0(react@18.2.0):
+    resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
+    peerDependencies:
+      react: ^18.2.0
+    dependencies:
+      loose-envify: 1.4.0
+      react: 18.2.0
+      scheduler: 0.23.0
+    dev: false
+
   /react-is@17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
     dev: true
+
+  /react@18.2.0:
+    resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      loose-envify: 1.4.0
+    dev: false
 
   /read-pkg@3.0.0:
     resolution: {integrity: sha512-BLq/cCO9two+lBgiTYNqD6GdtK8s4NpaWrl6/rCO9w0TUS8oJl7cmToOZfRYllKTISY6nt1U7jQ53brmKqY6BA==}
@@ -4585,6 +4620,12 @@ packages:
     dependencies:
       xmlchars: 2.2.0
     dev: true
+
+  /scheduler@0.23.0:
+    resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
+    dependencies:
+      loose-envify: 1.4.0
+    dev: false
 
   /search-insights@2.13.0:
     resolution: {integrity: sha512-Orrsjf9trHHxFRuo9/rzm0KIWmgzE8RMlZMzuhZOJ01Rnz3D0YBAe+V6473t6/H6c7irs6Lt48brULAiRWb3Vw==}
