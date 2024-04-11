@@ -1,0 +1,8 @@
+{
+  "name": "genji",
+  "version": "0.2.0",
+  "description": "The interactive Markdown extension",
+  "packageManager": "pnpm@8.15.3",
+  "author": "https://github.com/pearmini",
+  "license": "MIT"
+}
