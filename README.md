@@ -11,6 +11,7 @@
 - Motivation - https://genji-md.dev/why-genji
 - Examples - https://genji-md.dev/examples/athletes-visualization
 - Try Online - https://stackblitz.com/edit/vite-p5brzc?file=package.json
+- Changelog - https://github.com/pearmini/genji/releases
 
 ## Packages 📦
 
