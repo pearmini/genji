@@ -1,8 +1,8 @@
-# Markdown Genji for VitePress
+# Genji Runtime
 
 <img src="./img/logo.svg" width="300"/>
 
-The [VitePress](https://vitepress.dev/) theme to enable Genji Markdown extension.
+The runtime for Markdown Genji.
 
 ## Documentation 📚
 
