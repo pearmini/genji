@@ -61,7 +61,7 @@ importers:
         specifier: 2.5.1
         version: 2.5.1
 
-  packages/genji-theme-vitepress:
+  packages/genji-runtime:
     dependencies:
       '@observablehq/inputs':
         specifier: ^0.10.6
@@ -75,6 +75,22 @@ importers:
       estraverse:
         specifier: ^5.3.0
         version: 5.3.0
+    devDependencies:
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.0
+      eslint-config-prettier:
+        specifier: ^9.1.0
+        version: 9.1.0(eslint@8.57.0)
+      prettier:
+        specifier: ^3.2.5
+        version: 3.2.5
+
+  packages/genji-theme-vitepress:
+    dependencies:
+      genji-runtime:
+        specifier: workspace:*
+        version: link:../genji-runtime
       vitepress:
         specifier: ^1.0.0
         version: 1.1.0(@algolia/client-search@4.23.3)(search-insights@2.13.0)

@@ -1,0 +1,70 @@
+:root {
+  --genji-inspector-syntax-normal: #1b1e23;
+  --genji-code-font-size: 14px;
+  --genji-input-table-head-bg: #f8f9fa;
+}
+
+:root {
+  --syntax_normal: var(--genji-inspector-syntax-normal) !important;
+  --sans-serif: -apple-system, BlinkMacSystemFont, "avenir next", avenir, helvetica, "helvetica neue", ubuntu, roboto,
+    noto, "segoe ui", arial, sans-serif;
+}
+
+.genji-cell {
+  display: flex;
+  align-items: center;
+  margin: 16px 0px 0px 0px;
+  min-height: 22px;
+  overflow: auto;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+}
+
+.genji-cell::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari and new Edge */
+}
+
+.genji-cell + div {
+  margin-top: 0px !important;
+}
+
+.genji-error {
+  color: #cb4538;
+  margin-bottom: 4px;
+}
+
+.genji-loading {
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid var(--vp-c-text-1);
+  border-top-color: transparent;
+  border-radius: 100%;
+  animation: circle infinite 0.75s linear;
+}
+
+@keyframes circle {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.observablehq--caret {
+  margin-right: 4px;
+  vertical-align: baseline;
+  margin-bottom: 1px;
+}
+
+.observablehq--inspect {
+  font-size: var(--genji-code-font-size) !important;
+}
+
+.__ns__-table table {
+  width: 100%;
+}
+
+.__ns__-table thead th {
+  background-color: var(--genji-input-table-head-bg) !important;
+}

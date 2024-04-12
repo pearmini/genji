@@ -1,26 +1,27 @@
 import {
   button as _button,
-  // checkbox as _checkbox,
   radio as _radio,
   toggle as _toggle,
   color as _color,
-  // date as _date,
-  // datetime as _datetime,
-  // fileOf as _fileOf,
   range as _range,
-  // number as _number,
   search as _search,
-  // searchFilter as _searchFilter,
   select as _select,
   table as _table,
   text as _text,
+  // TODO
+  // checkbox as _checkbox,
+  // date as _date,
+  // datetime as _datetime,
+  // fileOf as _fileOf,
+  // number as _number,
+  // searchFilter as _searchFilter,
   // email as _email,
   // tel as _tel,
   // url as _url,
   // password as _password,
   // textarea as _textarea,
 } from "@observablehq/inputs";
-import Signal from "./signal";
+import Signal from "./signal.js";
 
 export function fromElement(element) {
   return new Signal((next, view) => {
