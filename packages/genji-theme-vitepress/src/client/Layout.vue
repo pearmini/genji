@@ -1,9 +1,8 @@
 <script setup>
 import { defineProps } from "vue";
 import { useRender } from "./render";
+import "genji-runtime/css";
 import "./style.css";
-import "./inspector.css";
-import "./inputs.css";
 
 const { transform = {}, library = {}, Theme } = defineProps(["transform", "library", "Theme"]);
 

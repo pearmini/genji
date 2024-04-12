@@ -13,12 +13,16 @@ export default defineConfig({
         plugins: [
           postcssIsolateStyles({
             includeFiles: [/vp-doc\.css/, /base\.css/],
+            prefix: ":not(:where(.genji-cell, .genji-cell *))",
           }),
         ],
       },
     },
     optimizeDeps: {
-      include: ["genji-theme-vitepress > esprima", "genji-theme-vitepress > estraverse"],
+      include: [
+        "genji-theme-vitepress > genji-runtime > esprima",
+        "genji-theme-vitepress > genji-runtime > estraverse",
+      ],
     },
   },
 });
