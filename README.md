@@ -15,8 +15,9 @@
 
 ## Packages 📦
 
-- [genji-theme-vitepress](./packages/genji-theme-vitepress/) - A [VitePress](https://vitepress.dev/) theme to enable Genji Markdown extension.
-- [genji-notebook](./packages/genji-notebook/) - A demo static site generator with builtin Genji Markdown extension.
+- [genji-theme-vitepress](./packages/genji-theme-vitepress/) - The [VitePress](https://vitepress.dev/) theme to enable Genji Markdown extension.
+- [genji-runtime](./packages/genji-runtime) - The runtime for Markdown Genji.
+- [genji-notebook](./packages/genji-notebook/) - The simple static site generator with builtin Genji Markdown extension.
 
 ## License 📄
 
