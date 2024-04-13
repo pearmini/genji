@@ -5,7 +5,8 @@
   "type": "module",
   "main": "src/index.js",
   "files": [
-    "src"
+    "src",
+    "img"
   ],
   "exports": {
     ".": "./src/index.js",
