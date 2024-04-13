@@ -1,11 +1,12 @@
 {
   "name": "genji-runtime",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "The runtime for Genji",
   "type": "module",
   "main": "src/index.js",
   "files": [
-    "src"
+    "src",
+    "img"
   ],
   "exports": {
     ".": "./src/index.js",
