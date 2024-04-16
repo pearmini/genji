@@ -2,7 +2,7 @@
   "name": "genji-theme-vitepress",
   "version": "0.2.1",
   "type": "module",
-  "description": "A VitePress theme to enable Genji interactive Markdown extension.",
+  "description": "The VitePress theme to enable Genji interactive Markdown extension.",
   "main": "src/client/Layout.vue",
   "exports": {
     ".": "./src/client/Layout.vue",

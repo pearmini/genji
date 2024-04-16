@@ -44,13 +44,12 @@ function renderInspector(node, options) {
 
 function mount(block, node) {
   if (!block) return;
-  const previous = block.previousElementSibling;
-  const exist = previous && previous.classList.contains("genji-cell");
-  if (!exist) return;
-  if (previous.firstChild) {
-    if (previous.firstChild.__dispose__) previous.firstChild.__dispose__();
-    previous.replaceChild(node, previous.firstChild);
-  } else previous.appendChild(node);
+  const cell = block.__cell__;
+  if (!cell.firstChild) cell.appendChild(node);
+  else {
+    if (cell.firstChild.__dispose__) cell.firstChild.__dispose__();
+    cell.replaceChild(node, cell.firstChild);
+  }
 }
 
 function renderError(e, { script }) {
@@ -423,22 +422,21 @@ function dispose(module) {
 
 function clearCells(blocks) {
   for (const block of blocks) {
-    const sibling = block.previousElementSibling;
-    if (sibling.classList.contains("genji-cell")) sibling.innerHTML = "";
+    const cell = block.__cell__;
+    if (cell) cell.innerHTML = "";
   }
 }
 
 function setCells(blocks) {
   for (const block of blocks) {
     const { code, inspector, overflow = "auto" } = block.dataset;
-    const sibling = block.previousElementSibling;
+    const cell = block.__cell__;
     if (code === "false") block.style.display = "none";
-    if (!sibling.classList.contains("genji-cell")) return;
     if (overflow !== "auto" && overflow !== "undefined") {
-      sibling.style.overflow = overflow;
-      sibling.style.display = "block"; // TODO Remove this.
+      cell.style.overflow = overflow;
+      cell.style.display = "block"; // TODO Remove this.
     }
-    if (inspector === "false") sibling.style.display = "none";
+    if (inspector === "false") cell.style.display = "none";
   }
 }
 
@@ -478,17 +476,21 @@ function scrollToAnchor() {
 function render(module, { root, isDark, path, transform = {}, isDev = false }) {
   dispose(module);
 
+  const scroll = debounce(scrollToAnchor);
+
   const blocks = Array.from(root.querySelectorAll(".genji-cell"))
     .filter((node) => node.dataset.options)
     .map((d) => {
       const block = d.nextElementSibling;
+      block.__cell__ = d;
       Object.assign(block.dataset, parseMeta(d.dataset.options));
       return block;
     });
 
-  const scroll = debounce(scrollToAnchor);
-
   if (!blocks.length) return;
+
+  clearCells(blocks);
+  setCells(blocks);
 
   const errors = [];
   const variables = blocks
@@ -503,8 +505,6 @@ function render(module, { root, isDark, path, transform = {}, isDev = false }) {
     .filter(Boolean);
 
   builtinVariable(variables);
-  clearCells(blocks);
-  setCells(blocks);
 
   const relationById = createGraph(variables);
   const nodeById = new Map(variables.map((d) => [d.id, d]));

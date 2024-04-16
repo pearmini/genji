@@ -1,0 +1,19 @@
+{
+  "name": "genji-theme-docusaurus",
+  "version": "0.2.1",
+  "description": "The Docusaurus theme to enable Genji interactive Markdown extension.",
+  "type": "module",
+  "main": "src/index.js",
+  "author": "https://github.com/pearmini",
+  "license": "MIT",
+  "dependencies": {
+    "genji-runtime": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "engines": {
+    "node": ">=18.0"
+  }
+}
