@@ -33,8 +33,10 @@
     "prettier": "^3.2.5"
   },
   "dependencies": {
-    "vitepress": "^1.0.0",
-    "vue": "^3.4.21",
     "genji-runtime": "workspace:*"
+  },
+  "peerDependencies": {
+    "vitepress": ">=1.0.0",
+    "vue": ">=3.0.0"
   }
 }
