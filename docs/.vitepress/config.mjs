@@ -13,6 +13,7 @@ export default defineConfig({
     nav: [
       { text: "Docs", link: "/what-is-genji" },
       { text: "Examples", link: "/examples/athletes-visualization" },
+      { text: "Showcase", link: "/showcase" },
     ],
     sidebar: [
       {
@@ -21,6 +22,10 @@ export default defineConfig({
           { text: "What is Genji?", link: "/what-is-genji" },
           { text: "Why Genji?", link: "/why-genji" },
           { text: "Getting Started", link: "/getting-started" },
+          {
+            text: "Site Showcase",
+            link: "/showcase",
+          },
         ],
       },
       {
