@@ -50,7 +50,7 @@ export default {
 };
 ```
 
-## With other Markdown plugins <Badge type="info" text="^0.2.1" />
+## With other Markdown plugins <VersionBadge version="0.2.1"/> {#with-other-markdown-plugins}
 
 If you are working with other Markdown plugins, you should register Markdown plugin _genjiAttrs_ explicitly:
 
