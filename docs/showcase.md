@@ -1,6 +1,6 @@
 # Site Showcase
 
-List of websites people are building with Markdown Genji.
+List of websites people are building with Markdown Genji. If your are building something cool with Markdown Genji, please add it [here](https://github.com/pearmini/genji/blob/main/docs/showcase.md)!
 
 ## Markdown Genji
 
