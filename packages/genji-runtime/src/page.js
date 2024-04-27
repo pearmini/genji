@@ -198,10 +198,11 @@ function createVariable(block, index, customTransforms) {
   };
 }
 
-function builtinVariable(variables) {
+function builtinVariable(variables, { isDark } = {}) {
   const builtins = [
     ["width", "width = Signals.width()"],
     ["now", "now = Signals.now()"],
+    ["dark", `dark = Signals.dark(${isDark})`],
   ];
   const names = new Set(variables.map((d) => d.name));
   let id = -1;
@@ -504,7 +505,7 @@ function render(module, { root, isDark, path, transform = {}, isDev = false }) {
     })
     .filter(Boolean);
 
-  builtinVariable(variables);
+  builtinVariable(variables, { isDark });
 
   const relationById = createGraph(variables);
   const nodeById = new Map(variables.map((d) => [d.id, d]));
@@ -559,11 +560,17 @@ function render(module, { root, isDark, path, transform = {}, isDev = false }) {
 export class Page {
   constructor(options = {}) {
     this._options = options;
+
     const module = new Map();
+    this._module = module;
+
+    // Scroll to anchor
     module._scrolled = false;
     this._onScroll = () => (module._scrolled = true);
-    this._module = module;
     window.addEventListener("wheel", this._onScroll);
+
+    this._events = {};
+    this.on("dark", (value) => window.dispatchEvent(new CustomEvent("dark", { detail: value })));
   }
   render(root = document.body) {
     const { library, ...rest } = this._options;
@@ -579,5 +586,15 @@ export class Page {
   dispose() {
     dispose(this._module);
     window.removeEventListener("wheel", this._onScroll);
+    for (const event in this._events) this._events[event] = [];
+  }
+  emit(event, ...value) {
+    const callbacks = this._events[event] || [];
+    for (const callback of callbacks) callback(...value);
+  }
+  on(event, callback) {
+    const callbacks = this._events[event] || [];
+    callbacks.push(callback);
+    this._events[event] = callbacks;
   }
 }
