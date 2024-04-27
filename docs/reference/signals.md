@@ -59,7 +59,7 @@ The reactive [signal](#signal) produces the current timestamp.
 now;
 ```
 
-## dark <VersionBadge version="0.2.2" />
+## dark <VersionBadge version="0.2.2" /> {#dark}
 
 The reactive [signal](#signal) produces if the current theme is set to dark mode.
 
