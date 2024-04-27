@@ -6,6 +6,7 @@ import { json, csv } from "d3-fetch";
 import { require } from "d3-require";
 import { autoType } from "d3-dsv";
 import { sum, groups, sort, groupSort, median } from "d3-array";
+import VersionBadge from "../components/VersionBadge.vue";
 import "./custom.css";
 
 function block(color) {
@@ -97,4 +98,7 @@ const props = {
 export default {
   extends: DefaultTheme,
   Layout: () => h(Layout, props),
+  enhanceApp({ app }) {
+    app.component("VersionBadge", VersionBadge);
+  },
 };
