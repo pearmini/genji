@@ -30,3 +30,12 @@ export function width(element = document.querySelector("main")) {
     return () => observer.disconnect();
   });
 }
+
+export function dark(defaultValue = false) {
+  return new Signal((next) => {
+    const onDark = (e) => next(e.detail);
+    window.addEventListener("dark", onDark);
+    next(defaultValue);
+    return () => media.removeEventListener("dark", onDark);
+  });
+}

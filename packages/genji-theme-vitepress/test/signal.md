@@ -69,6 +69,16 @@ Signals.width();
 })();
 ```
 
+## Dark
+
+```js eval
+dark;
+```
+
+```js eval
+document.createTextNode(dark ? "dark" : "light");
+```
+
 ## Multiple
 
 ```js eval code=false

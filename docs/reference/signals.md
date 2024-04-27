@@ -58,3 +58,17 @@ The reactive [signal](#signal) produces the current timestamp.
 ```js eval
 now;
 ```
+
+## dark <Badge type="info" text="^0.2.2" />
+
+The reactive [signal](#signal) produces if the current theme is set to dark mode.
+
+```js eval
+(() => {
+  const div = document.createElement("div");
+  div.style.width = "100px";
+  div.style.height = "100px";
+  div.style.background = dark ? "#fff" : "#000";
+  return div;
+})();
+```

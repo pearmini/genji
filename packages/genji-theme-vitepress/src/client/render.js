@@ -29,6 +29,13 @@ export function useRender({ library, transform }) {
     });
   });
 
+  watch(
+    () => isDark.value,
+    () => {
+      page.emit("dark", isDark.value);
+    },
+  );
+
   dev(() => {
     onHMR(() => renderPage(), site.value.base);
   });
