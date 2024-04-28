@@ -36,6 +36,6 @@ export function dark(defaultValue = false) {
     const onDark = (e) => next(e.detail);
     window.addEventListener("dark", onDark);
     next(defaultValue);
-    return () => media.removeEventListener("dark", onDark);
+    return () => window.removeEventListener("dark", onDark);
   });
 }
