@@ -1,6 +1,8 @@
 import { defineConfig } from "vitepress";
 import config from "genji-theme-vitepress/config";
 
+import meta from "../package.json" assert { type: "json" };
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   extends: config,
@@ -14,6 +16,19 @@ export default defineConfig({
       { text: "Docs", link: "/what-is-genji" },
       { text: "Examples", link: "/examples/athletes-visualization" },
       { text: "Showcase", link: "/showcase" },
+      {
+        text: meta.version,
+        items: [
+          {
+            text: "Changelog",
+            link: "https://github.com/pearmini/genji/releases",
+          },
+          // {
+          //   text: "Contributing",
+          //   link: "https://github.com/vuejs/vitepress/blob/main/.github/contributing.md",
+          // },
+        ],
+      },
     ],
     sidebar: [
       {
