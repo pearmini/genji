@@ -1,6 +1,14 @@
 import postcssPrefixSelector from "postcss-prefix-selector";
+import path from "path";
 
-export default function genjiThemeDocusaurus(context) {
+export default function genjiThemeDocusaurus(context, options) {
+  const { siteDir } = context;
+
+  // Inject genji.config.js into clientModules.
+  context.siteConfig.clientModules.push(
+    path.resolve(siteDir, "./genji.config.js")
+  );
+
   return {
     name: "genji-theme-docusaurus",
     getThemePath() {

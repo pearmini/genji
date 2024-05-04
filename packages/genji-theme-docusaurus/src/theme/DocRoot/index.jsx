@@ -8,7 +8,8 @@ export default function DocRoot(props) {
   const location = useLocation();
 
   useEffect(() => {
-    if (!pageRef.current) pageRef.current = new Page();
+    const config = window.__genjiConfig || {};
+    if (!pageRef.current) pageRef.current = new Page(config);
     pageRef.current.render();
     return () => pageRef.current.dispose();
   }, [location.pathname]);

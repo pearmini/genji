@@ -34,7 +34,7 @@ const config = {
     locales: ["en"],
   },
 
-  plugins: ["../src/"],
+  plugins: ["genji-theme-docusaurus"],
 
   presets: [
     [
