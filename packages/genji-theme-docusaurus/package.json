@@ -4,6 +4,10 @@
   "description": "The Docusaurus theme to enable Genji interactive Markdown extension.",
   "type": "module",
   "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./config": "./src/config.js"
+  },
   "author": "https://github.com/pearmini",
   "license": "MIT",
   "dependencies": {

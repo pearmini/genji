@@ -115,6 +115,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      genji-theme-docusaurus:
+        specifier: ^0.2.0
+        version: link:..
       prism-react-renderer:
         specifier: ^2.3.1
         version: 2.3.1(react@18.3.1)
