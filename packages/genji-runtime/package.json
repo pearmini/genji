@@ -1,6 +1,6 @@
 {
   "name": "genji-runtime",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "The runtime for Genji",
   "type": "module",
   "main": "src/index.js",
