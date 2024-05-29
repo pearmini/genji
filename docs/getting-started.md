@@ -1,23 +1,26 @@
 # Getting started
 
-Currently Genji can be used in [VitePress](https://vitepress.dev/) via the custom theme: [genji-theme-vitepress](https://github.com/pearmini/genji/tree/main/packages/genji-theme-vitepress).
-
-::: info Future Work
-There are plans to develop additional Genji themes and plugins for other SSGs in the future, such as [Docusaurus](https://docusaurus.io/), [Nextra](https://nextra.site/), [Rspress](https://rspress.dev/) and more.
-:::
+Currently Genji can be used with [VitePress](#vitepress) and [Docusaurus](#docusaurus). There are plans to develop additional Genji themes and plugins for other SSGs in the future, such as [Nextra](https://nextra.site/), [Rspress](https://rspress.dev/) and more.
 
 ## Try Genji online
 
-You can try VitePress and Genji directly in your browser on [StackBlitz](https://stackblitz.com/edit/vite-p5brzc?file=package.json).
+You can try Genji directly in your browser on StackBlitz:
 
-## Installing from NPM
+- [VitePress](https://stackblitz.com/edit/vite-p5brzc?file=package.json)
+- [Docusaurus](https://stackblitz.com/edit/vite-p5brzc?file=package.json)
+
+## Genji in VitePress
+
+In [VitePress](https://vitepress.dev/), Genji can be used via the custom theme: [genji-theme-vitepress](https://github.com/pearmini/genji/tree/main/packages/genji-theme-vitepress).
+
+### Installing VitePress from NPM
 
 First, you should install VitePress and create a basic project following the instructions in the [Getting Started](https://vitepress.dev/guide/getting-started) section of the VitePress official guide.
 
 Then install `genji-theme-vitepress` from NPM:
 
 ```bash
-$ npm install genji-theme-vitepress
+$ npm install genji-theme-vitepress -D
 ```
 
 To consume `genji-theme-vitpress`, override the default `Layout` component from the chosen theme:
@@ -50,7 +53,7 @@ export default {
 };
 ```
 
-## With other Markdown plugins <VersionBadge version="0.2.1"/> {#with-other-markdown-plugins}
+### With other Markdown plugins <VersionBadge version="0.2.1"/> {#with-other-markdown-plugins}
 
 If you are working with other Markdown plugins, you should register Markdown plugin _genjiAttrs_ explicitly:
 
@@ -70,9 +73,48 @@ export default {
 };
 ```
 
+Then you can test with this [example](#a-quick-example).
+
+## Genji in Docusaurus
+
+In [Docusaurus](https://docusaurus.io/), Genji can be used via the custom theme: [genji-theme-docusaurus](https://github.com/pearmini/genji/tree/main/packages/genji-theme-docusaurus).
+
+### Installing Docusaurus from NPM
+
+First, you should install Docusaurus and create a basic project following the instructions in the [Installation](https://docusaurus.io/docs/installation) section of the VitePress official guide.
+
+Then install `genji-theme-docusaurus` from NPM:
+
+```bash
+$ npm install genji-theme-docusaurus -D
+```
+
+After that register `genji-theme-docusaurus` in _docusaurus.config.js_ via plugins option:
+
+```js
+// docusaurus.config.js
+const config = {
+  // ...
+  plugins: ["genji-theme-docusaurus"],
+  // ...
+};
+```
+
+And create a `genji.config.js` in the root directory to configure genji:
+
+```js
+// genji.config.js
+import { defineConfig } from "genji-theme-docusaurus/config";
+
+// More props: https://genji-md.dev/reference/props
+export default defineConfig({});
+```
+
+Then you can test with this [example](#a-quick-example).
+
 ## A quick example
 
-If everything goes where, insert the following code snippet into one of your Markdown files, excluding `index.md`:
+If everything goes where, insert the following code snippet into one of your Markdown files.
 
 ````md
 ```js eval code=false
