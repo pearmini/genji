@@ -23,6 +23,7 @@ $ npm i @observablehq/plot
 Then registers it in the theme:
 
 ```js
+// For VitePress
 // .vitepress/theme/index.js
 import DefaultTheme from "vitepress/theme";
 import Layout from "genji-theme-vitepress";
@@ -41,6 +42,19 @@ export default {
   extends: DefaultTheme,
   Layout: () => h(Layout, props),
 };
+```
+
+```js
+// For Docusaurus
+// genji.config.js
+import { defineConfig } from "genji-theme-docusaurus/config";
+
+// More props: https://genji-md.dev/reference/props
+export default defineConfig({
+  library: {
+    Plot, // Add Plot to custom libraries.
+  },
+});
 ```
 
 Now you can plot a chart using it:
@@ -67,6 +81,7 @@ For [Observable Notebook](https://observablehq.com) users, you could install and
 You can also register some helper functions or variables. For example, to define a _block_ function:
 
 ```js
+// For VitePress
 // .vitepress/theme/index.js
 import DefaultTheme from "vitepress/theme";
 import Layout from "genji-theme-vitepress";
@@ -90,6 +105,25 @@ export default {
 };
 ```
 
+```js
+// For Docusaurus
+// genji.config.js
+import { defineConfig } from "genji-theme-docusaurus/config";
+
+// More props: https://genji-md.dev/reference/props
+export default defineConfig({
+  library: {
+    block(color) {
+      const div = document.createElement("div");
+      div.style.width = "100px";
+      div.style.height = "100px";
+      div.style.background = color;
+      return div;
+    },
+  },
+});
+```
+
 Then:
 
 ```js eval
@@ -109,6 +143,7 @@ $ npm i d3-require
 Then registers _d3-require_ in the theme:
 
 ```js
+// For VitePress
 // .vitepress/theme/index.js
 import DefaultTheme from "vitepress/theme";
 import Layout from "genji-theme-vitepress";
@@ -127,6 +162,20 @@ export default {
   extends: DefaultTheme,
   Layout: () => h(Layout, props),
 };
+```
+
+```js
+// For Docusaurus
+// genji.config.js
+import { defineConfig } from "genji-theme-docusaurus/config";
+import { require } from "d3-require";
+
+// More props: https://genji-md.dev/reference/props
+export default defineConfig({
+  library: {
+    d3: { require },
+  },
+});
 ```
 
 Require _Jquery_ and assign it to the variable _$_:

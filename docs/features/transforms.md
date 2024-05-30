@@ -21,6 +21,7 @@ Multiple transforms can be specified splitting by `,`:
 Transforms should be registered through [_props.transform_](/reference/props#trasnform) before being declared in directive.
 
 ```js
+// For VitePress
 // .vitepress/theme/index.js
 import DefaultTheme from "vitepress/theme";
 import Layout from "genji-theme-vitepress";
@@ -40,6 +41,24 @@ export default {
   extends: DefaultTheme,
   Layout: () => h(Layout, props),
 };
+```
+
+```js
+// For Docusaurus
+// genji.config.js
+import { defineConfig } from "genji-theme-docusaurus/config";
+import { require } from "d3-require";
+
+// More props: https://genji-md.dev/reference/props
+export default defineConfig({
+  transform: {
+    // Register a py transform
+    py(code) {
+      // ...
+      return newCode;
+    },
+  },
+});
 ```
 
 ## Transform Code
