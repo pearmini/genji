@@ -466,12 +466,19 @@ function getAnchorInCurrentURL() {
   return url.hash.slice(1);
 }
 
+function withSmoothScroll(callback) {
+  const html = document.getElementsByTagName("html")[0];
+  html.style.scrollBehavior = "smooth";
+  callback();
+  setTimeout(() => (html.style.scrollBehavior = "auto"), 20);
+}
+
 function scrollToAnchor() {
   const anchor = getAnchorInCurrentURL();
   if (!anchor) return;
   const a = document.querySelector(`a[href="#${anchor}"]`);
   if (!a) return;
-  a.click();
+  withSmoothScroll(() => a.click());
 }
 
 function render(module, { root, isDark, path, transform = {}, isDev = false }) {
