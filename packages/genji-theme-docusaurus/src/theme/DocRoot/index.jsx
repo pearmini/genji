@@ -5,6 +5,7 @@ import { useLocation } from "@docusaurus/router";
 
 function useDark() {
   const [dark, setDark] = React.useState(false);
+
   useEffect(() => {
     const observer = new MutationObserver((mutationsList) => {
       for (const mutation of mutationsList) {
@@ -14,8 +15,10 @@ function useDark() {
       }
     });
     observer.observe(document.documentElement, { attributes: true });
+
     return () => observer.disconnect();
   }, []);
+
   return dark;
 }
 
@@ -26,9 +29,12 @@ export default function DocRoot(props) {
 
   useEffect(() => {
     const config = window.__genjiConfig || {};
-    if (!pageRef.current) pageRef.current = new Page(config);
+    if (!pageRef.current) pageRef.current = new Page({ isDark: dark, ...config });
     pageRef.current.render();
-    return () => pageRef.current.dispose();
+    return () => {
+      pageRef.current.dispose();
+      pageRef.current = null;
+    };
   }, [location.pathname]);
 
   useEffect(() => {
