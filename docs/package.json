@@ -1,6 +1,6 @@
 {
   "name": "genji-docs",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": true,
   "description": "The documentation for Genji",
   "scripts": {

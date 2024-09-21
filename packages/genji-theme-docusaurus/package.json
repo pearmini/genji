@@ -1,9 +1,13 @@
 {
   "name": "genji-theme-docusaurus",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "description": "The Docusaurus theme to enable Genji interactive Markdown extension.",
   "type": "module",
   "main": "src/index.js",
+  "files": [
+    "src",
+    "img"
+  ],
   "exports": {
     ".": "./src/index.js",
     "./config": "./src/config.js"
