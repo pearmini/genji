@@ -7,7 +7,7 @@ Currently Genji can be used with [VitePress](#vitepress) and [Docusaurus](#docus
 You can try Genji directly in your browser on StackBlitz:
 
 - [VitePress](https://stackblitz.com/edit/vite-p5brzc?file=package.json)
-- [Docusaurus](https://stackblitz.com/edit/vite-p5brzc?file=package.json)
+- [Docusaurus](https://stackblitz.com/edit/github-majhcr?file=package.json)
 
 ## Genji in VitePress
 
