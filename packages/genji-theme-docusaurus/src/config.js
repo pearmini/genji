@@ -1,4 +1,8 @@
+import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
+
 export function defineConfig(config) {
-  if (typeof window === 'object') window.__genjiConfig = config;
+  if (ExecutionEnvironment.canUseDOM) {
+    window.__genjiConfig = config;
+  }
   return config;
 }
