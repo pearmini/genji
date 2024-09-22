@@ -1,4 +1,4 @@
 export function defineConfig(config) {
-  window.__genjiConfig = config;
+  if (typeof window === 'object') window.__genjiConfig = config;
   return config;
 }
