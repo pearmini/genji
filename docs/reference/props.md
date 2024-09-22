@@ -2,8 +2,9 @@
 
 Props to configure Markdown Genji:
 
+- For VitePress:
+
 ```js
-// For VitePress
 // .vitepress/theme/index.js
 import DefaultTheme from "vitepress/theme";
 import Layout from "genji-theme-vitepress";
@@ -19,13 +20,52 @@ export default {
 };
 ```
 
+- For Docusaurus:
+
 ```js
-// For Docusaurus
 // genji.config.js
 import { defineConfig } from "genji-theme-docusaurus/config";
 
 export default defineConfig({});
 ```
+
+::: warning
+If you want to import some modules with side effects for Docusaurus, such as accessing some global variables in browser, you need to check the [execution environment](https://docusaurus.io/docs/advanced/ssg#escape-hatches) before accessing client-side globals.
+
+For example, to import a module which listens keydown event:
+
+```js
+// keydown.js
+window.addEventListener("keydown", (e) => {
+  if (e.code === "Period") {
+    location.assign(location.href.replace(".com", ".dev"));
+  }
+});
+
+export default function () {
+  window.dispatchEvent(new Event("keydown", { code: "Period" }));
+}
+```
+
+You should use _require_ instead of _import_:
+
+```js
+// genji.config.js
+import { defineConfig } from "genji-theme-docusaurus/config";
+import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
+
+const keydown = ExecutionEnvironment.canUseDOM
+  ? require("./keydown.js")
+  : () => {};
+
+export default defineConfig({
+  library: {
+    keydown,
+  },
+});
+```
+
+:::
 
 ## library
 
@@ -35,8 +75,9 @@ Specifies custom global variables and functions can be accessed in code blocks. 
 $ npm i @observablehq/plot
 ```
 
+- For VitePress:
+
 ```js
-// For VitePress
 // .vitepress/theme/index.js
 import * as Plot from "@observablehq/plot";
 
@@ -58,8 +99,9 @@ const props = {
 //...
 ```
 
+- For Docusaurus:
+
 ```js
-// For Docusaurus
 // genji.config.js
 import { defineConfig } from "genji-theme-docusaurus/config";
 import * as Plot from "@observablehq/plot";
@@ -103,10 +145,10 @@ block("steelblue");
 
 Specifies the transforms to transform code in code blocks before executing. For example, to define a transform called _py_:
 
-```js
-// For VitePress
-// .vitepress/theme/index.js
+- For VitePress:
 
+```js
+// .vitepress/theme/index.js
 const props = {
   transform: {
     py(code) {
@@ -116,8 +158,9 @@ const props = {
 };
 ```
 
+- For Docusaurus:
+
 ```js
-// For Docusaurus
 // genji.config.js
 import { defineConfig } from "genji-theme-docusaurus/config";
 
