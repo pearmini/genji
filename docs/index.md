@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: Markdown Genji
-  text: The interactive Markdown extension
+  text: A interactive Markdown extension
   tagline: Author interactive documents with just Markdown.
   image:
     src: /logo.svg
