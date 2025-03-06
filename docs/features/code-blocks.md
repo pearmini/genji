@@ -243,7 +243,7 @@ function rbg(r, g = r, b = r) {
 :::
 ````
 
-This produce:
+This produces:
 
 ::: code-group
 
