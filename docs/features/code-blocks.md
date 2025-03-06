@@ -218,7 +218,7 @@ call(() => {
 });
 ```
 
-## Code Groups
+## Code Groups <VersionBadge version="0.2.7"/>
 
 In Vitepress, you can group multiple [code blocks](https://vitepress.dev/guide/markdown#code-groups) like this:
 
