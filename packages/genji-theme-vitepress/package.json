@@ -1,6 +1,6 @@
 {
   "name": "genji-theme-vitepress",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "type": "module",
   "description": "The VitePress theme to enable Genji interactive Markdown extension.",
   "main": "src/client/Layout.vue",
