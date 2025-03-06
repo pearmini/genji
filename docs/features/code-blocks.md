@@ -217,3 +217,51 @@ call(() => {
   return span;
 });
 ```
+
+## Code Groups
+
+In Vitepress, you can group multiple [code blocks](https://vitepress.dev/guide/markdown#code-groups) like this:
+
+````md
+::: code-group
+
+```js [main.js] eval
+(() => {
+  const div = document.createElement("div");
+  div.style.width = "100px";
+  div.style.height = "100px";
+  div.style.background = rgb(100);
+})();
+```
+
+```js [rgb.js] eval inspector=false
+function rbg(r, g = r, b = r) {
+  return `rgb(${r}, ${g}, ${b})`;
+}
+```
+
+:::
+````
+
+This produce:
+
+::: code-group
+
+```js [main.js] eval
+(() => {
+  const div = document.createElement("div");
+  div.style.width = "100px";
+  div.style.height = "100px";
+  div.style.background = rgb(100);
+  div.style.borderRadius = "50px";
+  return div;
+})();
+```
+
+```js [rgb.js] eval inspector=false
+function rgb(r, g = r, b = r) {
+  return `rgb(${r}, ${g}, ${b})`;
+}
+```
+
+:::
