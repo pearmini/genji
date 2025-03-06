@@ -474,6 +474,14 @@ function scrollToAnchor() {
   a.click();
 }
 
+function maybeCodegroup(node, code) {
+  const group = node.closest(".vp-code-group");
+  if (!group) return;
+  const parent = group.parentElement;
+  parent.insertBefore(node, group);
+  if (node.classList.contains("active")) code.classList.add("active");
+}
+
 function render(module, { root, isDark, path, transform = {}, isDev = false }) {
   dispose(module);
 
@@ -483,6 +491,7 @@ function render(module, { root, isDark, path, transform = {}, isDev = false }) {
     .filter((node) => node.dataset.options)
     .map((d) => {
       const block = d.nextElementSibling;
+      maybeCodegroup(d, block);
       block.__cell__ = d;
       Object.assign(block.dataset, parseMeta(d.dataset.options));
       return block;

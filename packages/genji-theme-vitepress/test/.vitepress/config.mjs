@@ -26,6 +26,7 @@ export default defineConfig({
           { text: "Transform", link: "/transform" },
           { text: "Signal", link: "/signal" },
           { text: "Dispose", link: "/dispose" },
+          { text: "Code Group", link: "/code-group" },
         ],
       },
     ],
