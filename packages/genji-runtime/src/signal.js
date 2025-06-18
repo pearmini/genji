@@ -24,7 +24,13 @@ export function now() {
 export function width(element = document.querySelector("main")) {
   if (element === undefined) throw new Error("Element is undefined.");
   return new Signal((next) => {
-    const observer = new ResizeObserver(() => next(element.offsetWidth));
+    let prevWidth;
+    const observer = new ResizeObserver(() => {
+      const width = element.offsetWidth;
+      if (width === prevWidth) return;
+      prevWidth = width;
+      next(width);
+    });
     observer.observe(element);
     next(element.offsetWidth);
     return () => observer.disconnect();
