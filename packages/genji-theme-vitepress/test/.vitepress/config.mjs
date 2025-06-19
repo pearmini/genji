@@ -27,6 +27,7 @@ export default defineConfig({
           { text: "Signal", link: "/signal" },
           { text: "Dispose", link: "/dispose" },
           { text: "Code Group", link: "/code-group" },
+          { text: "Magic Variable", link: "/magic-variable" },
         ],
       },
     ],

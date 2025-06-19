@@ -288,7 +288,7 @@ function rootsOf(relationById) {
 }
 
 function execute(id, nodeById, relationById, valueById, countById, disposeById, idByName, hooks) {
-  const { loading, success, error } = hooks;
+  const { loading, success: _success, error } = hooks;
 
   const node = nodeById.get(id);
 
@@ -340,6 +340,8 @@ function execute(id, nodeById, relationById, valueById, countById, disposeById, 
       error(e, node);
       return;
     }
+
+    const success = (node) => _success(node, { names, values });
 
     if (output instanceof Signal) {
       try {
@@ -466,6 +468,13 @@ function getAnchorInCurrentURL() {
   return url.hash.slice(1);
 }
 
+function span(text, style) {
+  const span = document.createElement("span");
+  span.textContent = text;
+  if (style) span.style = style;
+  return span;
+}
+
 function scrollToAnchor() {
   const anchor = getAnchorInCurrentURL();
   if (!anchor) return;
@@ -482,7 +491,25 @@ function maybeCodegroup(node, code) {
   if (node.classList.contains("active")) code.classList.add("active");
 }
 
-function render(module, { root, isDark, path, transform = {}, isDev = false }) {
+const quoteByBlocks = new Map();
+
+function inferQuoted(blocks) {
+  if (quoteByBlocks.has(blocks)) return quoteByBlocks.get(blocks);
+
+  let singleQuotedCount = 0;
+  let doubleQuotedCount = 0;
+
+  for (const block of blocks) {
+    const text = block.textContent;
+    singleQuotedCount += (text.match(/'/g) || []).length;
+    doubleQuotedCount += (text.match(/"/g) || []).length;
+  }
+
+  quoteByBlocks.set(blocks, singleQuotedCount > doubleQuotedCount);
+  return quoteByBlocks.get(blocks);
+}
+
+function render(module, { root, isDark, path, transform = {}, isDev = false, numberStyle, stringStyle }) {
   dispose(module);
 
   const scroll = debounce(scrollToAnchor);
@@ -496,6 +523,8 @@ function render(module, { root, isDark, path, transform = {}, isDev = false }) {
       Object.assign(block.dataset, parseMeta(d.dataset.options));
       return block;
     });
+
+  const isSingleQuoted = inferQuoted(blocks);
 
   if (!blocks.length) return;
 
@@ -536,13 +565,54 @@ function render(module, { root, isDark, path, transform = {}, isDev = false }) {
     mount(block, node);
   };
 
-  const success = ({ id }) => {
+  const success = ({ id }, { names, values }) => {
     const block = blocks[id];
     const node = valueById.get(id);
     if (!block) return;
     const [normalized, dispose] = renderInspector(node, { isDark });
     normalized.__dispose__ = dispose;
     mount(block, normalized);
+
+    const format = (value) => (typeof value === "string" ? (isSingleQuoted ? `'${value}'` : `"${value}"`) : value);
+    const style = (value) => (typeof value === "number" ? numberStyle : stringStyle);
+
+    // Replace magic variables with values.
+    // For example: const width = $$number$$ will be replaced with const width = 50.
+    if (block.__textNodeByName__) {
+      for (const [name, node] of block.__textNodeByName__) {
+        const value = values[names.indexOf(name)];
+        const stringedValue = format(value);
+        node.textContent = stringedValue;
+      }
+    } else {
+      const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT);
+      const textNodeByNode = new Map();
+      while (walker.nextNode()) {
+        const node = walker.currentNode;
+        const text = node.textContent;
+        for (const name of names) {
+          if (!name.startsWith("$$") || !name.endsWith("$$")) continue;
+          const startIndex = text.indexOf(name);
+          if (startIndex !== -1) {
+            const value = values[names.indexOf(name)];
+            const stringedValue = format(value);
+            const prefix = text.slice(0, startIndex);
+            const suffix = text.slice(startIndex + name.length);
+            const parent = node.parentElement;
+            const prefixSpan = span(prefix);
+            const suffixSpan = span(suffix);
+            const valueSpan = span(stringedValue, style(value));
+            parent.innerHTML = "";
+            if (prefix) parent.appendChild(prefixSpan);
+            parent.appendChild(valueSpan);
+            if (suffix) parent.appendChild(suffixSpan);
+            textNodeByNode.set(name, valueSpan);
+          }
+        }
+      }
+      block.__textNodeByName__ = textNodeByNode;
+    }
+
     if (!module._scrolled) scroll();
   };
 

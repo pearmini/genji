@@ -17,6 +17,8 @@ export function useRender({ library, transform }) {
         transform,
         isDark: isDark.value,
         path: route.path,
+        numberStyle: "--shiki-light:#005CC5;--shiki-dark:#79B8FF;",
+        stringStyle: "--shiki-light:#032F62;--shiki-dark:#9ECBFF;",
       });
 
       renderPage();
