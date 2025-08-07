@@ -15,7 +15,7 @@ The version of _square()_ with four parameters creates a rounded square. The fou
 The version of _square()_ with seven parameters also creates a rounded square. Each of the last four parameters set the radius of a corner. The radii start with the top-left corner and move clockwise around the square. If any of these parameters are omitted, they are set to the value of the last radius that was set.
 
 ```js eval code=false inspector=false
-p5 = d3.require("p5");
+p5 = d3.require("p5@1");
 ```
 
 ## Examples
