@@ -36,3 +36,13 @@ $$color$$ = Inputs.color({ label: "Pick a color" });
 ```js eval
 block($$color$$);
 ```
+
+## Width
+
+```js eval
+$$width$$ = width;
+```
+
+```js eval
+w = $$width$$;
+```
