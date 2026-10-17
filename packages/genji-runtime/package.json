@@ -15,14 +15,15 @@
   },
   "scripts": {
     "test": "npm run test:lint && npm run test:format",
-    "test:lint": "eslint src test",
-    "test:format": "prettier --check src test"
+    "test:lint": "eslint src",
+    "test:format": "prettier --check src"
   },
   "author": "https://github.com/pearmini",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.2.5"
   },
   "dependencies": {
