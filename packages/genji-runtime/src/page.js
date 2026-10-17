@@ -83,79 +83,36 @@ function debounce(callback, wait = 10) {
   };
 }
 
-function splitByEqual(content) {
-  const index = content.split("").findIndex((d) => d === "=");
-  const before = content.slice(0, index);
-  const after = content.slice(index + 1, content.length);
-  return [before, after];
-}
-
-function createAssignmentNode(code) {
-  const [name, value] = splitByEqual(code);
-  return [name.trim(), value.trim()];
-}
-
-function createVariableNode(code) {
-  const [prefix, value] = splitByEqual(code);
-  const name = prefix.trim().split(" ").pop();
-  return [name.trim(), value.trim()];
-}
-
-function createFunctionNode(code, ast) {
-  const { name } = ast.body[0].id;
-  return [name, code];
-}
-
-function createCallNode(code) {
-  return [undefined, code];
-}
-
-function createExpressionNode(code) {
-  return [undefined, code];
-}
-
-function typeOfExpression(ast) {
-  return ast.body[0]?.expression?.type;
-}
-
-function typeOfBody(ast) {
-  return ast.body[0]?.type;
-}
-
-function isAssignment(ast) {
-  return typeOfExpression(ast) === "AssignmentExpression";
-}
-
-function isCall(ast) {
-  return typeOfExpression(ast) === "CallExpression";
-}
-
-function isVariableDeclaration(ast) {
-  return typeOfBody(ast) === "VariableDeclaration";
-}
-
-function isFunctionDeclaration(ast) {
-  return typeOfBody(ast) === "FunctionDeclaration";
-}
-
-function isExpression(ast) {
-  return typeOfBody(ast) === "ExpressionStatement";
-}
-
+// Returns the name a cell declares (if any) and the code that computes its value.
 function normalizeVariable(ast, code) {
-  if (isAssignment(ast)) return createAssignmentNode(code);
-  if (isCall(ast)) return createCallNode(code);
-  if (isFunctionDeclaration(ast)) return createFunctionNode(code, ast);
-  if (isVariableDeclaration(ast)) return createVariableNode(code);
-  if (isExpression(ast)) return createExpressionNode(code, ast);
+  const [node] = ast.body;
+  const valueFrom = (init) => (init ? code.slice(init.start).trim() : "");
+
+  // x = 1
+  if (node?.type === "ExpressionStatement") {
+    const { expression: e } = node;
+    if (e.type === "AssignmentExpression" && e.operator === "=" && e.left.type === "Identifier") {
+      return [e.left.name, valueFrom(e.right)];
+    }
+    return [undefined, code];
+  }
+
+  // const x = 1
+  if (node?.type === "VariableDeclaration") {
+    const [{ id, init }] = node.declarations;
+    return [id.name, valueFrom(init)];
+  }
+
+  // function x() {}
+  if (node?.type === "FunctionDeclaration") return [node.id.name, code];
+
   return [undefined, ""];
 }
 
 function parseVariable(code) {
   const ast = parse(code, { ecmaVersion: "latest", sourceType: "script" });
   const [name, expression] = normalizeVariable(ast, code);
-  const deps = findReferences(ast);
-  return { name, expression, ast, deps };
+  return { name, expression, deps: findReferences(ast) };
 }
 
 function identity(d) {
@@ -200,32 +157,17 @@ function builtinVariable(variables, { isDark } = {}) {
   return variables;
 }
 
+// Adds an edge n1 -> n2 for every cell n2 that reads the variable declared by n1.
 function createGraph(nodes) {
   const relationById = new Map(nodes.map((n) => [n.id, { from: [], to: [] }]));
-  for (let i = 0; i < nodes.length; i++) {
-    for (let j = i + 1; j < nodes.length; j++) {
-      const n1 = nodes[i];
-      const n2 = nodes[j];
-      const r1 = relationById.get(n1.id);
-      const r2 = relationById.get(n2.id);
-      const ref1 = isReference(n1, n2);
-      const ref2 = isReference(n2, n1);
-      if (ref1) {
-        r1.to.push(n2.id);
-        r2.from.push(n1.id);
-      }
-      if (ref2) {
-        r1.from.push(n2.id);
-        r2.to.push(n1.id);
-      }
+  for (const n2 of nodes) {
+    for (const n1 of nodes) {
+      if (n1 === n2 || n1.name === undefined || !n2.deps.includes(n1.name)) continue;
+      relationById.get(n1.id).to.push(n2.id);
+      relationById.get(n2.id).from.push(n1.id);
     }
   }
   return relationById;
-}
-
-// Whether n2 reads the variable declared by n1.
-function isReference(n1, n2) {
-  return n1.name !== undefined && n2.deps.includes(n1.name);
 }
 
 function isCircular(relationById, id) {
