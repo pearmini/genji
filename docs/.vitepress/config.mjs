@@ -50,6 +50,7 @@ export default defineConfig({
           { text: "Libraries", link: "/features/libraries" },
           { text: "Inputs", link: "/features/inputs" },
           { text: "Signals", link: "/features/signals" },
+          { text: "Magic Variables", link: "/features/magic-variables" },
           { text: "Transforms", link: "/features/transforms" },
         ],
       },
