@@ -20,21 +20,26 @@ export function createGraph(nodes) {
   return relationById;
 }
 
-function isCircular(relationById, id) {
-  const relation = relationById.get(id);
-  const { from, to } = relation;
-  return from.some((id) => to.includes(id));
+// Returns the ids reachable from the given ids by following edges.
+function reachableFrom(relationById, ids) {
+  const reached = new Set();
+  const stack = [...ids];
+  while (stack.length) {
+    for (const to of relationById.get(stack.pop()).to) {
+      if (reached.has(to)) continue;
+      reached.add(to);
+      stack.push(to);
+    }
+  }
+  return reached;
 }
 
-export function leavesOf(relationById) {
-  return Array.from(relationById.entries())
-    .filter(([, d]) => {
-      const { from } = d;
-      if (from.length === 0) return true;
-      if (from.every((d) => isCircular(relationById, d))) return true;
-      return false;
-    })
-    .map(([id]) => id);
+// Returns the ids of the cells in a cycle of any length, and of every cell
+// downstream of one, since neither can ever run.
+function blockedOf(relationById) {
+  const ids = Array.from(relationById.keys());
+  const circular = ids.filter((id) => reachableFrom(relationById, [id]).has(id));
+  return reachableFrom(relationById, circular);
 }
 
 function execute(id, nodeById, relationById, valueById, countById, disposeById, idByName, hooks) {
@@ -53,14 +58,6 @@ function execute(id, nodeById, relationById, valueById, countById, disposeById, 
   const { from, to } = relation;
   const names = from.map((id) => nodeById.get(id).name);
   const deps = from.map((id) => valueById.get(id));
-
-  for (const fromId of from) {
-    const { from: fromIds } = relationById.get(fromId);
-    if (fromIds.includes(id)) {
-      error(new SyntaxError(`Circular dependency detected.`), node);
-      return;
-    }
-  }
 
   const executeDeps = () => {
     for (const toId of to) {
@@ -186,8 +183,17 @@ export function run(variables, { disposeById = new Map(), loading = () => {}, su
     if (!idByName.has(name) && name !== undefined) idByName.set(name, id);
   }
 
-  for (const root of leavesOf(relationById)) {
-    execute(root, nodeById, relationById, valueById, countById, disposeById, idByName, {
+  const blocked = blockedOf(relationById);
+  for (const { id } of variables) {
+    if (!blocked.has(id)) continue;
+    error(new SyntaxError(`Circular dependency detected.`), nodeById.get(id));
+    // Never run, even when a dependency outside the cycle updates.
+    countById.set(id, Infinity);
+  }
+
+  for (const { id } of variables) {
+    if (blocked.has(id) || relationById.get(id).from.length) continue;
+    execute(id, nodeById, relationById, valueById, countById, disposeById, idByName, {
       loading,
       success,
       error,
