@@ -20,7 +20,7 @@ function isBlockScope(node) {
 }
 
 function isFunctionScope(node) {
-  return isFunction(node) || node.type === "Program";
+  return isFunction(node) || node.type === "Program" || node.type === "StaticBlock";
 }
 
 // Collects the names bound by a pattern, e.g. const { a, b: [c, ...d] = e } = f.
@@ -71,7 +71,9 @@ function declarationsOf(ast) {
 
   ancestor(ast, {
     VariableDeclaration(node, _, ancestors) {
-      const scope = closest(ancestors, node.kind === "var" ? isFunctionScope : isBlockScope);
+      let scope = closest(ancestors, node.kind === "var" ? isFunctionScope : isBlockScope);
+      // Parameter defaults can't see var declarations in the function body.
+      if (isFunction(scope)) scope = scope.body;
       declare(
         scope,
         node.declarations.flatMap((d) => namesOfPattern(d.id)),
@@ -104,23 +106,33 @@ function declarationsOf(ast) {
 }
 
 // Returns the names a program reads but does not declare itself, in order of
-// first appearance. Object keys, member properties, labels and assignment
-// targets are not references, because acorn-walk never visits them as
-// identifiers.
+// first appearance. Object keys, member properties and labels are not
+// references, because acorn-walk never visits them as identifiers.
 export function findReferences(ast) {
   const scopes = declarationsOf(ast);
   const references = new Set();
 
   const isLocal = (name, ancestors) => {
     for (let i = ancestors.length - 1; i >= 0; i--) {
-      if (scopes.get(ancestors[i])?.has(name)) return true;
+      const scope = ancestors[i];
+      // The discriminant of a switch can't see the declarations in its cases.
+      if (scope.type === "SwitchStatement" && ancestors[i + 1] === scope.discriminant) continue;
+      if (scopes.get(scope)?.has(name)) return true;
     }
     return false;
   };
 
+  const reference = (node, ancestors) => {
+    if (!isLocal(node.name, ancestors)) references.add(node.name);
+  };
+
   ancestor(ast, {
-    Identifier(node, _, ancestors) {
-      if (!isLocal(node.name, ancestors)) references.add(node.name);
+    Identifier: reference,
+    // Identifiers in declarations and assignment targets are patterns. Only the
+    // target of a compound assignment, such as x += 1, also reads the variable.
+    VariablePattern(node, _, ancestors) {
+      const parent = ancestors[ancestors.length - 2];
+      if (parent.type === "AssignmentExpression" && parent.operator !== "=") reference(node, ancestors);
     },
   });
 

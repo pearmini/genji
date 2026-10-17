@@ -1,11 +1,10 @@
-import { parse } from "acorn";
 import { Inspector } from "@observablehq/inspector";
 import * as Signals from "./signal.js";
 import * as Inputs from "./inputs.js";
 import * as stdlibs from "./stdlib.js";
 import Signal from "./signal.js";
 import { parseMeta } from "./node.js";
-import { findReferences } from "./references.js";
+import { parseVariable } from "./parse.js";
 
 function assignLibrary(library = {}) {
   Object.assign(window, library);
@@ -81,38 +80,6 @@ function debounce(callback, wait = 10) {
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
   };
-}
-
-// Returns the name a cell declares (if any) and the code that computes its value.
-function normalizeVariable(ast, code) {
-  const [node] = ast.body;
-  const valueFrom = (init) => (init ? code.slice(init.start).trim() : "");
-
-  // x = 1
-  if (node?.type === "ExpressionStatement") {
-    const { expression: e } = node;
-    if (e.type === "AssignmentExpression" && e.operator === "=" && e.left.type === "Identifier") {
-      return [e.left.name, valueFrom(e.right)];
-    }
-    return [undefined, code];
-  }
-
-  // const x = 1
-  if (node?.type === "VariableDeclaration") {
-    const [{ id, init }] = node.declarations;
-    return [id.name, valueFrom(init)];
-  }
-
-  // function x() {}
-  if (node?.type === "FunctionDeclaration") return [node.id.name, code];
-
-  return [undefined, ""];
-}
-
-function parseVariable(code) {
-  const ast = parse(code, { ecmaVersion: "latest", sourceType: "script" });
-  const [name, expression] = normalizeVariable(ast, code);
-  return { name, expression, deps: findReferences(ast) };
 }
 
 function identity(d) {

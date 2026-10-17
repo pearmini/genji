@@ -60,3 +60,23 @@ test("named function and class expressions can refer to themselves", () => {
 test("ignores labels", () => {
   assert.deepEqual(references("outer: for (const a of list) { break outer; }"), ["list"]);
 });
+
+test("compound assignments read their target", () => {
+  assert.deepEqual(references("x += 1"), ["x"]);
+  assert.deepEqual(references("f = () => { a ||= 1; b &&= 2; c ??= 3; }"), ["a", "b", "c"]);
+  assert.deepEqual(references("f = () => { let x = 0; x += y; }"), ["y"]);
+});
+
+test("static blocks are var scopes", () => {
+  assert.deepEqual(references("function f() { class C { static { var x = 1; } } return x; }"), ["x"]);
+});
+
+test("parameter defaults can't see var declarations in the function body", () => {
+  assert.deepEqual(references("function f(a = x) { var x = 2; return a + x; }"), ["x"]);
+  assert.deepEqual(references("f = (a = x) => { var x; }"), ["x"]);
+});
+
+test("switch discriminants can't see declarations in cases", () => {
+  assert.deepEqual(references("function f() { switch (x) { default: let x = 0; } }"), ["x"]);
+  assert.deepEqual(references("switch (y) { case 1: let x = y; x; }"), ["y"]);
+});
