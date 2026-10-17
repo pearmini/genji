@@ -1,11 +1,10 @@
-import { parse, tokenizer } from "acorn";
-import { simple } from "acorn-walk";
 import { Inspector } from "@observablehq/inspector";
 import * as Signals from "./signal.js";
 import * as Inputs from "./inputs.js";
 import * as stdlibs from "./stdlib.js";
 import Signal from "./signal.js";
 import { parseMeta } from "./node.js";
+import { parseVariable } from "./parse.js";
 
 function assignLibrary(library = {}) {
   Object.assign(window, library);
@@ -83,109 +82,6 @@ function debounce(callback, wait = 10) {
   };
 }
 
-function splitByEqual(content) {
-  const index = content.split("").findIndex((d) => d === "=");
-  const before = content.slice(0, index);
-  const after = content.slice(index + 1, content.length);
-  return [before, after];
-}
-
-function createAssignmentNode(code, ast) {
-  const [name, value] = splitByEqual(code);
-  const params = ast.body[0]?.expression?.right?.params || [];
-  return [name.trim(), value.trim(), params];
-}
-
-function createVariableNode(code, ast) {
-  const [prefix, value] = splitByEqual(code);
-  const name = prefix.trim().split(" ").pop();
-  const params = ast.body[0]?.declarations[0]?.init?.params || [];
-  return [name.trim(), value.trim(), params];
-}
-
-function createFunctionNode(code, ast) {
-  const { name } = ast.body[0].id;
-  const { params } = ast.body[0];
-  const normalized = params.map((d) => {
-    // function add(a, b = 10) { return a + b; }
-    if (d.type === "AssignmentPattern") return d.left;
-    return d;
-  });
-  return [name, code, normalized];
-}
-
-function createCallNode(code) {
-  return [undefined, code];
-}
-
-function createExpressionNode(code) {
-  return [undefined, code];
-}
-
-function typeOfExpression(ast) {
-  return ast.body[0]?.expression?.type;
-}
-
-function typeOfBody(ast) {
-  return ast.body[0]?.type;
-}
-
-function isAssignment(ast) {
-  return typeOfExpression(ast) === "AssignmentExpression";
-}
-
-function isCall(ast) {
-  return typeOfExpression(ast) === "CallExpression";
-}
-
-function isVariableDeclaration(ast) {
-  return typeOfBody(ast) === "VariableDeclaration";
-}
-
-function isFunctionDeclaration(ast) {
-  return typeOfBody(ast) === "FunctionDeclaration";
-}
-
-function isExpression(ast) {
-  return typeOfBody(ast) === "ExpressionStatement";
-}
-
-function normalizeVariable(ast, code) {
-  if (isAssignment(ast)) return createAssignmentNode(code, ast);
-  if (isCall(ast)) return createCallNode(code);
-  if (isFunctionDeclaration(ast)) return createFunctionNode(code, ast);
-  if (isVariableDeclaration(ast)) return createVariableNode(code, ast);
-  if (isExpression(ast)) return createExpressionNode(code, ast);
-  return [undefined, ""];
-}
-
-const ACORN_OPTIONS = { ecmaVersion: "latest", sourceType: "script" };
-
-// Normalize acorn tokens to { type, value }, where type is "Identifier" for
-// names and value falls back to the token label for punctuators.
-function tokenize(code) {
-  return Array.from(tokenizer(code, ACORN_OPTIONS), (d) => ({
-    type: d.type.label === "name" ? "Identifier" : d.type.label,
-    value: d.value ?? d.type.label,
-  }));
-}
-
-// TODO
-function getExternalDeps(ast) {
-  const externalDeps = [];
-  simple(ast, {});
-  return externalDeps;
-}
-
-function parseVariable(code) {
-  const tokens = tokenize(code);
-  const ast = parse(code, ACORN_OPTIONS);
-  const [name, expression, params = []] = normalizeVariable(ast, code);
-  const deps = getExternalDeps(ast);
-  const paramNames = params.map((d) => d.name);
-  return { name, expression, tokens, ast, params: paramNames, deps };
-}
-
 function identity(d) {
   return d;
 }
@@ -228,49 +124,17 @@ function builtinVariable(variables, { isDark } = {}) {
   return variables;
 }
 
+// Adds an edge n1 -> n2 for every cell n2 that reads the variable declared by n1.
 function createGraph(nodes) {
   const relationById = new Map(nodes.map((n) => [n.id, { from: [], to: [] }]));
-  for (let i = 0; i < nodes.length; i++) {
-    for (let j = i + 1; j < nodes.length; j++) {
-      const n1 = nodes[i];
-      const n2 = nodes[j];
-      const r1 = relationById.get(n1.id);
-      const r2 = relationById.get(n2.id);
-      const ref1 = isReference(n1, n2);
-      const ref2 = isReference(n2, n1);
-      if (ref1) {
-        r1.to.push(n2.id);
-        r2.from.push(n1.id);
-      }
-      if (ref2) {
-        r1.from.push(n2.id);
-        r2.to.push(n1.id);
-      }
+  for (const n2 of nodes) {
+    for (const n1 of nodes) {
+      if (n1 === n2 || n1.name === undefined || !n2.deps.includes(n1.name)) continue;
+      relationById.get(n1.id).to.push(n2.id);
+      relationById.get(n2.id).from.push(n1.id);
     }
   }
   return relationById;
-}
-
-// TODO: work with deps to avoid wrong execution order.
-function isReference(n1, n2) {
-  const { name } = n1;
-  const { tokens, params } = n2;
-  return tokens
-    .filter((d) => !params.includes(d.value))
-    .some((d, i) => {
-      return (
-        d.type === "Identifier" &&
-        d.value === name &&
-        // Is not a variable assignment.
-        (!tokens[i + 1] || tokens[i + 1].value !== "=") &&
-        // Is not a variable declaration.
-        (!tokens[i - 1] || tokens[i - 1].value !== "let") &&
-        (!tokens[i - 1] || tokens[i - 1].value !== "const") &&
-        (!tokens[i - 1] || tokens[i - 1].value !== "var") &&
-        // Is not a object property.
-        (!tokens[i - 1] || (tokens[i - 1].value !== "." && tokens[i - 1].value !== "?."))
-      );
-    });
 }
 
 function isCircular(relationById, id) {
