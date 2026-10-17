@@ -1,4 +1,4 @@
-const fs = require("file-system");
+const fs = require("fs-extra");
 const path = require("path");
 
 const { parse } = require("../lib/parse");
