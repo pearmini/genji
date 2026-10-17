@@ -18,13 +18,13 @@
     "template": "cd template && ../bin/genji.js dev"
   },
   "devDependencies": {
-    "jest": "^30.5.0",
+    "jest": "^30.5.2",
     "npm-run-all2": "^9.0.3",
-    "prettier": "3.9.6"
+    "prettier": "3.9.10"
   },
   "dependencies": {
     "commander": "^15.0.0",
-    "fs-extra": "^11.3.2",
+    "fs-extra": "^11.4.1",
     "gh-pages": "^6.3.0",
     "nodemon": "^3.1.14",
     "object-hash": "^3.0.0"
