@@ -198,8 +198,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       genji-theme-docusaurus:
-        specifier: ^0.2.0
-        version: 0.2.8(postcss@8.5.26)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: workspace:*
+        version: link:..
       prism-react-renderer:
         specifier: ^2.3.1
         version: 2.4.1(react@18.3.1)
@@ -2263,10 +2263,6 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@observablehq/inputs@0.10.6':
-    resolution: {integrity: sha512-fOcpJvyBwPqr9I1QdW55J5x36nxRbfyqRQXVT3li9AvMpy6m14WPo5K0m4cPCxr4IlLIDtM/lq6z1GL3ElA14g==}
-    engines: {node: '>=14.5.0'}
-
   '@observablehq/inputs@0.12.0':
     resolution: {integrity: sha512-1ln7+PYe31cMx00K9awVbiCscQM0THnXRJ/AEzd+FfTA25Gu3KRWknAGECxU49QzHyKqiXpLl5LCg3XtYm70eQ==}
     engines: {node: '>=14.5.0'}
@@ -4252,11 +4248,6 @@ packages:
     resolution: {integrity: sha512-j6PAQ2uUr79PZhBjP5C5fhl8e39FmRnOjsD5lGnWrFU8i2G776tBK7+nP8KuQUTTyAZUwfQqXAgrVH5MbH9CYQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  esprima@4.0.1:
-    resolution: {integrity: sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==}
-    engines: {node: '>=4'}
-    hasBin: true
-
   esquery@1.7.0:
     resolution: {integrity: sha512-Ap6G0WQwcU/LHsvLwON1fAQX9Zp0A2Y6Y/cJBl9r/JbW90Zyg4/zbG6zzKa2OTALELarYHmKu0GhpM5EO+7T0g==}
     engines: {node: '>=0.10'}
@@ -4487,16 +4478,6 @@ packages:
 
   function-bind@1.1.2:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==}
-
-  genji-runtime@0.2.8:
-    resolution: {integrity: sha512-PQtQGtDOnY9kkUw6WxfYKinly6VqTP4KwYp1LDeSCuskAI1Monl4S5OtkftsoPJiCHvKxWYmTazeq3MZ+vEssg==}
-
-  genji-theme-docusaurus@0.2.8:
-    resolution: {integrity: sha512-5yiKB6MssHPDEkaXzALtOyoGxirJvntOsn9EORw0Ei/G/GHijsdkfmK1FvB4MAZHvlVuNfYRv0+r99HBVQZL8w==}
-    engines: {node: '>=18.0'}
-    peerDependencies:
-      react: ^18.3.1
-      react-dom: ^18.3.1
 
   gensync@1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
@@ -6239,11 +6220,6 @@ packages:
   postcss-place@10.0.0:
     resolution: {integrity: sha512-5EBrMzat2pPAxQNWYavwAfoKfYcTADJ8AXGVPcUZ2UkNloUTWzJQExgrzrDkh3EKzmAx1evfTAzF9I8NGcc+qw==}
     engines: {node: '>=18'}
-    peerDependencies:
-      postcss: '>=8.5.18'
-
-  postcss-prefix-selector@1.16.1:
-    resolution: {integrity: sha512-Umxu+FvKMwlY6TyDzGFoSUnzW+NOfMBLyC1tAkIjgX+Z/qGspJeRjVC903D7mx7TuBpJlwti2ibXtWuA7fKMeQ==}
     peerDependencies:
       postcss: '>=8.5.18'
 
@@ -10464,11 +10440,6 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.20.3
 
-  '@observablehq/inputs@0.10.6':
-    dependencies:
-      htl: 0.3.1
-      isoformat: 0.2.1
-
   '@observablehq/inputs@0.12.0':
     dependencies:
       htl: 0.3.1
@@ -12605,8 +12576,6 @@ snapshots:
       acorn-jsx: 5.3.2(acorn@8.19.0)
       eslint-visitor-keys: 4.2.1
 
-  esprima@4.0.1: {}
-
   esquery@1.7.0:
     dependencies:
       estraverse: 5.3.0
@@ -12876,22 +12845,6 @@ snapshots:
     optional: true
 
   function-bind@1.1.2: {}
-
-  genji-runtime@0.2.8:
-    dependencies:
-      '@observablehq/inputs': 0.10.6
-      '@observablehq/inspector': 5.0.1
-      esprima: 4.0.1
-      estraverse: 5.3.0
-
-  genji-theme-docusaurus@0.2.8(postcss@8.5.26)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      genji-runtime: 0.2.8
-      postcss-prefix-selector: 1.16.1(postcss@8.5.26)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-    transitivePeerDependencies:
-      - postcss
 
   gensync@1.0.0-beta.2: {}
 
@@ -15122,10 +15075,6 @@ snapshots:
     dependencies:
       postcss: 8.5.26
       postcss-value-parser: 4.2.0
-
-  postcss-prefix-selector@1.16.1(postcss@8.5.26):
-    dependencies:
-      postcss: 8.5.26
 
   postcss-prefix-selector@2.2.1(postcss@8.5.30):
     dependencies:

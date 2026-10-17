@@ -6,8 +6,9 @@
 
 :root {
   --syntax_normal: var(--genji-inspector-syntax-normal) !important;
-  --sans-serif: -apple-system, BlinkMacSystemFont, "avenir next", avenir, helvetica, "helvetica neue", ubuntu, roboto,
-    noto, "segoe ui", arial, sans-serif;
+  --sans-serif:
+    -apple-system, BlinkMacSystemFont, "avenir next", avenir, helvetica, "helvetica neue", ubuntu, roboto, noto,
+    "segoe ui", arial, sans-serif;
 }
 
 .genji-cell {
