@@ -19,10 +19,7 @@ export default defineConfig({
       },
     },
     optimizeDeps: {
-      include: [
-        "genji-theme-vitepress > genji-runtime > acorn",
-        "genji-theme-vitepress > genji-runtime > acorn-walk",
-      ],
+      include: ["genji-theme-vitepress > genji-runtime > acorn", "genji-theme-vitepress > genji-runtime > acorn-walk"],
     },
   },
 });

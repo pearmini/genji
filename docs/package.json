@@ -14,7 +14,7 @@
     "esbuild": "^0.28.2",
     "genji-theme-vitepress": "workspace:*",
     "vitepress": "^1.6.4",
-    "vue": "^3.5.42"
+    "vue": "^3.5.44"
   },
   "repository": {
     "type": "git",
