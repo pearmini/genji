@@ -14,9 +14,10 @@
     "./css": "./src/index.css"
   },
   "scripts": {
-    "test": "npm run test:lint && npm run test:format",
-    "test:lint": "eslint src",
-    "test:format": "prettier --check src"
+    "test": "npm run test:lint && npm run test:format && npm run test:unit",
+    "test:lint": "eslint src test",
+    "test:format": "prettier --check src test",
+    "test:unit": "node --test \"test/**/*.test.js\""
   },
   "author": "https://github.com/pearmini",
   "license": "MIT",

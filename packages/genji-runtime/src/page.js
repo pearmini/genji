@@ -1,11 +1,11 @@
-import { parse, tokenizer } from "acorn";
-import { simple } from "acorn-walk";
+import { parse } from "acorn";
 import { Inspector } from "@observablehq/inspector";
 import * as Signals from "./signal.js";
 import * as Inputs from "./inputs.js";
 import * as stdlibs from "./stdlib.js";
 import Signal from "./signal.js";
 import { parseMeta } from "./node.js";
+import { findReferences } from "./references.js";
 
 function assignLibrary(library = {}) {
   Object.assign(window, library);
@@ -90,28 +90,20 @@ function splitByEqual(content) {
   return [before, after];
 }
 
-function createAssignmentNode(code, ast) {
+function createAssignmentNode(code) {
   const [name, value] = splitByEqual(code);
-  const params = ast.body[0]?.expression?.right?.params || [];
-  return [name.trim(), value.trim(), params];
+  return [name.trim(), value.trim()];
 }
 
-function createVariableNode(code, ast) {
+function createVariableNode(code) {
   const [prefix, value] = splitByEqual(code);
   const name = prefix.trim().split(" ").pop();
-  const params = ast.body[0]?.declarations[0]?.init?.params || [];
-  return [name.trim(), value.trim(), params];
+  return [name.trim(), value.trim()];
 }
 
 function createFunctionNode(code, ast) {
   const { name } = ast.body[0].id;
-  const { params } = ast.body[0];
-  const normalized = params.map((d) => {
-    // function add(a, b = 10) { return a + b; }
-    if (d.type === "AssignmentPattern") return d.left;
-    return d;
-  });
-  return [name, code, normalized];
+  return [name, code];
 }
 
 function createCallNode(code) {
@@ -151,39 +143,19 @@ function isExpression(ast) {
 }
 
 function normalizeVariable(ast, code) {
-  if (isAssignment(ast)) return createAssignmentNode(code, ast);
+  if (isAssignment(ast)) return createAssignmentNode(code);
   if (isCall(ast)) return createCallNode(code);
   if (isFunctionDeclaration(ast)) return createFunctionNode(code, ast);
-  if (isVariableDeclaration(ast)) return createVariableNode(code, ast);
+  if (isVariableDeclaration(ast)) return createVariableNode(code);
   if (isExpression(ast)) return createExpressionNode(code, ast);
   return [undefined, ""];
 }
 
-const ACORN_OPTIONS = { ecmaVersion: "latest", sourceType: "script" };
-
-// Normalize acorn tokens to { type, value }, where type is "Identifier" for
-// names and value falls back to the token label for punctuators.
-function tokenize(code) {
-  return Array.from(tokenizer(code, ACORN_OPTIONS), (d) => ({
-    type: d.type.label === "name" ? "Identifier" : d.type.label,
-    value: d.value ?? d.type.label,
-  }));
-}
-
-// TODO
-function getExternalDeps(ast) {
-  const externalDeps = [];
-  simple(ast, {});
-  return externalDeps;
-}
-
 function parseVariable(code) {
-  const tokens = tokenize(code);
-  const ast = parse(code, ACORN_OPTIONS);
-  const [name, expression, params = []] = normalizeVariable(ast, code);
-  const deps = getExternalDeps(ast);
-  const paramNames = params.map((d) => d.name);
-  return { name, expression, tokens, ast, params: paramNames, deps };
+  const ast = parse(code, { ecmaVersion: "latest", sourceType: "script" });
+  const [name, expression] = normalizeVariable(ast, code);
+  const deps = findReferences(ast);
+  return { name, expression, ast, deps };
 }
 
 function identity(d) {
@@ -251,26 +223,9 @@ function createGraph(nodes) {
   return relationById;
 }
 
-// TODO: work with deps to avoid wrong execution order.
+// Whether n2 reads the variable declared by n1.
 function isReference(n1, n2) {
-  const { name } = n1;
-  const { tokens, params } = n2;
-  return tokens
-    .filter((d) => !params.includes(d.value))
-    .some((d, i) => {
-      return (
-        d.type === "Identifier" &&
-        d.value === name &&
-        // Is not a variable assignment.
-        (!tokens[i + 1] || tokens[i + 1].value !== "=") &&
-        // Is not a variable declaration.
-        (!tokens[i - 1] || tokens[i - 1].value !== "let") &&
-        (!tokens[i - 1] || tokens[i - 1].value !== "const") &&
-        (!tokens[i - 1] || tokens[i - 1].value !== "var") &&
-        // Is not a object property.
-        (!tokens[i - 1] || (tokens[i - 1].value !== "." && tokens[i - 1].value !== "?."))
-      );
-    });
+  return n1.name !== undefined && n2.deps.includes(n1.name);
 }
 
 function isCircular(relationById, id) {
