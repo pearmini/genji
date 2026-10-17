@@ -1,5 +1,5 @@
-import { tokenize, parseScript } from "esprima";
-import { traverse } from "estraverse";
+import { parse, tokenizer } from "acorn";
+import { simple } from "acorn-walk";
 import { Inspector } from "@observablehq/inspector";
 import * as Signals from "./signal.js";
 import * as Inputs from "./inputs.js";
@@ -159,18 +159,27 @@ function normalizeVariable(ast, code) {
   return [undefined, ""];
 }
 
+const ACORN_OPTIONS = { ecmaVersion: "latest", sourceType: "script" };
+
+// Normalize acorn tokens to { type, value }, where type is "Identifier" for
+// names and value falls back to the token label for punctuators.
+function tokenize(code) {
+  return Array.from(tokenizer(code, ACORN_OPTIONS), (d) => ({
+    type: d.type.label === "name" ? "Identifier" : d.type.label,
+    value: d.value ?? d.type.label,
+  }));
+}
+
 // TODO
 function getExternalDeps(ast) {
   const externalDeps = [];
-  traverse(ast, {
-    enter: function () {},
-  });
+  simple(ast, {});
   return externalDeps;
 }
 
 function parseVariable(code) {
   const tokens = tokenize(code);
-  const ast = parseScript(code);
+  const ast = parse(code, ACORN_OPTIONS);
   const [name, expression, params = []] = normalizeVariable(ast, code);
   const deps = getExternalDeps(ast);
   const paramNames = params.map((d) => d.name);
@@ -259,7 +268,7 @@ function isReference(n1, n2) {
         (!tokens[i - 1] || tokens[i - 1].value !== "const") &&
         (!tokens[i - 1] || tokens[i - 1].value !== "var") &&
         // Is not a object property.
-        (!tokens[i - 1] || tokens[i - 1].value !== ".")
+        (!tokens[i - 1] || (tokens[i - 1].value !== "." && tokens[i - 1].value !== "?."))
       );
     });
 }

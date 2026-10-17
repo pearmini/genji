@@ -20,8 +20,8 @@ export default defineConfig({
     },
     optimizeDeps: {
       include: [
-        "genji-theme-vitepress > genji-runtime > esprima",
-        "genji-theme-vitepress > genji-runtime > estraverse",
+        "genji-theme-vitepress > genji-runtime > acorn",
+        "genji-theme-vitepress > genji-runtime > acorn-walk",
       ],
     },
   },
