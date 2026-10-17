@@ -1,4 +1,5 @@
 import Signal from "./signal.js";
+import { parseVariable } from "./parse.js";
 
 export const SCRIPT_PREFIX = "cell";
 
@@ -139,13 +140,12 @@ function execute(id, nodeById, relationById, valueById, countById, disposeById, 
 
         valueById.set(id, value);
         disposeById.set(id, dispose);
-        success(node);
-        return Promise.resolve(value);
+        return value;
       });
 
-      // Keep the stored promise rejected, so dependents fail with the same error
-      // instead of running with undefined.
-      promise.catch((e) => error(e, node));
+      // Report the cell apart from the stored promise: a rejection should reach
+      // dependents, but an error while rendering the value should not.
+      promise.then(() => success(node)).catch((e) => error(e, node));
 
       valueById.set(id, promise);
       executeDeps();
@@ -155,7 +155,17 @@ function execute(id, nodeById, relationById, valueById, countById, disposeById, 
   if (deps.some((d) => d instanceof Promise)) {
     loading(node);
     Promise.all(deps)
-      .then((values) => next(values))
+      .then(
+        (values) => next(values),
+        (e) => {
+          error(e, node);
+          // Pass the error on, so dependents further down report it too.
+          const failed = Promise.reject(e);
+          failed.catch(() => {});
+          valueById.set(id, failed);
+          executeDeps();
+        },
+      )
       .catch((e) => error(e, node));
   } else {
     next(deps);
@@ -185,4 +195,26 @@ export function run(variables, { disposeById = new Map(), loading = () => {}, su
   }
 
   return relationById;
+}
+
+// Adds the built-in width, now and dark signals unless a cell declares them.
+export function builtinVariable(variables, { isDark } = {}) {
+  const builtins = [
+    ["width", "width = Signals.width()"],
+    ["now", "now = Signals.now()"],
+    ["dark", `dark = Signals.dark(${isDark})`],
+  ];
+  const names = new Set(variables.map((d) => d.name));
+  let id = -1;
+  for (const [name, code] of builtins) {
+    if (names.has(name)) continue;
+    const variable = {
+      code,
+      id: id--,
+      options: {},
+      ...parseVariable(code),
+    };
+    variables.push(variable);
+  }
+  return variables;
 }

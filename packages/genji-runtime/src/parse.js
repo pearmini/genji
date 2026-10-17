@@ -39,25 +39,3 @@ export function parseVariable(code) {
   const [name, expression] = normalizeVariable(ast, code, tokens);
   return { name, expression, deps: findReferences(ast) };
 }
-
-// Adds the built-in width, now and dark signals unless a cell declares them.
-export function builtinVariable(variables, { isDark } = {}) {
-  const builtins = [
-    ["width", "width = Signals.width()"],
-    ["now", "now = Signals.now()"],
-    ["dark", `dark = Signals.dark(${isDark})`],
-  ];
-  const names = new Set(variables.map((d) => d.name));
-  let id = -1;
-  for (const [name, code] of builtins) {
-    if (names.has(name)) continue;
-    const variable = {
-      code,
-      id: id--,
-      options: {},
-      ...parseVariable(code),
-    };
-    variables.push(variable);
-  }
-  return variables;
-}

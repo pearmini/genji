@@ -3,9 +3,9 @@ import * as Signals from "./signal.js";
 import * as Inputs from "./inputs.js";
 import * as stdlibs from "./stdlib.js";
 import Signal from "./signal.js";
-import { run, SCRIPT_PREFIX } from "./graph.js";
+import { run, createGraph, builtinVariable, SCRIPT_PREFIX } from "./graph.js";
+import { parseVariable } from "./parse.js";
 import { parseMeta } from "./node.js";
-import { parseVariable, builtinVariable } from "./parse.js";
 
 function assignLibrary(library = {}) {
   Object.assign(window, library);
@@ -304,9 +304,9 @@ function render(module, { root, isDark, path, transform = {}, isDev = false, num
     mount(block, error);
   };
 
-  const relationById = run(variables, { disposeById: module, loading, success, error });
+  if (isDev) printDevTrees(path, createGraph(variables), variables);
 
-  if (isDev) printDevTrees(path, relationById, variables);
+  run(variables, { disposeById: module, loading, success, error });
 
   for (const [id, e] of errors) error(e, { id });
 }
