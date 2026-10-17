@@ -181,12 +181,14 @@ test("reports circular dependencies", () => {
   ]);
 });
 
-test("reports cycles of any length", () => {
-  const { events } = runCells("a = c + 1", "b = a + 1", "c = b + 1", "d = 1");
-  assert.deepEqual(events.slice(0, 3), [
+test("reports cycles of any length", async () => {
+  const { results } = runCells("a = c + 1", "b = a + 1", "c = b + 1", "d = 1");
+  await settle();
+  assert.deepEqual(results(), [
     ["error", 0, "Circular dependency detected."],
     ["error", 1, "Circular dependency detected."],
     ["error", 2, "Circular dependency detected."],
+    ["success", 3, 1],
   ]);
 });
 
@@ -196,7 +198,7 @@ test("reports dependents of a cycle without running them", async () => {
   assert.deepEqual(results(), [
     ["error", 0, "Circular dependency detected."],
     ["error", 1, "Circular dependency detected."],
-    ["error", 2, "Circular dependency detected."],
+    ["error", 2, "Depends on a circular dependency."],
     ["success", 3, 1],
     ["success", 4, 2],
   ]);
@@ -222,6 +224,25 @@ test("reports duplicate declarations", async () => {
   assert.deepEqual(results(), [
     ["error", 1, "Identifier a has already been declared."],
     ["success", 0, 1],
+  ]);
+});
+
+test("only the first declaration of a name is a dependency", async () => {
+  const { results } = runCells("a = 1", "b = a", "a = b");
+  await settle();
+  assert.deepEqual(results(), [
+    ["error", 2, "Identifier a has already been declared."],
+    ["success", 0, 1],
+    ["success", 1, 1],
+  ]);
+});
+
+test("reports a duplicate declaration before a circular dependency", () => {
+  const { events } = runCells("a = b", "b = a", "a = b + 1");
+  assert.deepEqual(events, [
+    ["error", 2, "Identifier a has already been declared."],
+    ["error", 0, "Circular dependency detected."],
+    ["error", 1, "Circular dependency detected."],
   ]);
 });
 

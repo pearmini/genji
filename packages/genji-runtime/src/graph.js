@@ -8,11 +8,15 @@ function lines(...L) {
 }
 
 // Adds an edge n1 -> n2 for every cell n2 that reads the variable declared by n1.
+// Only the first declaration of a name counts; later ones are errors.
 export function createGraph(nodes) {
   const relationById = new Map(nodes.map((n) => [n.id, { from: [], to: [] }]));
-  for (const n2 of nodes) {
-    for (const n1 of nodes) {
-      if (n1 === n2 || n1.name === undefined || !n2.deps.includes(n1.name)) continue;
+  const declared = new Set();
+  for (const n1 of nodes) {
+    if (n1.name === undefined || declared.has(n1.name)) continue;
+    declared.add(n1.name);
+    for (const n2 of nodes) {
+      if (n1 === n2 || !n2.deps.includes(n1.name)) continue;
       relationById.get(n1.id).to.push(n2.id);
       relationById.get(n2.id).from.push(n1.id);
     }
@@ -34,25 +38,26 @@ function reachableFrom(relationById, ids) {
   return reached;
 }
 
-// Returns the ids of the cells in a cycle of any length, and of every cell
-// downstream of one, since neither can ever run.
+// Returns the ids of the cells in a cycle, or downstream of one, which can never
+// run. These are the cells a topological sort (Kahn's algorithm) never reaches.
 function blockedOf(relationById) {
-  const ids = Array.from(relationById.keys());
-  const circular = ids.filter((id) => reachableFrom(relationById, [id]).has(id));
-  return reachableFrom(relationById, circular);
+  const countById = new Map(Array.from(relationById, ([id, { from }]) => [id, from.length]));
+  const queue = Array.from(countById.keys()).filter((id) => countById.get(id) === 0);
+  for (const id of queue) {
+    for (const to of relationById.get(id).to) {
+      countById.set(to, countById.get(to) - 1);
+      if (countById.get(to) === 0) queue.push(to);
+    }
+  }
+  return Array.from(countById.keys()).filter((id) => countById.get(id) > 0);
 }
 
-function execute(id, nodeById, relationById, valueById, countById, disposeById, idByName, hooks) {
+function execute(id, nodeById, relationById, valueById, countById, disposeById, hooks) {
   const { loading, success: _success, error } = hooks;
 
   const node = nodeById.get(id);
 
-  const { expression, name } = node;
-
-  if (name !== undefined && idByName.get(name) !== id) {
-    error(new SyntaxError(`Identifier ${name} has already been declared.`), node);
-    return;
-  }
+  const { expression } = node;
 
   const relation = relationById.get(id);
   const { from, to } = relation;
@@ -64,7 +69,7 @@ function execute(id, nodeById, relationById, valueById, countById, disposeById, 
       const count = countById.get(toId);
       if (count - 1 <= 0) {
         countById.set(toId, 0);
-        execute(toId, nodeById, relationById, valueById, countById, disposeById, idByName, hooks);
+        execute(toId, nodeById, relationById, valueById, countById, disposeById, hooks);
       } else {
         countById.set(toId, count - 1);
       }
@@ -178,26 +183,30 @@ export function run(variables, { disposeById = new Map(), loading = () => {}, su
   const nodeById = new Map(variables.map((d) => [d.id, d]));
   const valueById = new Map(variables.map((d) => [d.id, undefined]));
   const countById = new Map(variables.map((d) => [d.id, relationById.get(d.id).from.length]));
-  const idByName = new Map();
-  for (const { name, id } of variables) {
-    if (!idByName.has(name) && name !== undefined) idByName.set(name, id);
-  }
 
-  const blocked = blockedOf(relationById);
-  for (const { id } of variables) {
-    if (!blocked.has(id)) continue;
-    error(new SyntaxError(`Circular dependency detected.`), nodeById.get(id));
-    // Never run, even when a dependency outside the cycle updates.
+  // A cell with an error never runs, even when a dependency of it updates.
+  const fail = (e, id) => {
+    error(e, nodeById.get(id));
     countById.set(id, Infinity);
+  };
+
+  const declared = new Set();
+  for (const { id, name } of variables) {
+    if (name === undefined) continue;
+    if (declared.has(name)) fail(new SyntaxError(`Identifier ${name} has already been declared.`), id);
+    declared.add(name);
   }
 
-  for (const { id } of variables) {
-    if (blocked.has(id) || relationById.get(id).from.length) continue;
-    execute(id, nodeById, relationById, valueById, countById, disposeById, idByName, {
-      loading,
-      success,
-      error,
-    });
+  for (const id of blockedOf(relationById)) {
+    if (countById.get(id) === Infinity) continue;
+    const isCircular = reachableFrom(relationById, [id]).has(id);
+    fail(new SyntaxError(isCircular ? "Circular dependency detected." : "Depends on a circular dependency."), id);
+  }
+
+  // Collect the roots first, since running a cell sets its dependents' counts to 0.
+  const roots = variables.filter(({ id }) => countById.get(id) === 0);
+  for (const { id } of roots) {
+    execute(id, nodeById, relationById, valueById, countById, disposeById, { loading, success, error });
   }
 
   return relationById;
