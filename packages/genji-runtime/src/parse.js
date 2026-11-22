@@ -39,3 +39,10 @@ export function parseVariable(code) {
   const [name, expression] = normalizeVariable(ast, code, tokens);
   return { name, expression, deps: findReferences(ast) };
 }
+
+// The source of a code block's <pre>. Docusaurus 3 draws each line as an element (.token-line) that ends
+// in <br>, which textContent drops, so the lines are joined by hand.
+export function codeOf(pre) {
+  const lines = pre.querySelectorAll(".token-line");
+  return lines.length ? Array.from(lines, (line) => line.textContent).join("\n") : pre.textContent;
+}

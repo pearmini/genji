@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseVariable } from "../src/parse.js";
+import { codeOf, parseVariable } from "../src/parse.js";
 
 function variable(code) {
   const { name, expression } = parseVariable(code);
@@ -48,4 +48,19 @@ test("values are valid expressions", () => {
     const { expression } = parseVariable(code);
     assert.doesNotThrow(() => new Function(`const value = ${expression}`));
   }
+});
+
+// A <pre> whose text is the given lines, drawn as Docusaurus 3 draws them (one element per line, each
+// ending in a <br> that adds nothing to textContent), or as plain text.
+function pre(lines, { tokenLines }) {
+  const elements = lines.map((line) => ({ textContent: line }));
+  return {
+    textContent: tokenLines ? lines.join("") : lines.join("\n"),
+    querySelectorAll: (selector) => (tokenLines && selector === ".token-line" ? elements : []),
+  };
+}
+
+test("reads code blocks line by line", () => {
+  assert.equal(codeOf(pre(["a = 1", "", "b = a"], { tokenLines: true })), "a = 1\n\nb = a");
+  assert.equal(codeOf(pre(["a = 1", "b = a"], { tokenLines: false })), "a = 1\nb = a");
 });

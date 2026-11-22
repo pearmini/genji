@@ -4,7 +4,7 @@ import * as Inputs from "./inputs.js";
 import * as stdlibs from "./stdlib.js";
 import Signal from "./signal.js";
 import { run, createGraph, builtinVariable, SCRIPT_PREFIX } from "./graph.js";
-import { parseVariable } from "./parse.js";
+import { codeOf, parseVariable } from "./parse.js";
 import { parseMeta } from "./node.js";
 
 function assignLibrary(library = {}) {
@@ -87,8 +87,7 @@ function createVariable(block, index, customTransforms) {
 
   if (!P.length) return null;
 
-  const dom = block.getElementsByTagName("pre")[0];
-  const code = dom.textContent;
+  const code = codeOf(block.getElementsByTagName("pre")[0]);
   const parsed = parseCode(code, P);
   return {
     code: parsed,
