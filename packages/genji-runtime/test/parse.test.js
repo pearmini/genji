@@ -62,5 +62,7 @@ function pre(lines, { tokenLines }) {
 
 test("reads code blocks line by line", () => {
   assert.equal(codeOf(pre(["a = 1", "", "b = a"], { tokenLines: true })), "a = 1\n\nb = a");
+  assert.equal(codeOf(pre(["a = 1", "\n", "b = a"], { tokenLines: true })), "a = 1\n\nb = a");
   assert.equal(codeOf(pre(["a = 1", "b = a"], { tokenLines: false })), "a = 1\nb = a");
+  assert.equal(codeOf(undefined), "");
 });

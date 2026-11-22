@@ -40,9 +40,12 @@ export function parseVariable(code) {
   return { name, expression, deps: findReferences(ast) };
 }
 
-// The source of a code block's <pre>. Docusaurus 3 draws each line as an element (.token-line) that ends
-// in <br>, which textContent drops, so the lines are joined by hand.
+// The source of a code block's <pre> ("" if there is none). Docusaurus 3 draws each line as an element
+// with the class token-line that ends in <br>, which textContent drops, so the lines are joined by hand;
+// a line that keeps its own trailing newline isn't doubled. Other themes give the text as it is.
 export function codeOf(pre) {
+  if (!pre) return "";
   const lines = pre.querySelectorAll(".token-line");
-  return lines.length ? Array.from(lines, (line) => line.textContent).join("\n") : pre.textContent;
+  if (!lines.length) return pre.textContent;
+  return Array.from(lines, (line) => line.textContent.replace(/\n$/, "")).join("\n");
 }
